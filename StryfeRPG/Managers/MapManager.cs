@@ -23,16 +23,8 @@ namespace StryfeRPG.Managers
             TmxMap map = new TmxMap(String.Format("Content/Maps/{0}.tmx", mapName));
             Texture2D tileset = Content.Load<Texture2D>(map.Tilesets[0].Name.ToString());
 
-            currentMap = new Map();
-
-            currentMap.tmxMap = map;
-            currentMap.tileset = tileset;
-
-            currentMap.tileWidth = map.Tilesets[0].TileWidth;
-            currentMap.tileHeight = map.Tilesets[0].TileHeight;
-
-            currentMap.tilesetTilesWide = tileset.Width / currentMap.tileWidth;
-            currentMap.tilesetTilesHigh = tileset.Height / currentMap.tileHeight;
+            currentMap = new Map(map, tileset);
+            currentMap.UpdateCollisions();
         }
 
         public void Draw(double timePassed)
@@ -44,21 +36,24 @@ namespace StryfeRPG.Managers
         private void DrawMap()
         {
             TmxMap map = currentMap.tmxMap;
-
-            for (var i = 0; i < map.Layers[0].Tiles.Count; i++)
+            
+            foreach (TmxLayer layer in map.Layers)
             {
-                int gid = map.Layers[0].Tiles[i].Gid;
-                if (gid != 0)
+                for (var i = 0; i < layer.Tiles.Count; i++)
                 {
-                    int tileFrame = gid - 1;
-                    int column = tileFrame % currentMap.tilesetTilesWide;
-                    int row = tileFrame / currentMap.tilesetTilesWide;
+                    int gid = layer.Tiles[i].Gid;
+                    if (gid != 0)
+                    {
+                        int tileFrame = gid - 1;
+                        int column = tileFrame % currentMap.tilesetTilesWide;
+                        int row = tileFrame / currentMap.tilesetTilesWide;
 
-                    float x = (i % map.Width) * map.TileWidth;
-                    float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
+                        float x = (i % map.Width) * map.TileWidth;
+                        float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
 
-                    Rectangle tilesetRec = new Rectangle(currentMap.tileWidth * column, currentMap.tileHeight * row, currentMap.tileWidth, currentMap.tileHeight);
-                    spriteBatch.Draw(currentMap.tileset, new Rectangle((int)x, (int)y, currentMap.tileWidth, currentMap.tileHeight), tilesetRec, Color.White);
+                        Rectangle tilesetRec = new Rectangle(currentMap.tileWidth * column, currentMap.tileHeight * row, currentMap.tileWidth, currentMap.tileHeight);
+                        spriteBatch.Draw(currentMap.tileset, new Rectangle((int)x, (int)y, currentMap.tileWidth, currentMap.tileHeight), tilesetRec, Color.White);
+                    }
                 }
             }
         }

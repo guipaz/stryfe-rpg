@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Game1.cs" />
+    <Compile Include="Managers\CollisionManager.cs" />
     <Compile Include="Managers\KeyboardManager.cs" />
     <Compile Include="Managers\MapManager.cs" />
     <Compile Include="Models\Characters\Character.cs" />

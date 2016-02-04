@@ -36,8 +36,11 @@ namespace StryfeRPG.Managers
 
             if (moveX != 0 || moveY != 0)
             {
-                Player.Instance.Move(moveX, moveY);
-                currentCooldown = 1 / actionsPerSecond;
+                if (!CollisionManager.Instance.GetCollision(Player.Instance.positionX / 32 + moveX, Player.Instance.positionY / 32 + moveY))
+                {
+                    Player.Instance.Move(moveX, moveY);
+                    currentCooldown = 1 / actionsPerSecond;
+                }
             }
         }
 
