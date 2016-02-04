@@ -39,7 +39,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Game1.cs" />
+    <Compile Include="Managers\KeyboardManager.cs" />
     <Compile Include="Managers\MapManager.cs" />
+    <Compile Include="Models\Characters\Character.cs" />
+    <Compile Include="Models\Characters\Player.cs" />
     <Compile Include="Models\Maps\Map.cs" />
     <Compile Include="Models\Maps\MapObject.cs" />
     <Compile Include="Program.cs" />

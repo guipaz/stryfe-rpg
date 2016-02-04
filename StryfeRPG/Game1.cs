@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using TiledSharp;
 using StryfeRPG.Managers;
+using StryfeRPG.Models.Characters;
 
 namespace StryfeRPG
 {
@@ -43,8 +44,12 @@ namespace StryfeRPG
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            MapManager.Instance.spriteBatch = spriteBatch;
 
             MapManager.Instance.LoadMap("exampleMap");
+
+            Player.Instance.texture = Content.Load<Texture2D>("charsets");
+            Player.Instance.textureId = 1;
 
             // TODO: use this.Content to load your game content here
         }
@@ -68,6 +73,8 @@ namespace StryfeRPG
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            KeyboardManager.Instance.Update(gameTime.ElapsedGameTime.TotalSeconds);
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -81,7 +88,7 @@ namespace StryfeRPG
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            MapManager.Instance.Draw(spriteBatch);
+            MapManager.Instance.Draw();
 
             base.Draw(gameTime);
         }

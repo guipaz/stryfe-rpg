@@ -8,12 +8,14 @@ using TiledSharp;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using StryfeRPG.Models.Characters;
 
 namespace StryfeRPG.Managers
 {
     public class MapManager
     {
         public ContentManager Content { get; set; }
+        public SpriteBatch spriteBatch { get; set; }
         public Map currentMap;
         
         public void LoadMap(string mapName)
@@ -33,7 +35,13 @@ namespace StryfeRPG.Managers
             currentMap.tilesetTilesHigh = tileset.Height / currentMap.tileHeight;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw()
+        {
+            DrawMap();
+            DrawPlayer();
+        }
+
+        private void DrawMap()
         {
             TmxMap map = currentMap.tmxMap;
 
@@ -55,6 +63,15 @@ namespace StryfeRPG.Managers
                     spriteBatch.Draw(currentMap.tileset, new Rectangle((int)x, (int)y, currentMap.tileWidth, currentMap.tileHeight), tilesetRec, Color.White);
                 }
             }
+
+            spriteBatch.End();
+        }
+
+        private void DrawPlayer()
+        {
+            spriteBatch.Begin();
+
+            Player.Instance.Draw(spriteBatch);
 
             spriteBatch.End();
         }
