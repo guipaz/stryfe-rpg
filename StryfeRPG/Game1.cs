@@ -88,7 +88,11 @@ namespace StryfeRPG
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            MapManager.Instance.Draw();
+            spriteBatch.Begin();
+
+            MapManager.Instance.Draw(gameTime.ElapsedGameTime.TotalSeconds);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

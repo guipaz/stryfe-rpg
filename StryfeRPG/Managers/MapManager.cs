@@ -35,17 +35,15 @@ namespace StryfeRPG.Managers
             currentMap.tilesetTilesHigh = tileset.Height / currentMap.tileHeight;
         }
 
-        public void Draw()
+        public void Draw(double timePassed)
         {
             DrawMap();
-            DrawPlayer();
+            DrawCharacters(timePassed);
         }
 
         private void DrawMap()
         {
             TmxMap map = currentMap.tmxMap;
-
-            spriteBatch.Begin();
 
             for (var i = 0; i < map.Layers[0].Tiles.Count; i++)
             {
@@ -63,17 +61,11 @@ namespace StryfeRPG.Managers
                     spriteBatch.Draw(currentMap.tileset, new Rectangle((int)x, (int)y, currentMap.tileWidth, currentMap.tileHeight), tilesetRec, Color.White);
                 }
             }
-
-            spriteBatch.End();
         }
 
-        private void DrawPlayer()
+        private void DrawCharacters(double timePassed)
         {
-            spriteBatch.Begin();
-
-            Player.Instance.Draw(spriteBatch);
-
-            spriteBatch.End();
+            Player.Instance.Draw(spriteBatch, timePassed);
         }
 
         // Singleton stuff

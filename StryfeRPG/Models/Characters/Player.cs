@@ -9,8 +9,10 @@ namespace StryfeRPG.Models.Characters
     {
         public bool Move(int x, int y)
         {
-            positionX += tileSize * x;
-            positionY += tileSize * y;
+            isMoving = true;
+
+            destinationX = positionX + tileSize * x;
+            destinationY = positionY + tileSize * y;
 
             return true;
         }
