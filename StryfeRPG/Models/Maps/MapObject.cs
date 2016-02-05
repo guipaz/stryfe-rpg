@@ -20,24 +20,26 @@ namespace StryfeRPG.Models.Maps
 
         // Moving stuff
         public bool isMoving { get; set; }
+
+        public int tempX { get; set; }
+        public int tempY { get; set; }
+
         public int destinationX { get; set; }
         public int destinationY { get; set; }
+
         double lerpTime = 0;
         double animationSpeed = 5;
 
-        public void Draw(SpriteBatch spriteBatch, double timePassed)
+        public void Update(double timePassed)
         {
-            int column = textureId % (texture.Height / tileSize);
-            int row = textureId / (texture.Width / tileSize);
-
-            int finalPosX = positionX;
-            int finalPosY = positionY;
+            tempX = positionX;
+            tempY = positionY;
 
             // Calculate moving animation
             if (isMoving)
             {
-                finalPosX = (int)(positionX + (destinationX - positionX) * lerpTime);
-                finalPosY = (int)(positionY + (destinationY - positionY) * lerpTime);
+                tempX = (int)(positionX + (destinationX - positionX) * lerpTime);
+                tempY = (int)(positionY + (destinationY - positionY) * lerpTime);
                 lerpTime += timePassed * animationSpeed;
             }
 
@@ -49,9 +51,15 @@ namespace StryfeRPG.Models.Maps
                 positionX = destinationX;
                 positionY = destinationY;
             }
+        }
 
+        public void Draw(SpriteBatch spriteBatch, double timePassed)
+        {
+            int column = textureId % (texture.Height / tileSize);
+            int row = textureId / (texture.Width / tileSize);
+            
             Rectangle tilesetRec = new Rectangle(tileSize * column, tileSize * row, tileSize, tileSize);
-            spriteBatch.Draw(texture, new Rectangle((int)finalPosX, (int)finalPosY, tileSize, tileSize), tilesetRec, Color.White);
+            spriteBatch.Draw(texture, new Rectangle((int)tempX, (int)tempY, tileSize, tileSize), tilesetRec, Color.White);
         }
     }
 }

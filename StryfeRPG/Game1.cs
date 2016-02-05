@@ -31,7 +31,8 @@ namespace StryfeRPG
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            CameraManager.Instance.Bounds = GraphicsDevice.Viewport.Bounds;
+            CameraManager.Instance.Zoom = 2;
 
             base.Initialize();
         }
@@ -75,7 +76,7 @@ namespace StryfeRPG
 
             KeyboardManager.Instance.Update(gameTime.ElapsedGameTime.TotalSeconds);
 
-            // TODO: Add your update logic here
+            Player.Instance.Update(gameTime.ElapsedGameTime.TotalSeconds);
 
             base.Update(gameTime);
         }
@@ -88,7 +89,9 @@ namespace StryfeRPG
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
+            CameraManager.Instance.Position = new Vector2(Player.Instance.tempX, Player.Instance.tempY);
+
+            spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: CameraManager.Instance.TransformMatrix);
 
             MapManager.Instance.Draw(gameTime.ElapsedGameTime.TotalSeconds);
 
