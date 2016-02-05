@@ -33,7 +33,7 @@ namespace StryfeRPG
         {
             CameraManager.Instance.Bounds = GraphicsDevice.Viewport.Bounds;
             CameraManager.Instance.Zoom = 2;
-
+        
             base.Initialize();
         }
 
