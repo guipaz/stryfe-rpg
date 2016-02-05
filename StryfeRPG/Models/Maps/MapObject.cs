@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StryfeRPG.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,34 +13,31 @@ namespace StryfeRPG.Models.Maps
         // Texture stuff
         public Texture2D texture { get; set; }
         public int textureId { get; set; }
-        protected int tileSize = 32;
 
-        // Positioning stuff
-        public int positionX { get; set; }
-        public int positionY { get; set; }
+        // Positioning stuff (tile-based)
+        public Vector2 mapPosition { get; set; }
 
-        // Moving stuff
+        // Moving stuff (pixel-based)
         public bool isMoving { get; set; }
-
-        public int tempX { get; set; }
-        public int tempY { get; set; }
-
-        public int destinationX { get; set; }
-        public int destinationY { get; set; }
+        
+        public Vector2 currentPosition { get; set; }
+        public Vector2 destinationPosition { get; set; }
 
         double lerpTime = 0;
         double animationSpeed = 5;
 
         public void Update(double timePassed)
         {
-            tempX = positionX;
-            tempY = positionY;
+            int size = Global.tileSize;
+
+            currentPosition = mapPosition * size;
 
             // Calculate moving animation
             if (isMoving)
             {
-                tempX = (int)(positionX + (destinationX - positionX) * lerpTime);
-                tempY = (int)(positionY + (destinationY - positionY) * lerpTime);
+                int x = (int)(currentPosition.X + (destinationPosition.X - currentPosition.X) * lerpTime);
+                int y = (int)(currentPosition.Y + (destinationPosition.Y - currentPosition.Y) * lerpTime);
+                currentPosition = new Vector2(x, y);
                 lerpTime += timePassed * animationSpeed;
             }
 
@@ -48,18 +46,19 @@ namespace StryfeRPG.Models.Maps
             {
                 lerpTime = 0;
                 isMoving = false;
-                positionX = destinationX;
-                positionY = destinationY;
+                mapPosition = destinationPosition / size;
             }
         }
 
         public void Draw(SpriteBatch spriteBatch, double timePassed)
         {
-            int column = textureId % (texture.Height / tileSize);
-            int row = textureId / (texture.Width / tileSize);
+            int size = Global.tileSize;
+
+            int column = textureId % (texture.Height / Global.tileSize);
+            int row = textureId / (texture.Width / Global.tileSize);
             
-            Rectangle tilesetRec = new Rectangle(tileSize * column, tileSize * row, tileSize, tileSize);
-            spriteBatch.Draw(texture, new Rectangle((int)tempX, (int)tempY, tileSize, tileSize), tilesetRec, Color.White);
+            Rectangle tilesetRec = new Rectangle(size * column, size * row, size, size);
+            spriteBatch.Draw(texture, new Rectangle((int)currentPosition.X, (int)currentPosition.Y, size, size), tilesetRec, Color.White);
         }
     }
 }

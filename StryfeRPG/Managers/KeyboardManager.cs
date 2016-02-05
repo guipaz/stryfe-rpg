@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using StryfeRPG.Models.Characters;
 using System;
 using System.Collections.Generic;
@@ -36,9 +37,10 @@ namespace StryfeRPG.Managers
 
             if (moveX != 0 || moveY != 0)
             {
-                if (!CollisionManager.Instance.GetCollision(Player.Instance.positionX / 32 + moveX, Player.Instance.positionY / 32 + moveY))
+                Vector2 movement = new Vector2(moveX, moveY);
+                if (!CollisionManager.Instance.GetCollision(Player.Instance.mapPosition + movement))
                 {
-                    Player.Instance.Move(moveX, moveY);
+                    Player.Instance.Move(movement);
                     currentCooldown = 1 / actionsPerSecond;
                 }
             }

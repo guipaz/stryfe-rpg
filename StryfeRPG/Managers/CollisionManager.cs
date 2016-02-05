@@ -1,4 +1,5 @@
-﻿using StryfeRPG.Models.Characters;
+﻿using Microsoft.Xna.Framework;
+using StryfeRPG.Models.Characters;
 using StryfeRPG.Models.Maps;
 using System;
 using System.Collections.Generic;
@@ -9,15 +10,15 @@ namespace StryfeRPG.Managers
 {
     public class CollisionManager
     {
-        public bool GetCollision(int x, int y)
+        public bool GetCollision(Vector2 movement)
         {
             Map map = MapManager.Instance.currentMap;
 
             // Checks map collision
-            int collision = map.GetCollision(x, y);
+            int collision = map.GetCollision(movement);
 
             // Checks player collision
-            collision = Player.Instance.positionX == x && Player.Instance.positionY == y ? 1 : collision;
+            collision = Player.Instance.mapPosition == movement ? 1 : collision;
 
             //TODO: Checks NPC collision
 

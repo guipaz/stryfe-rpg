@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,10 +60,10 @@ namespace StryfeRPG.Models.Maps
             }
         }
 
-        public int GetCollision(int x, int y)
+        public int GetCollision(Vector2 movement)
         {
-            if (x >= 0 && y >= 0 && x < width && y < height)
-                return collisionMap[y * width + x];
+            if (movement.X >= 0 && movement.Y >= 0 && movement.X < width && movement.Y < height)
+                return collisionMap[(int)movement.Y * width + (int)movement.X];
             return 1;
         }
     }

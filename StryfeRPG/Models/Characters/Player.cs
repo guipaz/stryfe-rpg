@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using StryfeRPG.System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,12 +9,11 @@ namespace StryfeRPG.Models.Characters
 {
     public class Player : Character
     {
-        public bool Move(int x, int y)
+        public bool Move(Vector2 movement)
         {
             isMoving = true;
 
-            destinationX = positionX + tileSize * x;
-            destinationY = positionY + tileSize * y;
+            destinationPosition = (mapPosition + movement) * Global.tileSize;
 
             return true;
         }

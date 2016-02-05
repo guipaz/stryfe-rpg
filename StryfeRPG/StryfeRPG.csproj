@@ -49,6 +49,7 @@
     <Compile Include="Models\Maps\MapObject.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="System\Global.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
@@ -67,9 +68,7 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="System\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Content\Maps\exampleMap.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

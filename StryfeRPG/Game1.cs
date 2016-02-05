@@ -89,7 +89,7 @@ namespace StryfeRPG
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            CameraManager.Instance.Position = new Vector2(Player.Instance.tempX, Player.Instance.tempY);
+            CameraManager.Instance.Position = Player.Instance.currentPosition;
 
             spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: CameraManager.Instance.TransformMatrix);
 
