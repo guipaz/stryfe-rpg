@@ -5,3 +5,7 @@ StryfeRPG/Content/obj/Windows/charsets.mgcontent
 StryfeRPG/Content/obj/Windows/tileset.mgcontent
 StryfeRPG/obj/x86/Debug/StryfeRPG.csproj.FileListAbsolute.txt
 StryfeRPG/obj/
+TiledSharp-master/
+TiledSharp-MonoGame-Example-master/
+charsets.png
+tileset.png
