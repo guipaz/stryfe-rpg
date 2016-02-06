@@ -24,7 +24,6 @@ namespace StryfeRPG.Managers
             Texture2D tileset = Global.GetTexture(map.Tilesets[0].Name.ToString());
 
             currentMap = new Map(map, tileset);
-            currentMap.PopulateCollisions();
         }
 
         public void Update(double timePassed)
@@ -94,8 +93,9 @@ namespace StryfeRPG.Managers
             Texture2D texture = obj.texture;
             Vector2 currentPosition = obj.currentPosition;
 
-            int column = textureId % (texture.Height / Global.tileSize);
-            int row = textureId / (texture.Width / Global.tileSize);
+            int tilesWide = (texture.Width / Global.tileSize);
+            int column = textureId % tilesWide;
+            int row = textureId / tilesWide;
 
             Rectangle tilesetRec = new Rectangle(size * column, size * row, size, size);
             spriteBatch.Draw(texture, new Rectangle((int)currentPosition.X, (int)currentPosition.Y, size, size), tilesetRec, Color.White);

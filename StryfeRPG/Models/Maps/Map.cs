@@ -48,6 +48,8 @@ namespace StryfeRPG.Models.Maps
                     }
                 }
             }
+
+            PopulateCollisions();
         }
 
         public void PopulateCollisions()

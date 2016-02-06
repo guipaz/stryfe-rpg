@@ -11,6 +11,8 @@ namespace StryfeRPG.Models.Maps
 {
     public class MapObject
     {
+        public string name { get; set; }
+
         // Texture stuff
         public Texture2D texture { get; set; }
         public int textureId { get; set; }
@@ -30,8 +32,9 @@ namespace StryfeRPG.Models.Maps
         public MapObject() { }
         public MapObject(TmxObject obj)
         {
+            name = obj.Name != null ? obj.Name : "NoName";
             texture = Global.GetTexture("charsets"); //TODO
-            textureId = obj.Tile.Gid - 85 - 1;
+            textureId = obj.Tile.Gid - 85;
             mapPosition = new Vector2((int)obj.X / Global.tileSize, (int)(obj.Y - 1) / Global.tileSize);
             currentPosition = mapPosition * Global.tileSize;
             destinationPosition = currentPosition;

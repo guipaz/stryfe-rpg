@@ -20,7 +20,11 @@ namespace StryfeRPG.Managers
             // Checks player collision
             collision = Player.Instance.mapPosition == movement ? 1 : collision;
 
-            //TODO: Checks NPC collision
+            // Checks NPC collision
+            foreach (MapObject obj in map.npcs)
+            {
+                collision = obj.mapPosition == movement ? 1 : collision;
+            }
 
             return collision == 1;
         }
