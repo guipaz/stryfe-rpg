@@ -9,15 +9,6 @@ namespace StryfeRPG.Models.Characters
 {
     public class Player : Character
     {
-        public bool Move(Vector2 movement)
-        {
-            isMoving = true;
-
-            destinationPosition = (mapPosition + movement) * Global.tileSize;
-
-            return true;
-        }
-
         // Singleton stuff
         private static Player instance;
         protected Player() { }

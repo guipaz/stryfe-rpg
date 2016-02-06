@@ -9,9 +9,6 @@ using StryfeRPG.System;
 
 namespace StryfeRPG
 {
-    /// <summary>
-    /// This is the main type for your game.
-    /// </summary>
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
@@ -21,15 +18,9 @@ namespace StryfeRPG
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            Global.Content = Content;
+            Global.SetContent(Content);
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
             CameraManager.Instance.Bounds = GraphicsDevice.Viewport.Bounds;
@@ -38,54 +29,35 @@ namespace StryfeRPG
             base.Initialize();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            MapManager.Instance.spriteBatch = spriteBatch;
 
+            MapManager.Instance.spriteBatch = spriteBatch;
             MapManager.Instance.LoadMap("exampleMap");
 
-            Player.Instance.texture = Content.Load<Texture2D>("charsets");
+            Player.Instance.texture = Global.GetTexture("charsets");
             Player.Instance.textureId = 1;
-
-            // TODO: use this.Content to load your game content here
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// game-specific content.
-        /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+            
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
             KeyboardManager.Instance.Update(gameTime.ElapsedGameTime.TotalSeconds);
+            MapManager.Instance.Update(gameTime.ElapsedGameTime.TotalSeconds);
 
-            Player.Instance.Update(gameTime.ElapsedGameTime.TotalSeconds);
+            Console.WriteLine(Player.Instance.mapPosition);
 
             base.Update(gameTime);
         }
-
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -93,9 +65,7 @@ namespace StryfeRPG
             CameraManager.Instance.Position = Player.Instance.currentPosition;
 
             spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: CameraManager.Instance.TransformMatrix);
-
             MapManager.Instance.Draw(gameTime.ElapsedGameTime.TotalSeconds);
-
             spriteBatch.End();
 
             base.Draw(gameTime);

@@ -9,7 +9,6 @@ namespace StryfeRPG.Models.Characters
     public class Character : Maps.MapObject
     {
         public Character() { }
-
         public Character(TmxObject obj) : base(obj) { }
     }
 }

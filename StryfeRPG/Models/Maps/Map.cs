@@ -50,7 +50,7 @@ namespace StryfeRPG.Models.Maps
             }
         }
 
-        public void UpdateCollisions()
+        public void PopulateCollisions()
         {
             collisionMap = new int[width * height];
             for (int y = 0; y < height; y++)
