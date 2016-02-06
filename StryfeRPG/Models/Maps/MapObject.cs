@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TiledSharp;
 
 namespace StryfeRPG.Models.Maps
 {
@@ -26,6 +27,15 @@ namespace StryfeRPG.Models.Maps
         double lerpTime = 0;
         double animationSpeed = 5;
 
+        public MapObject() { }
+
+        public MapObject(TmxObject obj)
+        {
+            texture = Global.Content.Load<Texture2D>("charsets"); //TODO
+            textureId = obj.Tile.Gid - 1;
+            mapPosition = new Vector2((int)obj.X / Global.tileSize, (int)obj.Y / Global.tileSize);
+        }
+
         public void Update(double timePassed)
         {
             int size = Global.tileSize;
@@ -39,14 +49,14 @@ namespace StryfeRPG.Models.Maps
                 int y = (int)(currentPosition.Y + (destinationPosition.Y - currentPosition.Y) * lerpTime);
                 currentPosition = new Vector2(x, y);
                 lerpTime += timePassed * animationSpeed;
-            }
 
-            // Finished movement
-            if (lerpTime >= 1)
-            {
-                lerpTime = 0;
-                isMoving = false;
-                mapPosition = destinationPosition / size;
+                // Finished movement
+                if (lerpTime >= 1)
+                {
+                    lerpTime = 0;
+                    isMoving = false;
+                    mapPosition = destinationPosition / size;
+                }
             }
         }
 

@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StryfeRPG.Models.Characters;
+using StryfeRPG.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,11 +21,10 @@ namespace StryfeRPG.Models.Maps
         public int width { get; set; }
         public int height { get; set; }
 
-        public int tileWidth { get; set; }
-        public int tileHeight { get; set; }
-
         public int tilesetTilesWide { get; set; }
         public int tilesetTilesHigh { get; set; }
+
+        public List<Character> npcs { get; set; }
 
         public Map(TmxMap tmxMap, Texture2D tileset)
         {
@@ -32,12 +33,21 @@ namespace StryfeRPG.Models.Maps
 
             width = tmxMap.Width;
             height = tmxMap.Height;
+            
+            tilesetTilesWide = tileset.Width / Global.tileSize;
+            tilesetTilesHigh = tileset.Height / Global.tileSize;
 
-            tileWidth = tmxMap.Tilesets[0].TileWidth;
-            tileHeight = tmxMap.Tilesets[0].TileHeight;
-
-            tilesetTilesWide = tileset.Width / tileWidth;
-            tilesetTilesHigh = tileset.Height / tileHeight;
+            npcs = new List<Character>();
+            foreach (TmxObjectGroup group in tmxMap.ObjectGroups)
+            {
+                foreach (TmxObject obj in group.Objects)
+                {
+                    if (obj.Type == "npc")
+                    {
+                        npcs.Add(new Character(obj));
+                    }
+                }
+            }
         }
 
         public void UpdateCollisions()

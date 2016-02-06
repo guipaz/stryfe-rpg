@@ -9,19 +9,19 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using StryfeRPG.Models.Characters;
+using StryfeRPG.System;
 
 namespace StryfeRPG.Managers
 {
     public class MapManager
     {
-        public ContentManager Content { get; set; }
         public SpriteBatch spriteBatch { get; set; }
         public Map currentMap;
         
         public void LoadMap(string mapName)
         {
             TmxMap map = new TmxMap(String.Format("Content/Maps/{0}.tmx", mapName));
-            Texture2D tileset = Content.Load<Texture2D>(map.Tilesets[0].Name.ToString());
+            Texture2D tileset = Global.Content.Load<Texture2D>(map.Tilesets[0].Name.ToString());
 
             currentMap = new Map(map, tileset);
             currentMap.UpdateCollisions();
@@ -36,7 +36,8 @@ namespace StryfeRPG.Managers
         private void DrawMap()
         {
             TmxMap map = currentMap.tmxMap;
-            
+            int size = Global.tileSize;
+
             foreach (TmxLayer layer in map.Layers)
             {
                 for (var i = 0; i < layer.Tiles.Count; i++)
@@ -51,8 +52,8 @@ namespace StryfeRPG.Managers
                         float x = (i % map.Width) * map.TileWidth;
                         float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
 
-                        Rectangle tilesetRec = new Rectangle(currentMap.tileWidth * column, currentMap.tileHeight * row, currentMap.tileWidth, currentMap.tileHeight);
-                        spriteBatch.Draw(currentMap.tileset, new Rectangle((int)x, (int)y, currentMap.tileWidth, currentMap.tileHeight), tilesetRec, Color.White);
+                        Rectangle tilesetRec = new Rectangle(size * column, size * row, size, size);
+                        spriteBatch.Draw(currentMap.tileset, new Rectangle((int)x, (int)y, size, size), tilesetRec, Color.White);
                     }
                 }
             }
@@ -61,6 +62,11 @@ namespace StryfeRPG.Managers
         private void DrawCharacters(double timePassed)
         {
             Player.Instance.Draw(spriteBatch, timePassed);
+
+            foreach (Character npc in currentMap.npcs)
+            {
+                npc.Draw(spriteBatch, timePassed);
+            }
         }
 
         // Singleton stuff

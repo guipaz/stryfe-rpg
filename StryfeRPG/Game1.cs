@@ -5,6 +5,7 @@ using System;
 using TiledSharp;
 using StryfeRPG.Managers;
 using StryfeRPG.Models.Characters;
+using StryfeRPG.System;
 
 namespace StryfeRPG
 {
@@ -20,7 +21,7 @@ namespace StryfeRPG
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            MapManager.Instance.Content = Content;
+            Global.Content = Content;
         }
 
         /// <summary>
