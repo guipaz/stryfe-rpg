@@ -14,29 +14,27 @@ namespace StryfeRPG.Models.Maps
     public class Map
     {
         public TmxMap tmxMap { get; set; }
-        public Texture2D tileset { get; set; }
+        public List<Tileset> tilesets { get; set; }
+        public List<Character> npcs { get; set; } //TODO: maybe change it to generic MapObject
+        public MapObject playerReference { get; set; }
 
         public int[] collisionMap { get; set; }
 
         public int width { get; set; }
         public int height { get; set; }
 
-        public int tilesetTilesWide { get; set; }
-        public int tilesetTilesHigh { get; set; }
-
-        public List<Character> npcs { get; set; }
-        public MapObject playerReference { get; set; }
-
-        public Map(TmxMap tmxMap, Texture2D tileset)
+        public Map(TmxMap tmxMap)
         {
             this.tmxMap = tmxMap;
-            this.tileset = tileset;
 
             width = tmxMap.Width;
             height = tmxMap.Height;
-            
-            tilesetTilesWide = tileset.Width / Global.tileSize;
-            tilesetTilesHigh = tileset.Height / Global.tileSize;
+
+            tilesets = new List<Tileset>();
+            foreach (TmxTileset tmxTileset in tmxMap.Tilesets)
+            {
+                tilesets.Add(new Tileset(tmxTileset));
+            }
 
             npcs = new List<Character>();
             foreach (TmxObjectGroup group in tmxMap.ObjectGroups)
@@ -45,10 +43,10 @@ namespace StryfeRPG.Models.Maps
                 {
                     if (obj.Type == "npc")
                     {
-                        npcs.Add(new Character(obj));
+                        npcs.Add(new Character(obj, GetTileset(obj.Tile.Gid)));
                     } else if (obj.Type == "player")
                     {
-                        playerReference = new MapObject(obj);
+                        playerReference = new MapObject(obj, GetTileset(obj.Tile.Gid));
                     }
                 }
             }
@@ -81,6 +79,19 @@ namespace StryfeRPG.Models.Maps
             if (movement.X >= 0 && movement.Y >= 0 && movement.X < width && movement.Y < height)
                 return collisionMap[(int)movement.Y * width + (int)movement.X];
             return 1;
+        }
+
+        public Tileset GetTileset(int gid)
+        {
+            foreach (Tileset tileset in tilesets)
+            {
+                if (gid >= tileset.firstGid && gid <= tileset.finalGid)
+                {
+                    return tileset;
+                }
+            }
+
+            return tilesets[0];
         }
     }
 }

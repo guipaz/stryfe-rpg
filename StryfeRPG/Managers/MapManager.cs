@@ -20,10 +20,8 @@ namespace StryfeRPG.Managers
         
         public void LoadMap(string mapName)
         {
-            TmxMap map = new TmxMap(String.Format("Content/Maps/{0}.tmx", mapName));
-            Texture2D tileset = Global.GetTexture(map.Tilesets[0].Name.ToString());
-
-            currentMap = new Map(map, tileset);
+            TmxMap tmxMap = new TmxMap(String.Format("Content/Maps/{0}.tmx", mapName));
+            currentMap = new Map(tmxMap);
 
             // Loads player position
             if (currentMap.playerReference != null)
@@ -138,15 +136,17 @@ namespace StryfeRPG.Managers
                     int gid = layer.Tiles[i].Gid;
                     if (gid != 0)
                     {
-                        int tileFrame = gid - 1;
-                        int column = tileFrame % currentMap.tilesetTilesWide;
-                        int row = tileFrame / currentMap.tilesetTilesWide;
+                        Tileset tileset = currentMap.GetTileset(gid);
+
+                        int tileFrame = gid - tileset.firstGid;
+                        int column = tileFrame % tileset.tilesWide;
+                        int row = tileFrame / tileset.tilesWide;
 
                         float x = (i % map.Width) * map.TileWidth;
                         float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
-
+                        
                         Rectangle tilesetRec = new Rectangle(size * column, size * row, size, size);
-                        spriteBatch.Draw(currentMap.tileset, new Rectangle((int)x, (int)y, size, size), tilesetRec, Color.White);
+                        spriteBatch.Draw(tileset.texture, new Rectangle((int)x, (int)y, size, size), tilesetRec, Color.White);
                     }
                 }
             }

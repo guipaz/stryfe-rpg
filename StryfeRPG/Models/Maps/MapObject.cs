@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StryfeRPG.Managers;
 using StryfeRPG.System;
 using System;
 using System.Collections.Generic;
@@ -31,12 +32,14 @@ namespace StryfeRPG.Models.Maps
         public double animationSpeed = 5;
 
         public MapObject() { }
-        public MapObject(TmxObject obj)
+        public MapObject(TmxObject obj, Tileset tileset)
         {
             name = obj.Name != null ? obj.Name : "NoName";
             nameColor = Color.Yellow; //TODO
-            texture = Global.GetTexture("charsets"); //TODO
-            textureId = obj.Tile.Gid - 85;
+
+            texture = tileset.texture;
+            textureId = obj.Tile.Gid - tileset.firstGid;
+
             mapPosition = new Vector2((int)obj.X / Global.tileSize, (int)(obj.Y - 1) / Global.tileSize);
             currentPosition = mapPosition * Global.tileSize;
             destinationPosition = currentPosition;

@@ -9,12 +9,12 @@ using StryfeRPG.System;
 
 namespace StryfeRPG
 {
-    public class Game1 : Game
+    public class Stryfe : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         
-        public Game1()
+        public Stryfe()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -50,8 +50,6 @@ namespace StryfeRPG
 
             KeyboardManager.Instance.Update(gameTime.ElapsedGameTime.TotalSeconds);
             MapManager.Instance.Update(gameTime.ElapsedGameTime.TotalSeconds);
-
-            Console.WriteLine(Player.Instance.mapPosition);
 
             base.Update(gameTime);
         }
