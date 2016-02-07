@@ -25,6 +25,7 @@ namespace StryfeRPG.Models.Maps
         public int tilesetTilesHigh { get; set; }
 
         public List<Character> npcs { get; set; }
+        public MapObject playerReference { get; set; }
 
         public Map(TmxMap tmxMap, Texture2D tileset)
         {
@@ -45,6 +46,9 @@ namespace StryfeRPG.Models.Maps
                     if (obj.Type == "npc")
                     {
                         npcs.Add(new Character(obj));
+                    } else if (obj.Type == "player")
+                    {
+                        playerReference = new MapObject(obj);
                     }
                 }
             }

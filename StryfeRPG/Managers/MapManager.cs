@@ -24,6 +24,12 @@ namespace StryfeRPG.Managers
             Texture2D tileset = Global.GetTexture(map.Tilesets[0].Name.ToString());
 
             currentMap = new Map(map, tileset);
+
+            // Loads player position
+            if (currentMap.playerReference != null)
+            {
+                Player.Instance.mapPosition = currentMap.playerReference.mapPosition;
+            }
         }
 
         public void Update(double timePassed)
@@ -84,6 +90,15 @@ namespace StryfeRPG.Managers
             {
                 DrawObject(npc);
             }
+            
+            //Draw the NPCs names
+            foreach (Character npc in currentMap.npcs)
+            {
+                DrawObjectName(npc);
+            }
+
+            //Draw the player's name
+            DrawObjectName(Player.Instance);
         }
 
         private void DrawObject(MapObject obj)
@@ -99,6 +114,16 @@ namespace StryfeRPG.Managers
 
             Rectangle tilesetRec = new Rectangle(size * column, size * row, size, size);
             spriteBatch.Draw(texture, new Rectangle((int)currentPosition.X, (int)currentPosition.Y, size, size), tilesetRec, Color.White);
+        }
+
+        private void DrawObjectName(MapObject obj)
+        {
+            // Draw the name
+            if (obj.name != null)
+            {
+                Vector2 textSize = Global.defaultFont.MeasureString(obj.name);
+                Utils.DrawText(spriteBatch, obj.name, new Vector2(obj.currentPosition.X + (Global.tileSize / 2) - (textSize.X / 2), obj.currentPosition.Y - Global.defaultFont.LineSpacing), obj.nameColor);
+            }
         }
         
         private void DrawMap()

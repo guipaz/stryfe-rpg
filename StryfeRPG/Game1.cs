@@ -32,12 +32,10 @@ namespace StryfeRPG
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            Global.defaultFont = Content.Load<SpriteFont>("MyFont");
 
             MapManager.Instance.spriteBatch = spriteBatch;
             MapManager.Instance.LoadMap("exampleMap");
-
-            Player.Instance.texture = Global.GetTexture("charsets");
-            Player.Instance.textureId = 1;
         }
 
         protected override void UnloadContent()

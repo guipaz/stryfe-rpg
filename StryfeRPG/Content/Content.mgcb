@@ -35,3 +35,9 @@
 /processorParam:TextureFormat=Color
 /build:charsets.png
 
+#begin MyFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:MyFont.spritefont
+

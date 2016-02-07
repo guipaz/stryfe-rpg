@@ -11,7 +11,13 @@ namespace StryfeRPG.Models.Characters
     {
         // Singleton stuff
         private static Player instance;
-        protected Player() { }
+        protected Player()
+        {
+            texture = Global.GetTexture("charsets");
+            textureId = 1;
+            name = "Stryfe";
+            nameColor = Color.White;
+        }
         public static Player Instance
         {
             get
