@@ -37,6 +37,17 @@ namespace StryfeRPG.Managers
 
             if (moveX != 0 || moveY != 0)
             {
+                // Change direction
+                if (moveX > 0)
+                    Player.Instance.direction = FacingDirection.Right;
+                else if (moveX < 0)
+                    Player.Instance.direction = FacingDirection.Left;
+                else if (moveY > 0)
+                    Player.Instance.direction = FacingDirection.Down;
+                else if (moveY < 0)
+                    Player.Instance.direction = FacingDirection.Up;
+
+                // Make movement
                 Vector2 movement = new Vector2(moveX, moveY);
                 if (!CollisionManager.Instance.GetCollision(Player.Instance.mapPosition + movement))
                 {

@@ -81,12 +81,12 @@ namespace StryfeRPG.Managers
             DrawMap();
 
             // Draw the player
-            DrawObject(Player.Instance);
+            DrawCharacter(Player.Instance);
 
             //Draw the NPCs
             foreach (Character npc in currentMap.npcs)
             {
-                DrawObject(npc);
+                DrawCharacter(npc);
             }
             
             //Draw the NPCs names
@@ -99,10 +99,11 @@ namespace StryfeRPG.Managers
             DrawObjectName(Player.Instance);
         }
 
-        private void DrawObject(MapObject obj)
+        private void DrawCharacter(Character obj)
         {
             int size = Global.tileSize;
-            int textureId = obj.textureId;
+            int textureId = obj.GetSprite();
+
             Texture2D texture = obj.texture;
             Vector2 currentPosition = obj.currentPosition;
 
