@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using StryfeRPG.Models.Characters;
+using StryfeRPG.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace StryfeRPG.Managers
     {
         double currentCooldown = 0;
         double actionsPerSecond = 5;
+
+        bool didPressControl = false;
 
         public void Update(double timePassed)
         {
@@ -39,21 +42,50 @@ namespace StryfeRPG.Managers
             {
                 // Change direction
                 if (moveX > 0)
-                    Player.Instance.direction = FacingDirection.Right;
+                    Global.Player.direction = FacingDirection.Right;
                 else if (moveX < 0)
-                    Player.Instance.direction = FacingDirection.Left;
+                    Global.Player.direction = FacingDirection.Left;
                 else if (moveY > 0)
-                    Player.Instance.direction = FacingDirection.Down;
+                    Global.Player.direction = FacingDirection.Down;
                 else if (moveY < 0)
-                    Player.Instance.direction = FacingDirection.Up;
+                    Global.Player.direction = FacingDirection.Up;
 
                 // Make movement
                 Vector2 movement = new Vector2(moveX, moveY);
-                if (!CollisionManager.Instance.GetCollision(Player.Instance.mapPosition + movement))
+                if (!Utils.GetCollision(Global.Player.mapPosition + movement))
                 {
-                    Player.Instance.Move(movement);
+                    Global.Player.Move(movement);
                     currentCooldown = 1 / actionsPerSecond;
                 }
+            }
+
+            // Control management
+            if (state.IsKeyDown(Keys.LeftControl) && !didPressControl)
+            {
+                didPressControl = true;
+            } else if (!state.IsKeyDown(Keys.LeftControl) && didPressControl)
+            {
+                didPressControl = false;
+
+                Vector2 position = Global.Player.mapPosition;
+                Vector2 direction = Vector2.Zero;
+                switch (Global.Player.direction)
+                {
+                    case FacingDirection.Up:
+                        direction = new Vector2(0, -1);
+                        break;
+                    case FacingDirection.Down:
+                        direction = new Vector2(0, 1);
+                        break;
+                    case FacingDirection.Left:
+                        direction = new Vector2(-1, 0);
+                        break;
+                    case FacingDirection.Right:
+                        direction = new Vector2(1, 0);
+                        break;
+                }
+
+                MapManager.Instance.PerformAction(position + direction);
             }
         }
 

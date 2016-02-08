@@ -25,8 +25,8 @@ namespace StryfeRPG.Models.Maps
             firstGid = tmxTileset.FirstGid;
             finalGid = firstGid + (int)tmxTileset.TileCount;
 
-            tilesWide = texture.Width / Global.tileSize;
-            tilesHigh = texture.Height / Global.tileSize;
+            tilesWide = texture.Width / Global.TileSize;
+            tilesHigh = texture.Height / Global.TileSize;
         }
     }
 }

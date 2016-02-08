@@ -1,4 +1,6 @@
-﻿using StryfeRPG.Models.Maps;
+﻿using Microsoft.Xna.Framework;
+using StryfeRPG.Models.Maps;
+using StryfeRPG.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +53,30 @@ namespace StryfeRPG.Models.Characters
             }
 
             return textureId;
+        }
+        
+        public void LookAt(Vector2 position)
+        {
+            if (mapPosition.X < position.X)
+            {
+                direction = FacingDirection.Right;
+            } else if (mapPosition.X > position.X)
+            {
+                direction = FacingDirection.Left;
+            } else if (mapPosition.Y > position.Y)
+            {
+                direction = FacingDirection.Up;
+            } else
+            {
+                direction = FacingDirection.Down;
+            }
+        }
+
+        public override void PerformAction()
+        {
+            LookAt(Global.Player.mapPosition);
+
+            Console.WriteLine(name);
         }
     }
 }

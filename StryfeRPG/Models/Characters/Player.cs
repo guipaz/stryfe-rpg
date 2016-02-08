@@ -1,43 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
+using StryfeRPG.Models.Maps;
 using StryfeRPG.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TiledSharp;
 
 namespace StryfeRPG.Models.Characters
 {
     public class Player : Character
     {
-        // Singleton stuff
-        private static Player instance;
-        protected Player(Character c) : this()
+        public Player(TmxObject obj, Tileset tileset) : base(obj, tileset)
         {
-            sheet = c.sheet;
-        }
-
-        protected Player()
-        {
-            texture = Global.GetTexture("charset1");
-            textureId = 1;
             name = "Stryfe";
             nameColor = Color.White;
-        }
-        public static Player Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new Player();
-                }
-                return instance;
-            }
-        }
-
-        public static void DefineInstance(Character character)
-        {
-            instance = new Player(character);
         }
     }
 }

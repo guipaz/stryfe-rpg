@@ -18,22 +18,31 @@ namespace StryfeRPG.Managers
         public SpriteBatch spriteBatch { get; set; }
         public Map currentMap;
         
+        public void PerformAction(Vector2 position)
+        {
+            MapObject obj = currentMap.GetObject(position);
+            if (obj != null)
+            {
+                obj.PerformAction();
+            }
+        }
+
         public void LoadMap(string mapName)
         {
             TmxMap tmxMap = new TmxMap(String.Format("Content/Maps/{0}.tmx", mapName));
             currentMap = new Map(tmxMap);
 
-            // Loads player position
+            // Loads player
             if (currentMap.playerReference != null)
             {
-                Player.Instance.mapPosition = currentMap.playerReference.mapPosition;
+                Global.Player = currentMap.playerReference;
             }
         }
 
         public void Update(double timePassed)
         {
             // Update Player
-            UpdateObject(Player.Instance, timePassed);
+            UpdateObject(Global.Player, timePassed);
 
             // Update NPCs
             foreach (MapObject obj in currentMap.npcs)
@@ -44,7 +53,7 @@ namespace StryfeRPG.Managers
         
         private void UpdateObject(MapObject obj, double timePassed)
         {
-            int size = Global.tileSize;
+            int size = Global.TileSize;
             Vector2 currentPosition = obj.currentPosition;
             Vector2 destinationPosition = obj.destinationPosition;
             Vector2 mapPosition = obj.mapPosition;
@@ -81,7 +90,7 @@ namespace StryfeRPG.Managers
             DrawMap();
 
             // Draw the player
-            DrawCharacter(Player.Instance);
+            DrawCharacter(Global.Player);
 
             //Draw the NPCs
             foreach (Character npc in currentMap.npcs)
@@ -96,18 +105,18 @@ namespace StryfeRPG.Managers
             }
 
             //Draw the player's name
-            DrawObjectName(Player.Instance);
+            DrawObjectName(Global.Player);
         }
 
         private void DrawCharacter(Character obj)
         {
-            int size = Global.tileSize;
+            int size = Global.TileSize;
             int textureId = obj.GetSprite();
 
             Texture2D texture = obj.texture;
             Vector2 currentPosition = obj.currentPosition;
 
-            int tilesWide = (texture.Width / Global.tileSize);
+            int tilesWide = (texture.Width / Global.TileSize);
             int column = textureId % tilesWide;
             int row = textureId / tilesWide;
 
@@ -120,15 +129,15 @@ namespace StryfeRPG.Managers
             // Draw the name
             if (obj.name != null)
             {
-                Vector2 textSize = Global.defaultFont.MeasureString(obj.name);
-                Utils.DrawText(spriteBatch, obj.name, new Vector2(obj.currentPosition.X + (Global.tileSize / 2) - (textSize.X / 2), obj.currentPosition.Y - Global.defaultFont.LineSpacing), obj.nameColor);
+                Vector2 textSize = Global.DefaultFont.MeasureString(obj.name);
+                Utils.DrawText(spriteBatch, obj.name, new Vector2(obj.currentPosition.X + (Global.TileSize / 2) - (textSize.X / 2), obj.currentPosition.Y - Global.DefaultFont.LineSpacing), obj.nameColor);
             }
         }
         
         private void DrawMap()
         {
             TmxMap map = currentMap.tmxMap;
-            int size = Global.tileSize;
+            int size = Global.TileSize;
 
             foreach (TmxLayer layer in map.Layers)
             {

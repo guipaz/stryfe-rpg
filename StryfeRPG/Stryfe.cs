@@ -32,7 +32,7 @@ namespace StryfeRPG
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            Global.defaultFont = Content.Load<SpriteFont>("MyFont");
+            Global.DefaultFont = Content.Load<SpriteFont>("MyFont");
 
             MapManager.Instance.spriteBatch = spriteBatch;
             MapManager.Instance.LoadMap("exampleMap");
@@ -58,7 +58,7 @@ namespace StryfeRPG
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            CameraManager.Instance.Position = Player.Instance.currentPosition;
+            CameraManager.Instance.Position = Global.Player.currentPosition;
 
             spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: CameraManager.Instance.TransformMatrix);
             MapManager.Instance.Draw(gameTime.ElapsedGameTime.TotalSeconds);

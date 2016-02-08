@@ -16,7 +16,7 @@ namespace StryfeRPG.Models.Maps
         public TmxMap tmxMap { get; set; }
         public List<Tileset> tilesets { get; set; }
         public List<Character> npcs { get; set; } //TODO: maybe change it to generic MapObject
-        public Character playerReference { get; set; }
+        public Player playerReference { get; set; }
 
         public int[] collisionMap { get; set; }
 
@@ -46,8 +46,7 @@ namespace StryfeRPG.Models.Maps
                         npcs.Add(new Character(obj, GetTileset(obj.Tile.Gid)));
                     } else if (obj.Type == "player")
                     {
-                        playerReference = new Character(obj, GetTileset(obj.Tile.Gid));
-                        Player.DefineInstance(playerReference);
+                        playerReference = new Player(obj, GetTileset(obj.Tile.Gid));
                     }
                 }
             }
@@ -93,6 +92,18 @@ namespace StryfeRPG.Models.Maps
             }
 
             return tilesets[0];
+        }
+
+        public MapObject GetObject(Vector2 position)
+        {
+            // Checks NPCs
+            foreach (MapObject npc in npcs)
+            {
+                if (npc.mapPosition == position)
+                    return npc;
+            }
+
+            return null;
         }
     }
 }

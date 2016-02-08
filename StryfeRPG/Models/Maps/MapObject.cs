@@ -40,8 +40,8 @@ namespace StryfeRPG.Models.Maps
             texture = tileset.texture;
             textureId = obj.Tile.Gid - tileset.firstGid;
 
-            mapPosition = new Vector2((int)obj.X / Global.tileSize, (int)(obj.Y - 1) / Global.tileSize);
-            currentPosition = mapPosition * Global.tileSize;
+            mapPosition = new Vector2((int)obj.X / Global.TileSize, (int)(obj.Y - 1) / Global.TileSize);
+            currentPosition = mapPosition * Global.TileSize;
             destinationPosition = currentPosition;
             isMoving = false;
         }
@@ -49,9 +49,14 @@ namespace StryfeRPG.Models.Maps
         public bool Move(Vector2 movement)
         {
             isMoving = true;
-            destinationPosition = (mapPosition + movement) * Global.tileSize;
+            destinationPosition = (mapPosition + movement) * Global.TileSize;
 
             return true;
+        }
+
+        public virtual void PerformAction()
+        {
+            //TODO
         }
     }
 }
