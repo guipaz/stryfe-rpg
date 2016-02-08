@@ -13,8 +13,8 @@ namespace StryfeRPG.System
     {
         public static void DrawText(SpriteBatch spriteBatch, string text, Vector2 position, Color color)
         {
-            spriteBatch.DrawString(Global.DefaultFont, text, position + new Vector2(1, 1), new Color(Color.Black, 0.5f));
-            spriteBatch.DrawString(Global.DefaultFont, text, position, color);
+            spriteBatch.DrawString(Global.MapFont, text, position + new Vector2(1, 1), new Color(Color.Black, 0.5f));
+            spriteBatch.DrawString(Global.MapFont, text, position, color);
         }
 
         public static bool GetCollision(Vector2 movement)

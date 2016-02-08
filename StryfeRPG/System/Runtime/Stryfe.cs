@@ -32,10 +32,15 @@ namespace StryfeRPG
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            Global.DefaultFont = Content.Load<SpriteFont>("MyFont");
+            Global.MapFont = Content.Load<SpriteFont>("MapFont");
+            Global.DialogFont = Content.Load<SpriteFont>("DialogFont");
+            Global.Viewport = GraphicsDevice.Viewport;
 
             MapManager.Instance.spriteBatch = spriteBatch;
             MapManager.Instance.LoadMap("exampleMap");
+
+            //testing
+            DialogManager.Instance.SetCurrentText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean porta sed odio eget bibendum. Maecenas in enim ut eros aliquam fermentum ut a sem. Vivamus eleifend dolor eget orci tincidunt porttitor.");
         }
 
         protected override void UnloadContent()
@@ -62,6 +67,10 @@ namespace StryfeRPG
 
             spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: CameraManager.Instance.TransformMatrix);
             MapManager.Instance.Draw(gameTime.ElapsedGameTime.TotalSeconds);
+            spriteBatch.End();
+
+            spriteBatch.Begin();
+            DialogManager.Instance.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);

@@ -129,8 +129,8 @@ namespace StryfeRPG.Managers
             // Draw the name
             if (obj.name != null)
             {
-                Vector2 textSize = Global.DefaultFont.MeasureString(obj.name);
-                Utils.DrawText(spriteBatch, obj.name, new Vector2(obj.currentPosition.X + (Global.TileSize / 2) - (textSize.X / 2), obj.currentPosition.Y - Global.DefaultFont.LineSpacing), obj.nameColor);
+                Vector2 textSize = Global.MapFont.MeasureString(obj.name);
+                Utils.DrawText(spriteBatch, obj.name, new Vector2(obj.currentPosition.X + (Global.TileSize / 2) - (textSize.X / 2), obj.currentPosition.Y - Global.MapFont.LineSpacing), obj.nameColor);
             }
         }
         

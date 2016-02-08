@@ -10,9 +10,11 @@ namespace StryfeRPG.System
 {
     public static class Global
     {
+        public static Viewport Viewport;
         public static Player Player;
         public static int TileSize = 32;
-        public static SpriteFont DefaultFont;
+        public static SpriteFont MapFont;
+        public static SpriteFont DialogFont;
 
         private static ContentManager Content;
         private static Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
