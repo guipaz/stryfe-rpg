@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StryfeRPG.Models.Maps;
 using StryfeRPG.Models.Utils;
 using StryfeRPG.System;
 using System;
@@ -29,8 +30,12 @@ namespace StryfeRPG.Managers
         private int marginX = 20;
         private int marginY = 15;
 
-        public void ActivateDialog(Dialog dialog)
+        // Reference for dismissing the object that called the dialog
+        private MapObject dismissReference;
+
+        public void ActivateDialog(Dialog dialog, MapObject dismissReference)
         {
+            this.dismissReference = dismissReference;
             currentDialog = dialog;
             dialogActive = true;
             NextMessage();
@@ -60,6 +65,11 @@ namespace StryfeRPG.Managers
                     dialogActive = false;
                     currentDialog = null;
                     currentText = "";
+
+                    if (dismissReference != null)
+                        dismissReference.Dismiss();
+
+                    dismissReference = null;
                 } else // or shows the next message
                 {
                     SetCurrentText(currentDialog.messages[nextTextIndex]);

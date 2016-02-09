@@ -58,5 +58,10 @@ namespace StryfeRPG.Models.Maps
         {
             //TODO
         }
+
+        public virtual void Dismiss()
+        {
+            //TODO
+        }
     }
 }

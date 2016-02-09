@@ -25,8 +25,6 @@ namespace StryfeRPG
 
             Content.RootDirectory = "Content";
             Global.SetContent(Content);
-
-            this.IsMouseVisible = true;
         }
 
         protected override void Initialize()
@@ -46,6 +44,8 @@ namespace StryfeRPG
 
             MapManager.Instance.spriteBatch = spriteBatch;
             MapManager.Instance.LoadMap("exampleMap");
+
+            Utils.LoadDialogs();
         }
 
         protected override void UnloadContent()
@@ -60,9 +60,6 @@ namespace StryfeRPG
 
             KeyboardManager.Instance.Update(gameTime.ElapsedGameTime.TotalSeconds);
             MapManager.Instance.Update(gameTime.ElapsedGameTime.TotalSeconds);
-
-            MouseState mouseState = Mouse.GetState();
-            Console.WriteLine(mouseState.Position);
 
             base.Update(gameTime);
         }

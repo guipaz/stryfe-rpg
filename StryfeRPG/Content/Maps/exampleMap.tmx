@@ -321,10 +321,26 @@
   </data>
  </layer>
  <objectgroup name="Object Layer 1">
-  <object id="26" name="Agamenon" type="npc" gid="92" x="96" y="96" width="32" height="32"/>
-  <object id="28" name="Raymond" type="npc" gid="155" x="288" y="192" width="32" height="32"/>
+  <object id="26" name="Agamenon" type="npc" gid="92" x="96" y="96" width="32" height="32">
+   <properties>
+    <property name="dialog" value="2"/>
+   </properties>
+  </object>
+  <object id="28" name="Raymond" type="npc" gid="155" x="288" y="192" width="32" height="32">
+   <properties>
+    <property name="dialog" value="0"/>
+   </properties>
+  </object>
   <object id="29" name="Player" type="player" gid="86" x="160" y="224" width="32" height="32"/>
-  <object id="32" name="Miss Jamie" type="npc" gid="239" x="384" y="64" width="32" height="32"/>
-  <object id="34" name="Dreamer Liana" type="npc" gid="173" x="32" y="256" width="32" height="32"/>
+  <object id="32" name="Miss Jamie" type="npc" gid="239" x="384" y="64" width="32" height="32">
+   <properties>
+    <property name="dialog" value="3"/>
+   </properties>
+  </object>
+  <object id="34" name="Dreamer Liana" type="npc" gid="173" x="32" y="256" width="32" height="32">
+   <properties>
+    <property name="dialog" value="1"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

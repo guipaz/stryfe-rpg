@@ -1,0 +1,6 @@
+{
+"0" : { "id" : 0, "messages": [ "My name is Raymond, and I'm a knight of the Templars of the Sun.", "Maybe someday you can join the Templars and help me purge the evil out of this lands." ] },
+"1" : { "id" : 1, "messages": [ "I'm Liana, the Dreamer. People call me a 'Dreamer' because I love to stand in the forest, feeling the breeze in my hair.", "Few understand the true feeling nature gives us when you are dreaming about your future.", "You should try that some time." ] },
+"2" : { "id" : 2, "messages": [ "Have you heard about Miss Jamie's poweful spells? She can kill a beast in seconds just with the power of a fireball." ] },
+"3" : { "id" : 3, "messages": [ "...", "Have you got something to discuss?", "If not, just leave me alone." ] }
+}

@@ -1,9 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 using StryfeRPG.Managers;
 using StryfeRPG.Models.Maps;
+using StryfeRPG.Models.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -34,6 +37,11 @@ namespace StryfeRPG.System
             }
 
             return collision == 1;
+        }
+
+        public static void LoadDialogs()
+        {
+            Global.SetDialogs(JsonConvert.DeserializeObject<Dictionary<int, Dialog>>(File.ReadAllText("Content/dialogs.json")));
         }
     }
 }

@@ -18,14 +18,17 @@ namespace StryfeRPG.Models.Characters
 
     public class Character : Maps.MapObject
     {
+        public FacingDirection defaultDirection { get; set; }
         public FacingDirection direction { get; set; }
         public CharacterSheet sheet { get; set; }
+        public int dialogId { get; set; }
 
         public Character() { }
         public Character(TmxObject obj, Tileset tileset) : base(obj, tileset)
         {
             Console.WriteLine(String.Format("NPC: {0}", obj.Name));
             sheet = new CharacterSheet(textureId, tileset);
+            dialogId = obj.Properties.ContainsKey("dialog") ? int.Parse(obj.Properties["dialog"]) : -1;
 
             if (textureId == sheet.gidUp)
                 direction = FacingDirection.Up;
@@ -35,6 +38,8 @@ namespace StryfeRPG.Models.Characters
                 direction = FacingDirection.Right;
             else
                 direction = FacingDirection.Down;
+
+            defaultDirection = direction;
         }
 
         public int GetSprite()
@@ -76,16 +81,16 @@ namespace StryfeRPG.Models.Characters
 
         public override void PerformAction()
         {
-            LookAt(Global.Player.mapPosition);
+            if (dialogId == -1)
+                return;
 
-            Dialog dialog = new Dialog();
-            List<string> messages = new List<string>();
-            messages.Add("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed est lectus, consequat nec blandit eget, " +
-                "rhoncus non ipsum. Aenean maximus venenatis convallis. Aliquam a dolor tortor. " +
-                "Donec vulputate, metus non pellentesque consequat, sem ipsum posuere justo, in rutrum mi ex vel leo. Pellentesque faucibus elit eu justo egestas, et viverra turpis pulvinar.");
-            messages.Add("The mouse location and button clicks are kept up to date in your XNA game.");
-            dialog.messages = messages;
-            DialogManager.Instance.ActivateDialog(dialog);
+            LookAt(Global.Player.mapPosition);
+            DialogManager.Instance.ActivateDialog(Global.GetDialog(dialogId), this);
+        }
+        
+        public override void Dismiss()
+        {
+            direction = defaultDirection;
         }
     }
 }
