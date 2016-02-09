@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StryfeRPG.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,13 +20,13 @@ namespace StryfeRPG.Managers
         {
             get
             {
-                Matrix m = Matrix.CreateTranslation(new Vector3((Position.X + 16) * -1, (Position.Y + 16) * -1, 0)) *
+                Matrix m = Matrix.CreateTranslation(new Vector3((Position.X + Global.TileSize / 2) * -1, (Position.Y + Global.TileSize / 2) * -1, 0)) *
                     Matrix.CreateRotationZ(Rotation) *
                     Matrix.CreateScale(Zoom) *
                     Matrix.CreateTranslation(new Vector3(Bounds.Width * 0.5f, Bounds.Height * 0.5f, 0));
 
-                int mapWidth = MapManager.Instance.currentMap.width * 32;
-                int mapHeight = MapManager.Instance.currentMap.height * 32;
+                int mapWidth = MapManager.Instance.currentMap.Width * Global.TileSize;
+                int mapHeight = MapManager.Instance.currentMap.Height * Global.TileSize;
 
                 int widthComparison = ((int)(mapWidth * Zoom) - Bounds.Width) * -1;
                 int heightComparison = ((int)(mapHeight * Zoom) - Bounds.Height) * -1;
@@ -54,6 +55,45 @@ namespace StryfeRPG.Managers
 
                 return m;
             }
+        }
+
+        public Matrix TestMatrix()
+        {
+            Matrix m = Matrix.CreateTranslation(new Vector3((Position.X + Global.TileSize / 2) * -1, (Position.Y + Global.TileSize / 2) * -1, 0)) *
+                    Matrix.CreateRotationZ(Rotation) *
+                    Matrix.CreateScale(Zoom) *
+                    Matrix.CreateTranslation(new Vector3(Bounds.Width * 0.5f, Bounds.Height * 0.5f, 0));
+
+            int mapWidth = MapManager.Instance.currentMap.Width * Global.TileSize;
+            int mapHeight = MapManager.Instance.currentMap.Height * Global.TileSize;
+
+            int widthComparison = ((int)(mapWidth * Zoom) - Bounds.Width) * -1;
+            int heightComparison = ((int)(mapHeight * Zoom) - Bounds.Height) * -1;
+
+            if (widthComparison > 0)
+                widthComparison = 0;
+            if (heightComparison > 0)
+                heightComparison = 0;
+
+            if (m.Translation.X > 0)
+            {
+                m *= Matrix.CreateTranslation(new Vector3(-m.Translation.X, 0, 0));
+            }
+            else if (m.Translation.X < widthComparison)
+            {
+                m *= Matrix.CreateTranslation(new Vector3(widthComparison - m.Translation.X, 0, 0));
+            }
+
+            if (m.Translation.Y > 0)
+            {
+                m *= Matrix.CreateTranslation(new Vector3(0, -m.Translation.Y, 0));
+            }
+            else if (m.Translation.Y < heightComparison)
+            {
+                m *= Matrix.CreateTranslation(new Vector3(0, heightComparison - m.Translation.Y, 0));
+            }
+
+            return m;
         }
 
         // Singleton stuff

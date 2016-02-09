@@ -13,7 +13,7 @@ namespace StryfeRPG.System
     {
         public static Viewport Viewport;
         public static Player Player;
-        public static int TileSize = 32;
+        public static int TileSize = 64;
         public static SpriteFont MapFont;
         public static SpriteFont DialogFont;
 

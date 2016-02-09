@@ -12,44 +12,44 @@ namespace StryfeRPG.Models.Maps
 {
     public class MapObject
     {
-        public string name { get; set; }
-        public Color nameColor { get; set; }
+        public string Name { get; set; }
+        public Color NameColor { get; set; }
 
         // Texture stuff
-        public Texture2D texture { get; set; }
-        public int textureId { get; set; }
+        public Texture2D Texture { get; set; }
+        public int TextureId { get; set; }
 
         // Positioning stuff (tile-based)
-        public Vector2 mapPosition { get; set; }
+        public Vector2 MapPosition { get; set; }
 
         // Moving stuff (pixel-based)
-        public bool isMoving { get; set; }
+        public bool IsMoving { get; set; }
         
-        public Vector2 currentPosition { get; set; }
-        public Vector2 destinationPosition { get; set; }
+        public Vector2 CurrentPosition { get; set; }
+        public Vector2 DestinationPosition { get; set; }
 
-        public double lerpTime = 0;
-        public double animationSpeed = 5;
+        public double LerpTime = 0;
+        public double AnimationSpeed = 5;
 
         public MapObject() { }
         public MapObject(TmxObject obj, Tileset tileset)
         {
-            name = obj.Name != null ? obj.Name : "NoName";
-            nameColor = Color.Yellow; //TODO
+            Name = obj.Name != null ? obj.Name : "NoName";
+            NameColor = Color.Yellow; //TODO
 
-            texture = tileset.texture;
-            textureId = obj.Tile.Gid - tileset.firstGid;
+            Texture = tileset.Texture;
+            TextureId = obj.Tile.Gid - tileset.FirstGid;
 
-            mapPosition = new Vector2((int)obj.X / Global.TileSize, (int)(obj.Y - 1) / Global.TileSize);
-            currentPosition = mapPosition * Global.TileSize;
-            destinationPosition = currentPosition;
-            isMoving = false;
+            MapPosition = new Vector2((int)obj.X / Global.TileSize, (int)(obj.Y - 1) / Global.TileSize);
+            CurrentPosition = MapPosition * Global.TileSize;
+            DestinationPosition = CurrentPosition;
+            IsMoving = false;
         }
 
         public bool Move(Vector2 movement)
         {
-            isMoving = true;
-            destinationPosition = (mapPosition + movement) * Global.TileSize;
+            IsMoving = true;
+            DestinationPosition = (MapPosition + movement) * Global.TileSize;
 
             return true;
         }

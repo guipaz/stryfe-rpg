@@ -33,9 +33,9 @@ namespace StryfeRPG.Managers
             currentMap = new Map(tmxMap);
 
             // Loads player
-            if (currentMap.playerReference != null)
+            if (currentMap.PlayerReference != null)
             {
-                Global.Player = currentMap.playerReference;
+                Global.Player = currentMap.PlayerReference;
             }
         }
 
@@ -45,7 +45,7 @@ namespace StryfeRPG.Managers
             UpdateObject(Global.Player, timePassed);
 
             // Update NPCs
-            foreach (MapObject obj in currentMap.npcs)
+            foreach (MapObject obj in currentMap.Npcs)
             {
                 UpdateObject(obj, timePassed);
             }
@@ -54,34 +54,34 @@ namespace StryfeRPG.Managers
         private void UpdateObject(MapObject obj, double timePassed)
         {
             int size = Global.TileSize;
-            Vector2 currentPosition = obj.currentPosition;
-            Vector2 destinationPosition = obj.destinationPosition;
-            Vector2 mapPosition = obj.mapPosition;
-            double lerpTime = obj.lerpTime;
+            Vector2 currentPosition = obj.CurrentPosition;
+            Vector2 destinationPosition = obj.DestinationPosition;
+            Vector2 mapPosition = obj.MapPosition;
+            double lerpTime = obj.LerpTime;
 
             currentPosition = mapPosition * size;
 
             // Calculate moving animation
-            if (obj.isMoving)
+            if (obj.IsMoving)
             {
                 int x = (int)(currentPosition.X + (destinationPosition.X - currentPosition.X) * lerpTime);
                 int y = (int)(currentPosition.Y + (destinationPosition.Y - currentPosition.Y) * lerpTime);
                 currentPosition = new Vector2(x, y);
-                lerpTime += timePassed * obj.animationSpeed;
+                lerpTime += timePassed * obj.AnimationSpeed;
 
                 // Finished movement
                 if (lerpTime >= 1)
                 {
                     lerpTime = 0;
-                    obj.isMoving = false;
+                    obj.IsMoving = false;
                     mapPosition = destinationPosition / size;
                 }
             }
 
-            obj.currentPosition = currentPosition;
-            obj.destinationPosition = destinationPosition;
-            obj.mapPosition = mapPosition;
-            obj.lerpTime = lerpTime;
+            obj.CurrentPosition = currentPosition;
+            obj.DestinationPosition = destinationPosition;
+            obj.MapPosition = mapPosition;
+            obj.LerpTime = lerpTime;
         }
 
         public void Draw(double timePassed)
@@ -93,19 +93,10 @@ namespace StryfeRPG.Managers
             DrawCharacter(Global.Player);
 
             //Draw the NPCs
-            foreach (Character npc in currentMap.npcs)
+            foreach (Character npc in currentMap.Npcs)
             {
                 DrawCharacter(npc);
             }
-            
-            //Draw the NPCs names
-            foreach (Character npc in currentMap.npcs)
-            {
-                DrawObjectName(npc);
-            }
-
-            //Draw the player's name
-            DrawObjectName(Global.Player);
         }
 
         private void DrawCharacter(Character obj)
@@ -113,8 +104,8 @@ namespace StryfeRPG.Managers
             int size = Global.TileSize;
             int textureId = obj.GetSprite();
 
-            Texture2D texture = obj.texture;
-            Vector2 currentPosition = obj.currentPosition;
+            Texture2D texture = obj.Texture;
+            Vector2 currentPosition = obj.CurrentPosition;
 
             int tilesWide = (texture.Width / Global.TileSize);
             int column = textureId % tilesWide;
@@ -123,20 +114,10 @@ namespace StryfeRPG.Managers
             Rectangle tilesetRec = new Rectangle(size * column, size * row, size, size);
             spriteBatch.Draw(texture, new Rectangle((int)currentPosition.X, (int)currentPosition.Y, size, size), tilesetRec, Color.White);
         }
-
-        private void DrawObjectName(MapObject obj)
-        {
-            // Draw the name
-            if (obj.name != null)
-            {
-                Vector2 textSize = Global.MapFont.MeasureString(obj.name);
-                Utils.DrawText(spriteBatch, obj.name, new Vector2(obj.currentPosition.X + (Global.TileSize / 2) - (textSize.X / 2), obj.currentPosition.Y - Global.MapFont.LineSpacing), obj.nameColor);
-            }
-        }
         
         private void DrawMap()
         {
-            TmxMap map = currentMap.tmxMap;
+            TmxMap map = currentMap.TmxMap;
             int size = Global.TileSize;
 
             foreach (TmxLayer layer in map.Layers)
@@ -148,15 +129,15 @@ namespace StryfeRPG.Managers
                     {
                         Tileset tileset = currentMap.GetTileset(gid);
 
-                        int tileFrame = gid - tileset.firstGid;
-                        int column = tileFrame % tileset.tilesWide;
-                        int row = tileFrame / tileset.tilesWide;
+                        int tileFrame = gid - tileset.FirstGid;
+                        int column = tileFrame % tileset.TilesWide;
+                        int row = tileFrame / tileset.TilesWide;
 
                         float x = (i % map.Width) * map.TileWidth;
                         float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
                         
                         Rectangle tilesetRec = new Rectangle(size * column, size * row, size, size);
-                        spriteBatch.Draw(tileset.texture, new Rectangle((int)x, (int)y, size, size), tilesetRec, Color.White);
+                        spriteBatch.Draw(tileset.Texture, new Rectangle((int)x, (int)y, size, size), tilesetRec, Color.White);
                     }
                 }
             }

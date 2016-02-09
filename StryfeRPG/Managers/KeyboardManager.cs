@@ -38,9 +38,9 @@ namespace StryfeRPG.Managers
 
                 // Map action
 
-                Vector2 position = Global.Player.mapPosition;
+                Vector2 position = Global.Player.MapPosition;
                 Vector2 direction = Vector2.Zero;
-                switch (Global.Player.direction)
+                switch (Global.Player.Direction)
                 {
                     case FacingDirection.Up:
                         direction = new Vector2(0, -1);
@@ -86,17 +86,17 @@ namespace StryfeRPG.Managers
             {
                 // Change direction
                 if (moveX > 0)
-                    Global.Player.direction = FacingDirection.Right;
+                    Global.Player.Direction = FacingDirection.Right;
                 else if (moveX < 0)
-                    Global.Player.direction = FacingDirection.Left;
+                    Global.Player.Direction = FacingDirection.Left;
                 else if (moveY > 0)
-                    Global.Player.direction = FacingDirection.Down;
+                    Global.Player.Direction = FacingDirection.Down;
                 else if (moveY < 0)
-                    Global.Player.direction = FacingDirection.Up;
+                    Global.Player.Direction = FacingDirection.Up;
 
                 // Make movement
                 Vector2 movement = new Vector2(moveX, moveY);
-                if (!Utils.GetCollision(Global.Player.mapPosition + movement))
+                if (!Utils.GetCollision(Global.Player.MapPosition + movement))
                 {
                     Global.Player.Move(movement);
                     currentCooldown = 1 / actionsPerSecond;

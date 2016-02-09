@@ -14,12 +14,6 @@ namespace StryfeRPG.System
 {
     public static class Utils
     {
-        public static void DrawText(SpriteBatch spriteBatch, string text, Vector2 position, Color color)
-        {
-            spriteBatch.DrawString(Global.MapFont, text, position + new Vector2(1, 1), new Color(Color.Black, 0.5f));
-            spriteBatch.DrawString(Global.MapFont, text, position, color);
-        }
-
         public static bool GetCollision(Vector2 movement)
         {
             Map map = MapManager.Instance.currentMap;
@@ -28,12 +22,12 @@ namespace StryfeRPG.System
             int collision = map.GetCollision(movement);
 
             // Checks player collision
-            collision = Global.Player.mapPosition == movement ? 1 : collision;
+            collision = Global.Player.MapPosition == movement ? 1 : collision;
 
             // Checks NPC collision
-            foreach (MapObject obj in map.npcs)
+            foreach (MapObject obj in map.Npcs)
             {
-                collision = obj.mapPosition == movement ? 1 : collision;
+                collision = obj.MapPosition == movement ? 1 : collision;
             }
 
             return collision == 1;

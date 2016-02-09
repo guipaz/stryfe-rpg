@@ -30,7 +30,6 @@ namespace StryfeRPG
         protected override void Initialize()
         {
             CameraManager.Instance.Bounds = GraphicsDevice.Viewport.Bounds;
-            CameraManager.Instance.Zoom = 2;
         
             base.Initialize();
         }
@@ -38,7 +37,7 @@ namespace StryfeRPG
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            Global.MapFont = Content.Load<SpriteFont>("MapFont");
+            Global.MapFont = Content.Load<SpriteFont>("DialogFont"); //TODO: get this straight
             Global.DialogFont = Content.Load<SpriteFont>("DialogFont");
             Global.Viewport = GraphicsDevice.Viewport;
 
@@ -68,19 +67,21 @@ namespace StryfeRPG
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            CameraManager.Instance.Position = Global.Player.currentPosition;
+            CameraManager.Instance.Position = Global.Player.CurrentPosition;
 
             // Maps (and everything in them)
             spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: CameraManager.Instance.TransformMatrix);
             MapManager.Instance.Draw(gameTime.ElapsedGameTime.TotalSeconds);
+            HUDManager.Instance.DrawObjectNames(spriteBatch);
             spriteBatch.End();
 
             // Dialogs
             spriteBatch.Begin();
             DialogManager.Instance.Draw(spriteBatch, gameTime.ElapsedGameTime.TotalSeconds);
-            spriteBatch.End();
 
-            //TODO: HUD
+            // HUD
+            HUDManager.Instance.Draw(spriteBatch);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

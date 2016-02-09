@@ -77,7 +77,7 @@ namespace StryfeRPG.Managers
                 }
 
                 // Finishes the dialog
-                if (nextTextIndex >= currentDialog.messages.Count())
+                if (nextTextIndex >= currentDialog.Messages.Count())
                 {
                     nextTextIndex = 0;
                     dialogActive = false;
@@ -90,7 +90,7 @@ namespace StryfeRPG.Managers
                     dismissReference = null;
                 } else // or shows the next message
                 {
-                    SetCurrentText(currentDialog.messages[nextTextIndex]);
+                    SetCurrentText(currentDialog.Messages[nextTextIndex]);
                     nextTextIndex++;
                 }
             }

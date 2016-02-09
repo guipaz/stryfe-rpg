@@ -39,6 +39,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Managers\DialogManager.cs" />
+    <Compile Include="Managers\HUDManager.cs" />
+    <Compile Include="Models\Characters\AttributeSheet.cs" />
     <Compile Include="Models\Characters\CharacterSheet.cs" />
     <Compile Include="Models\Utils\Dialog.cs" />
     <Compile Include="System\Runtime\Stryfe.cs" />

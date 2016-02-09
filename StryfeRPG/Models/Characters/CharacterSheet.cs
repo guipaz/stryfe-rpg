@@ -8,26 +8,26 @@ namespace StryfeRPG.Models.Characters
 {
     public class CharacterSheet
     {
-        public Tileset tileset { get; set; }
+        public Tileset Tileset { get; set; }
 
-        public int gidDown { get; set; }
-        public int gidUp { get; set; }
-        public int gidLeft { get; set; }
-        public int gidRight { get; set; }
+        public int GidDown { get; set; }
+        public int GidUp { get; set; }
+        public int GidLeft { get; set; }
+        public int GidRight { get; set; }
 
         public CharacterSheet(int textureId, Tileset tileset)
         {
-            this.tileset = tileset;
+            this.Tileset = tileset;
 
-            int sheetsWide = tileset.tilesWide / 3;
+            int sheetsWide = tileset.TilesWide / 3;
 
-            int y = textureId / (tileset.tilesWide * 4);
-            int x = ((textureId - (y * tileset.tilesWide * 4)) / 3) % sheetsWide;
+            int y = textureId / (tileset.TilesWide * 4);
+            int x = ((textureId - (y * tileset.TilesWide * 4)) / 3) % sheetsWide;
 
-            gidDown = 1 + (x * 3) + (y * 4 * tileset.tilesWide);
-            gidLeft = gidDown + tileset.tilesWide;
-            gidRight = gidDown + tileset.tilesWide * 2;
-            gidUp = gidDown + tileset.tilesWide * 3;
+            GidDown = 1 + (x * 3) + (y * 4 * tileset.TilesWide);
+            GidLeft = GidDown + tileset.TilesWide;
+            GidRight = GidDown + tileset.TilesWide * 2;
+            GidUp = GidDown + tileset.TilesWide * 3;
         }
     }
 }

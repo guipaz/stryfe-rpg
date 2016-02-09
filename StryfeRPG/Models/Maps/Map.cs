@@ -13,40 +13,40 @@ namespace StryfeRPG.Models.Maps
 {
     public class Map
     {
-        public TmxMap tmxMap { get; set; }
-        public List<Tileset> tilesets { get; set; }
-        public List<Character> npcs { get; set; } //TODO: maybe change it to generic MapObject
-        public Player playerReference { get; set; }
+        public TmxMap TmxMap { get; set; }
+        public List<Tileset> Tilesets { get; set; }
+        public List<Character> Npcs { get; set; } //TODO: maybe change it to generic MapObject
+        public Player PlayerReference { get; set; }
 
-        public int[] collisionMap { get; set; }
+        public int[] CollisionMap { get; set; }
 
-        public int width { get; set; }
-        public int height { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
 
         public Map(TmxMap tmxMap)
         {
-            this.tmxMap = tmxMap;
+            this.TmxMap = tmxMap;
 
-            width = tmxMap.Width;
-            height = tmxMap.Height;
+            Width = tmxMap.Width;
+            Height = tmxMap.Height;
 
-            tilesets = new List<Tileset>();
+            Tilesets = new List<Tileset>();
             foreach (TmxTileset tmxTileset in tmxMap.Tilesets)
             {
-                tilesets.Add(new Tileset(tmxTileset));
+                Tilesets.Add(new Tileset(tmxTileset));
             }
 
-            npcs = new List<Character>();
+            Npcs = new List<Character>();
             foreach (TmxObjectGroup group in tmxMap.ObjectGroups)
             {
                 foreach (TmxObject obj in group.Objects)
                 {
                     if (obj.Type == "npc")
                     {
-                        npcs.Add(new Character(obj, GetTileset(obj.Tile.Gid)));
+                        Npcs.Add(new Character(obj, GetTileset(obj.Tile.Gid)));
                     } else if (obj.Type == "player")
                     {
-                        playerReference = new Player(obj, GetTileset(obj.Tile.Gid));
+                        PlayerReference = new Player(obj, GetTileset(obj.Tile.Gid));
                     }
                 }
             }
@@ -56,18 +56,18 @@ namespace StryfeRPG.Models.Maps
 
         public void PopulateCollisions()
         {
-            collisionMap = new int[width * height];
-            for (int y = 0; y < height; y++)
+            CollisionMap = new int[Width * Height];
+            for (int y = 0; y < Height; y++)
             {
-                for (int x = 0; x < width; x++)
+                for (int x = 0; x < Width; x++)
                 {
-                    foreach (TmxLayer layer in tmxMap.Layers)
+                    foreach (TmxLayer layer in TmxMap.Layers)
                     {
-                        if (layer.Tiles[y * width + x].Gid != 0 &&
+                        if (layer.Tiles[y * Width + x].Gid != 0 &&
                             layer.Properties.ContainsKey("collision") &&
                             layer.Properties["collision"] == "true")
                         {
-                            collisionMap[y * width + x] = 1;
+                            CollisionMap[y * Width + x] = 1;
                         }
                     }
                 }
@@ -76,30 +76,30 @@ namespace StryfeRPG.Models.Maps
 
         public int GetCollision(Vector2 movement)
         {
-            if (movement.X >= 0 && movement.Y >= 0 && movement.X < width && movement.Y < height)
-                return collisionMap[(int)movement.Y * width + (int)movement.X];
+            if (movement.X >= 0 && movement.Y >= 0 && movement.X < Width && movement.Y < Height)
+                return CollisionMap[(int)movement.Y * Width + (int)movement.X];
             return 1;
         }
 
         public Tileset GetTileset(int gid)
         {
-            foreach (Tileset tileset in tilesets)
+            foreach (Tileset tileset in Tilesets)
             {
-                if (gid >= tileset.firstGid && gid <= tileset.finalGid)
+                if (gid >= tileset.FirstGid && gid <= tileset.FinalGid)
                 {
                     return tileset;
                 }
             }
 
-            return tilesets[0];
+            return Tilesets[0];
         }
 
         public MapObject GetObject(Vector2 position)
         {
             // Checks NPCs
-            foreach (MapObject npc in npcs)
+            foreach (MapObject npc in Npcs)
             {
-                if (npc.mapPosition == position)
+                if (npc.MapPosition == position)
                     return npc;
             }
 

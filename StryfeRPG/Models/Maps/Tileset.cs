@@ -10,23 +10,23 @@ namespace StryfeRPG.Models.Maps
 {
     public class Tileset
     {
-        public Texture2D texture { get; set; }
+        public Texture2D Texture { get; set; }
 
-        public int firstGid { get; set; }
-        public int finalGid { get; set; }
+        public int FirstGid { get; set; }
+        public int FinalGid { get; set; }
 
-        public int tilesWide { get; set; }
-        public int tilesHigh { get; set; }
+        public int TilesWide { get; set; }
+        public int TilesHigh { get; set; }
 
         public Tileset(TmxTileset tmxTileset)
         {
-            texture = Global.GetTexture(tmxTileset.Name);
+            Texture = Global.GetTexture(tmxTileset.Name);
 
-            firstGid = tmxTileset.FirstGid;
-            finalGid = firstGid + (int)tmxTileset.TileCount;
+            FirstGid = tmxTileset.FirstGid;
+            FinalGid = FirstGid + (int)tmxTileset.TileCount;
 
-            tilesWide = texture.Width / Global.TileSize;
-            tilesHigh = texture.Height / Global.TileSize;
+            TilesWide = Texture.Width / Global.TileSize;
+            TilesHigh = Texture.Height / Global.TileSize;
         }
     }
 }

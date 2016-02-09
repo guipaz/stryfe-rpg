@@ -18,79 +18,82 @@ namespace StryfeRPG.Models.Characters
 
     public class Character : Maps.MapObject
     {
-        public FacingDirection defaultDirection { get; set; }
-        public FacingDirection direction { get; set; }
-        public CharacterSheet sheet { get; set; }
-        public int dialogId { get; set; }
+        public AttributeSheet Attributes { get; set; }
+
+        public FacingDirection DefaultDirection { get; set; }
+        public FacingDirection Direction { get; set; }
+        public CharacterSheet Sheet { get; set; }
+        public int DialogId { get; set; }
 
         public Character() { }
+
+        // Map characters
         public Character(TmxObject obj, Tileset tileset) : base(obj, tileset)
         {
-            Console.WriteLine(String.Format("NPC: {0}", obj.Name));
-            sheet = new CharacterSheet(textureId, tileset);
-            dialogId = obj.Properties.ContainsKey("dialog") ? int.Parse(obj.Properties["dialog"]) : -1;
+            Sheet = new CharacterSheet(TextureId, tileset);
+            DialogId = obj.Properties.ContainsKey("dialog") ? int.Parse(obj.Properties["dialog"]) : -1;
 
-            if (textureId == sheet.gidUp)
-                direction = FacingDirection.Up;
-            else if (textureId == sheet.gidLeft)
-                direction = FacingDirection.Left;
-            else if (textureId == sheet.gidRight)
-                direction = FacingDirection.Right;
+            if (TextureId == Sheet.GidUp)
+                Direction = FacingDirection.Up;
+            else if (TextureId == Sheet.GidLeft)
+                Direction = FacingDirection.Left;
+            else if (TextureId == Sheet.GidRight)
+                Direction = FacingDirection.Right;
             else
-                direction = FacingDirection.Down;
+                Direction = FacingDirection.Down;
 
-            defaultDirection = direction;
+            DefaultDirection = Direction;
         }
 
         public int GetSprite()
         {
-            if (sheet == null)
-                return textureId;
+            if (Sheet == null)
+                return TextureId;
 
-            switch (direction)
+            switch (Direction)
             {
                 case FacingDirection.Up:
-                    return sheet.gidUp;
+                    return Sheet.GidUp;
                 case FacingDirection.Down:
-                    return sheet.gidDown;
+                    return Sheet.GidDown;
                 case FacingDirection.Left:
-                    return sheet.gidLeft;
+                    return Sheet.GidLeft;
                 case FacingDirection.Right:
-                    return sheet.gidRight;
+                    return Sheet.GidRight;
             }
 
-            return textureId;
+            return TextureId;
         }
         
         public void LookAt(Vector2 position)
         {
-            if (mapPosition.X < position.X)
+            if (MapPosition.X < position.X)
             {
-                direction = FacingDirection.Right;
-            } else if (mapPosition.X > position.X)
+                Direction = FacingDirection.Right;
+            } else if (MapPosition.X > position.X)
             {
-                direction = FacingDirection.Left;
-            } else if (mapPosition.Y > position.Y)
+                Direction = FacingDirection.Left;
+            } else if (MapPosition.Y > position.Y)
             {
-                direction = FacingDirection.Up;
+                Direction = FacingDirection.Up;
             } else
             {
-                direction = FacingDirection.Down;
+                Direction = FacingDirection.Down;
             }
         }
 
         public override void PerformAction()
         {
-            if (dialogId == -1)
+            if (DialogId == -1)
                 return;
 
-            LookAt(Global.Player.mapPosition);
-            DialogManager.Instance.ActivateDialog(Global.GetDialog(dialogId), this);
+            LookAt(Global.Player.MapPosition);
+            DialogManager.Instance.ActivateDialog(Global.GetDialog(DialogId), this);
         }
         
         public override void Dismiss()
         {
-            direction = defaultDirection;
+            Direction = DefaultDirection;
         }
     }
 }
