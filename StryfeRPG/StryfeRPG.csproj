@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Managers\DialogManager.cs" />
     <Compile Include="Models\Characters\CharacterSheet.cs" />
+    <Compile Include="Models\Utils\Dialog.cs" />
     <Compile Include="System\Runtime\Stryfe.cs" />
     <Compile Include="Managers\CameraManager.cs" />
     <Compile Include="Managers\KeyboardManager.cs" />

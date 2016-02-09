@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using StryfeRPG.Managers;
 using StryfeRPG.Models.Maps;
+using StryfeRPG.Models.Utils;
 using StryfeRPG.System;
 using System;
 using System.Collections.Generic;
@@ -76,7 +78,14 @@ namespace StryfeRPG.Models.Characters
         {
             LookAt(Global.Player.mapPosition);
 
-            Console.WriteLine(name);
+            Dialog dialog = new Dialog();
+            List<string> messages = new List<string>();
+            messages.Add("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed est lectus, consequat nec blandit eget, " +
+                "rhoncus non ipsum. Aenean maximus venenatis convallis. Aliquam a dolor tortor. " +
+                "Donec vulputate, metus non pellentesque consequat, sem ipsum posuere justo, in rutrum mi ex vel leo. Pellentesque faucibus elit eu justo egestas, et viverra turpis pulvinar.");
+            messages.Add("The mouse location and button clicks are kept up to date in your XNA game.");
+            dialog.messages = messages;
+            DialogManager.Instance.ActivateDialog(dialog);
         }
     }
 }

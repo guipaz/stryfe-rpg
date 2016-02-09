@@ -6,6 +6,8 @@ using TiledSharp;
 using StryfeRPG.Managers;
 using StryfeRPG.Models.Characters;
 using StryfeRPG.System;
+using StryfeRPG.Models.Utils;
+using System.Collections.Generic;
 
 namespace StryfeRPG
 {
@@ -17,8 +19,14 @@ namespace StryfeRPG
         public Stryfe()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 800;  // set this value to the desired width of your window
+            graphics.PreferredBackBufferHeight = 600;   // set this value to the desired height of your window
+            graphics.ApplyChanges();
+
             Content.RootDirectory = "Content";
             Global.SetContent(Content);
+
+            this.IsMouseVisible = true;
         }
 
         protected override void Initialize()
@@ -38,9 +46,6 @@ namespace StryfeRPG
 
             MapManager.Instance.spriteBatch = spriteBatch;
             MapManager.Instance.LoadMap("exampleMap");
-
-            //testing
-            DialogManager.Instance.SetCurrentText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean porta sed odio eget bibendum. Maecenas in enim ut eros aliquam fermentum ut a sem. Vivamus eleifend dolor eget orci tincidunt porttitor.");
         }
 
         protected override void UnloadContent()
@@ -56,6 +61,9 @@ namespace StryfeRPG
             KeyboardManager.Instance.Update(gameTime.ElapsedGameTime.TotalSeconds);
             MapManager.Instance.Update(gameTime.ElapsedGameTime.TotalSeconds);
 
+            MouseState mouseState = Mouse.GetState();
+            Console.WriteLine(mouseState.Position);
+
             base.Update(gameTime);
         }
         
@@ -65,13 +73,17 @@ namespace StryfeRPG
 
             CameraManager.Instance.Position = Global.Player.currentPosition;
 
+            // Maps (and everything in them)
             spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: CameraManager.Instance.TransformMatrix);
             MapManager.Instance.Draw(gameTime.ElapsedGameTime.TotalSeconds);
             spriteBatch.End();
 
+            // Dialogs
             spriteBatch.Begin();
             DialogManager.Instance.Draw(spriteBatch);
             spriteBatch.End();
+
+            //TODO: HUD
 
             base.Draw(gameTime);
         }
