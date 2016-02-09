@@ -30,6 +30,13 @@ namespace StryfeRPG.Managers
         private int marginX = 20;
         private int marginY = 15;
 
+        // Animation control
+        private float cooldown = 0;
+        private float charsBySecond = 100;
+        private bool isAnimating = false;
+        private int animationIndex = 0;
+        private string animatedText = "";
+
         // Reference for dismissing the object that called the dialog
         private MapObject dismissReference;
 
@@ -50,6 +57,17 @@ namespace StryfeRPG.Managers
         {
             if (IsDialogActive())
             {
+                // Resets animation index
+                animationIndex = 0;
+                animatedText = "";
+
+                // If there's animation, just show the whole text
+                if (isAnimating)
+                {
+                    isAnimating = false;
+                    return;
+                }
+                
                 // Checks if there's a remaining text
                 if (remainingText != null && remainingText != "")
                 {
@@ -78,11 +96,34 @@ namespace StryfeRPG.Managers
             }
         }
         
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, double timePassed)
         {
             // Checks if there's a dialog active at the moment
             if (!IsDialogActive())
                 return;
+            
+            // Set text according to the animation
+            if (isAnimating)
+            {
+                if (cooldown > 0)
+                {
+                    cooldown -= (float)timePassed;
+                } else
+                {
+                    cooldown = 1 / charsBySecond;
+                    animatedText = currentText.Substring(0, animationIndex);
+                    animationIndex++;
+
+                    if (animationIndex >= currentText.Count())
+                    {
+                        isAnimating = false;
+                        animationIndex = 0;
+                    }
+                }
+            } else
+            {
+                animatedText = currentText;
+            }
 
             // Draw dialog box
             spriteBatch.Draw(texture,
@@ -90,9 +131,9 @@ namespace StryfeRPG.Managers
                              color: new Color(Color.White, 0.8f));
 
             // Draw text
-            spriteBatch.DrawString(Global.DialogFont, currentText, new Vector2(marginX + 1, bounds.Height - yOffset + marginY + 1), Color.Black);
-            spriteBatch.DrawString(Global.DialogFont, currentText, new Vector2(marginX + 2, bounds.Height - yOffset + marginY + 2), new Color(Color.Black, 0.5f));
-            spriteBatch.DrawString(Global.DialogFont, currentText, new Vector2(marginX, bounds.Height - yOffset + marginY), Color.White);
+            spriteBatch.DrawString(Global.DialogFont, animatedText, new Vector2(marginX + 1, bounds.Height - yOffset + marginY + 1), Color.Black);
+            spriteBatch.DrawString(Global.DialogFont, animatedText, new Vector2(marginX + 2, bounds.Height - yOffset + marginY + 2), new Color(Color.Black, 0.5f));
+            spriteBatch.DrawString(Global.DialogFont, animatedText, new Vector2(marginX, bounds.Height - yOffset + marginY), Color.White);
         }
 
         private void SetCurrentText(string text)
@@ -150,6 +191,8 @@ namespace StryfeRPG.Managers
                 remaining = remaining.Substring(1);
             remainingText = remaining.Count() != finalString.Count() ? remaining : null;
             currentText = finalString;
+
+            isAnimating = true;
         }
 
         // Singleton stuff

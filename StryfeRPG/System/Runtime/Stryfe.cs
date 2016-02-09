@@ -77,7 +77,7 @@ namespace StryfeRPG
 
             // Dialogs
             spriteBatch.Begin();
-            DialogManager.Instance.Draw(spriteBatch);
+            DialogManager.Instance.Draw(spriteBatch, gameTime.ElapsedGameTime.TotalSeconds);
             spriteBatch.End();
 
             //TODO: HUD
