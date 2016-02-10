@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="15" height="10" tilewidth="64" tileheight="64" nextobjectid="6">
- <tileset firstgid="1" name="tileset_inner" tilewidth="64" tileheight="64" tilecount="1632" columns="96">
+ <tileset firstgid="1" name="tileset_inner" tilewidth="64" tileheight="64" tilecount="1632">
   <image source="../Textures/tileset_inner.PNG" width="6144" height="1088"/>
  </tileset>
- <tileset firstgid="1633" name="people2" tilewidth="64" tileheight="64" tilecount="96" columns="12">
+ <tileset firstgid="1633" name="people2" tilewidth="64" tileheight="64" tilecount="96">
   <image source="../Textures/people2.png" width="768" height="512"/>
  </tileset>
  <layer name="Tile Layer 2" width="15" height="10">
@@ -16,7 +16,7 @@
    <property name="collision" value="true"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJyVkFsKgCAQRafEZdRGalkV9NyBG4iW56976IIMTINKXjgfOp7hIlGMbyKuAL+RkU4oIHdIj+erJdrAYIhGcIMO595+d3CHoHpwdrw/wAku8Jh4H4Q7tUQzWNr0jlS86l/rhUpfetz/j689jv4/7eQ87Ts1dxnvBRfSO3k=
+   eJyVkdsJgDAMRaOlY+giOpYKPjdwAXE8f7uDF2rgGrTohfPRNieERiTmyCJrAq3hsBMScA/29L33IgOonEgNNlDgXPp7D50hmDk0I+onMIMF7C7eB3KbXKQFXf7c4ymHmf+vF3767On8X3zraez/8R5492//yjtcrxo+W+8E3+Y+Xw==
   </data>
  </layer>
  <layer name="Tile Layer 3" width="15" height="10">
@@ -29,7 +29,7 @@
  </layer>
  <objectgroup name="Object Layer 1">
   <object id="3" name="Rodrik" type="npc" gid="1643" x="256" y="256" width="64" height="64"/>
-  <object id="4" name="Teleport: testMap" type="teleport" x="384" y="576" width="192" height="64">
+  <object id="4" name="Teleport: testMap" type="teleport" x="448" y="576" width="64" height="64">
    <properties>
     <property name="teleport" value="testMap,22,29,down"/>
    </properties>

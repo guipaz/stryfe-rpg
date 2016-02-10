@@ -48,6 +48,7 @@ namespace StryfeRPG
             MapManager.Instance.LoadMap("testMap");
 
             Utils.LoadDialogs();
+            Utils.LoadScripts();
         }
 
         protected override void UnloadContent()
@@ -59,6 +60,10 @@ namespace StryfeRPG
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            PauseManager.Instance.Update(gameTime.ElapsedGameTime.TotalSeconds);
+            if (PauseManager.Instance.Waiting)
+                return;
 
             KeyboardManager.Instance.Update(gameTime.ElapsedGameTime.TotalSeconds);
             MapManager.Instance.Update(gameTime.ElapsedGameTime.TotalSeconds);

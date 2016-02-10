@@ -32,9 +32,14 @@ namespace StryfeRPG.Managers
 
         public void Teleport(Teleport teleport)
         {
-            LoadMap(teleport.Map);
-            Global.Player.MapPosition = teleport.TeleportPosition;
-            Global.Player.Direction = teleport.Direction;
+            Teleport(teleport.Map, teleport.TeleportPosition, teleport.Direction);
+        }
+
+        public void Teleport(string map, Vector2 position, FacingDirection direction)
+        {
+            LoadMap(map);
+            Global.Player.MapPosition = position;
+            Global.Player.Direction = direction;
         }
 
         public void LoadMap(string mapName)

@@ -24,6 +24,7 @@ namespace StryfeRPG.Models.Characters
         public FacingDirection Direction { get; set; }
         public CharacterSheet Sheet { get; set; }
         public int DialogId { get; set; }
+        public int ScriptId { get; set; }
 
         public Character() { }
 
@@ -32,6 +33,7 @@ namespace StryfeRPG.Models.Characters
         {
             Sheet = new CharacterSheet(TextureId, tileset);
             DialogId = obj.Properties.ContainsKey("dialog") ? int.Parse(obj.Properties["dialog"]) : -1;
+            ScriptId = obj.Properties.ContainsKey("script") ? int.Parse(obj.Properties["script"]) : -1;
 
             if (TextureId == Sheet.GidUp)
                 Direction = FacingDirection.Up;
@@ -84,11 +86,18 @@ namespace StryfeRPG.Models.Characters
 
         public override void PerformAction()
         {
-            if (DialogId == -1)
+            if (ScriptId != -1)
+            {
+                LookAt(Global.Player.MapPosition);
+                ScriptInterpreter.Instance.RunScript(ScriptId, this);
                 return;
+            }
 
-            LookAt(Global.Player.MapPosition);
-            DialogManager.Instance.ActivateDialog(Global.GetDialog(DialogId), this);
+            if (DialogId != -1)
+            {
+                LookAt(Global.Player.MapPosition);
+                DialogManager.Instance.ActivateDialog(Global.GetDialog(DialogId), this);
+            }
         }
         
         public override void Dismiss()

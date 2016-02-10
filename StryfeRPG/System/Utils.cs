@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using StryfeRPG.Managers;
+using StryfeRPG.Models.Characters;
 using StryfeRPG.Models.Maps;
 using StryfeRPG.Models.Utils;
 using System;
@@ -44,6 +45,26 @@ namespace StryfeRPG.System
         public static void LoadDialogs()
         {
             Global.SetDialogs(JsonConvert.DeserializeObject<Dictionary<int, Dialog>>(File.ReadAllText("Content/Data/dialogs.json")));
+        }
+
+        public static void LoadScripts()
+        {
+            Global.SetScripts(JsonConvert.DeserializeObject<Dictionary<int, Script>>(File.ReadAllText("Content/Data/scripts.json")));
+        }
+
+        public static FacingDirection GetDirection(string str)
+        {
+            switch (str)
+            {
+                case "up":
+                    return FacingDirection.Up;
+                case "left":
+                    return FacingDirection.Left;
+                case "right":
+                    return FacingDirection.Right;
+            }
+
+            return FacingDirection.Down;
         }
     }
 }

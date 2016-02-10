@@ -22,7 +22,10 @@ namespace StryfeRPG.System
         private static Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
         private static Dictionary<int, Dialog> dialogs = new Dictionary<int, Dialog>();
         private static Dictionary<string, Song> songs = new Dictionary<string, Song>();
-        
+
+        //testing
+        private static Dictionary<int, Script> scripts = new Dictionary<int, Script>();
+
         public static void SetContent(ContentManager content)
         {
             Content = content;
@@ -49,9 +52,21 @@ namespace StryfeRPG.System
             return null;
         }
 
+        public static Script GetScript(int id)
+        {
+            if (scripts.ContainsKey(id))
+                return scripts[id];
+            return null;
+        }
+
         public static void SetDialogs(Dictionary<int, Dialog> dialogs)
         {
             Global.dialogs = dialogs;
+        }
+
+        public static void SetScripts(Dictionary<int, Script> scripts)
+        {
+            Global.scripts = scripts;
         }
     }
 }

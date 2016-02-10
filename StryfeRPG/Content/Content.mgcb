@@ -35,17 +35,6 @@
 /processorParam:TextureFormat=Color
 /build:Textures/charset2.png
 
-#begin Textures/tileset.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:TextureFormat=Color
-/build:Textures/tileset.png
-
 #begin Fonts/DialogFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

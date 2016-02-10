@@ -84,10 +84,16 @@ namespace StryfeRPG.Managers
                     currentDialog = null;
                     currentText = "";
 
-                    if (dismissReference != null)
-                        dismissReference.Dismiss();
+                    if (ScriptInterpreter.Instance.IsScriptRunning())
+                    {
+                        ScriptInterpreter.Instance.FinishedCommand();
+                    } else
+                    {
+                        if (dismissReference != null)
+                            dismissReference.Dismiss();
 
-                    dismissReference = null;
+                        dismissReference = null;
+                    }
                 } else // or shows the next message
                 {
                     SetCurrentText(currentDialog.Messages[nextTextIndex]);
