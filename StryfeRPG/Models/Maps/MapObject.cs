@@ -21,6 +21,7 @@ namespace StryfeRPG.Models.Maps
 
         // Positioning stuff (tile-based)
         public Vector2 MapPosition { get; set; }
+        public Vector2 Size { get; set; }
 
         // Moving stuff (pixel-based)
         public bool IsMoving { get; set; }
@@ -35,15 +36,20 @@ namespace StryfeRPG.Models.Maps
         public MapObject(TmxObject obj, Tileset tileset)
         {
             Name = obj.Name != null ? obj.Name : "NoName";
-            NameColor = Color.Yellow; //TODO
+            NameColor = Color.White; //TODO
 
             Texture = tileset.Texture;
-            TextureId = obj.Tile.Gid - tileset.FirstGid;
+            TextureId = obj.Tile != null ? obj.Tile.Gid - tileset.FirstGid : -1;
 
-            MapPosition = new Vector2((int)obj.X / Global.TileSize, (int)(obj.Y - 1) / Global.TileSize);
+            // Workaround for the Y axis when it's a tile object (instead of rectangle)
+            int y = TextureId != -1 ? (int)obj.Y - 1 : (int)obj.Y;
+
+            MapPosition = new Vector2((int)obj.X / Global.TileSize, y / Global.TileSize);
             CurrentPosition = MapPosition * Global.TileSize;
             DestinationPosition = CurrentPosition;
             IsMoving = false;
+
+            Size = new Vector2((int)obj.Width / Global.TileSize, (int)obj.Height / Global.TileSize);
         }
 
         public bool Move(Vector2 movement)

@@ -17,7 +17,10 @@ namespace StryfeRPG.Managers
     {
         public SpriteBatch spriteBatch { get; set; }
         public Map currentMap;
-        
+
+        private bool mustTeleport = false;
+        private Teleport teleportObject;
+
         public void PerformAction(Vector2 position)
         {
             MapObject obj = currentMap.GetObject(position);
@@ -25,6 +28,13 @@ namespace StryfeRPG.Managers
             {
                 obj.PerformAction();
             }
+        }
+
+        public void Teleport(Teleport teleport)
+        {
+            LoadMap(teleport.Map);
+            Global.Player.MapPosition = teleport.TeleportPosition;
+            Global.Player.Direction = teleport.Direction;
         }
 
         public void LoadMap(string mapName)
@@ -37,6 +47,12 @@ namespace StryfeRPG.Managers
             {
                 Global.Player = currentMap.PlayerReference;
             }
+
+            // Plays the song
+            if (currentMap.song != null)
+            {
+                AudioManager.Instance.PlaySong(currentMap.song);
+            }
         }
 
         public void Update(double timePassed)
@@ -45,9 +61,15 @@ namespace StryfeRPG.Managers
             UpdateObject(Global.Player, timePassed);
 
             // Update NPCs
-            foreach (MapObject obj in currentMap.Npcs)
+            foreach (MapObject obj in currentMap.Objects)
             {
                 UpdateObject(obj, timePassed);
+            }
+
+            if (mustTeleport)
+            {
+                mustTeleport = false;
+                Teleport(teleportObject);
             }
         }
         
@@ -60,7 +82,7 @@ namespace StryfeRPG.Managers
             double lerpTime = obj.LerpTime;
 
             currentPosition = mapPosition * size;
-
+            
             // Calculate moving animation
             if (obj.IsMoving)
             {
@@ -75,6 +97,10 @@ namespace StryfeRPG.Managers
                     lerpTime = 0;
                     obj.IsMoving = false;
                     mapPosition = destinationPosition / size;
+                    mustTeleport = currentMap.GetCollision(mapPosition) == 2;
+
+                    if (mustTeleport)
+                        teleportObject = (Teleport)currentMap.GetObject(mapPosition);
                 }
             }
 
@@ -87,16 +113,39 @@ namespace StryfeRPG.Managers
         public void Draw(double timePassed)
         {
             // Draw the map
-            DrawMap();
+            foreach (TmxLayer layer in currentMap.TmxMap.Layers)
+            {
+                if (!currentMap.AboveLayers.Contains(layer))
+                {
+                    DrawMapLayer(layer);
+                }
+            }
 
             // Draw the player
             DrawCharacter(Global.Player);
 
-            //Draw the NPCs
-            foreach (Character npc in currentMap.Npcs)
+            // Draw above tiles of the map
+            foreach (TmxLayer layer in currentMap.AboveLayers)
             {
-                DrawCharacter(npc);
+                DrawMapLayer(layer);
             }
+
+            //Draw the Objects
+            foreach (MapObject obj in currentMap.Objects)
+            {
+                if (obj is Character)
+                    DrawCharacter((Character)obj);
+            }
+
+            // Draw the Objects names
+            foreach (MapObject obj in currentMap.Objects)
+            {
+                if (obj is Teleport == false)
+                    DrawObjectName(obj, spriteBatch);
+            }
+
+            // Draw the player's name
+            //DrawObjectName(Global.Player, spriteBatch);
         }
 
         private void DrawCharacter(Character obj)
@@ -114,31 +163,40 @@ namespace StryfeRPG.Managers
             Rectangle tilesetRec = new Rectangle(size * column, size * row, size, size);
             spriteBatch.Draw(texture, new Rectangle((int)currentPosition.X, (int)currentPosition.Y, size, size), tilesetRec, Color.White);
         }
-        
-        private void DrawMap()
+
+        private void DrawObjectName(MapObject obj, SpriteBatch spriteBatch)
+        {
+            // Draw the name
+            if (obj.Name != null)
+            {
+                Vector2 textSize = Global.MapFont.MeasureString(obj.Name);
+                int zoom = (int)CameraManager.Instance.Zoom;
+                spriteBatch.DrawString(Global.MapFont, obj.Name, new Vector2(obj.CurrentPosition.X + (Global.TileSize / 2) - (textSize.X / 2), obj.CurrentPosition.Y - Global.MapFont.LineSpacing) + new Vector2(1, 1), new Color(Color.Black, 0.5f));
+                spriteBatch.DrawString(Global.MapFont, obj.Name, new Vector2(obj.CurrentPosition.X + (Global.TileSize / 2) - (textSize.X / 2), obj.CurrentPosition.Y - Global.MapFont.LineSpacing), obj.NameColor);
+            }
+        }
+
+        private void DrawMapLayer(TmxLayer layer)
         {
             TmxMap map = currentMap.TmxMap;
             int size = Global.TileSize;
 
-            foreach (TmxLayer layer in map.Layers)
+            for (var i = 0; i < layer.Tiles.Count; i++)
             {
-                for (var i = 0; i < layer.Tiles.Count; i++)
+                int gid = layer.Tiles[i].Gid;
+                if (gid != 0)
                 {
-                    int gid = layer.Tiles[i].Gid;
-                    if (gid != 0)
-                    {
-                        Tileset tileset = currentMap.GetTileset(gid);
+                    Tileset tileset = currentMap.GetTileset(gid);
 
-                        int tileFrame = gid - tileset.FirstGid;
-                        int column = tileFrame % tileset.TilesWide;
-                        int row = tileFrame / tileset.TilesWide;
+                    int tileFrame = gid - tileset.FirstGid;
+                    int column = tileFrame % tileset.TilesWide;
+                    int row = tileFrame / tileset.TilesWide;
 
-                        float x = (i % map.Width) * map.TileWidth;
-                        float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
-                        
-                        Rectangle tilesetRec = new Rectangle(size * column, size * row, size, size);
-                        spriteBatch.Draw(tileset.Texture, new Rectangle((int)x, (int)y, size, size), tilesetRec, Color.White);
-                    }
+                    float x = (i % map.Width) * map.TileWidth;
+                    float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
+
+                    Rectangle tilesetRec = new Rectangle(size * column, size * row, size, size);
+                    spriteBatch.Draw(tileset.Texture, new Rectangle((int)x, (int)y, size, size), tilesetRec, Color.White);
                 }
             }
         }

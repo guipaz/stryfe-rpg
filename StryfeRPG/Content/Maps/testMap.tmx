@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="64" tileheight="64" nextobjectid="37">
+ <properties>
+  <property name="song" value="Dungeon1"/>
+ </properties>
+ <tileset firstgid="1" name="tileset_complete" tilewidth="64" tileheight="64" tilecount="2016" columns="32">
+  <image source="../Textures/tileset_complete.png" width="2048" height="4032"/>
+ </tileset>
+ <tileset firstgid="2017" name="charset1" tilewidth="64" tileheight="64" tilecount="96" columns="12">
+  <image source="../Textures/charset1.png" width="768" height="512"/>
+ </tileset>
+ <tileset firstgid="2113" name="Doors" tilewidth="64" tileheight="64" tilecount="96" columns="12">
+  <image source="../Textures/Doors.png" width="768" height="512"/>
+ </tileset>
+ <tileset firstgid="2209" name="people1" tilewidth="64" tileheight="64" tilecount="96" columns="12">
+  <image source="../Textures/people1.png" width="768" height="512"/>
+ </tileset>
+ <tileset firstgid="2305" name="charset2" tilewidth="64" tileheight="64" tilecount="96" columns="12">
+  <image source="../Textures/charset2.png" width="768" height="512"/>
+ </tileset>
+ <tileset firstgid="2401" name="people2" tilewidth="64" tileheight="64" tilecount="96" columns="12">
+  <image source="../Textures/people2.png" width="768" height="512"/>
+  <tile id="91">
+   <properties>
+    <property name="teleport" value="inner_deposit,7,8,up"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Ground" width="40" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzd10sSwiAMAFBYqgdjPIin7aXaztjRiYXmn+AiK5U8kkBrK6W0dzyD4lZLuW/xqL+fRdswvkjbHq/6CascSycaCIpPq3Y9G9Z3GDG9heuNclOC6ut9H+5Vy7dc9IDqo/SQ6vueN+rZGPXgLOe+LrVuHBf3PPR8oz563ifQh3VZ2kZzLZ0vbVsWi1XPrJ6vUhvmmRLhg8+nbL7s9aP6/9UHjRY90ui95V3H9VnPNtfndTdwc5z5LIwaebxryMnjNYMZ/gPP6juM0YZZ62dpy7pvjztcyyb1ZdzjTHOSsYZwNrLNcs+D8WnsYbSG9F1Fcj4j3s2ke7z63QrDvP3l
+  </data>
+ </layer>
+ <layer name="Constructions" width="40" height="40">
+  <properties>
+   <property name="collision" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztmD1LxDAch9Okd853ei46VxzvfIFDJ1/QVUGhgoM46Kpw5ws4iB9BDicH8SO4Cc4KfgIFFwe/g4LgP7Tl0jRpkya93uAPHtLrleRJ+pYGIfO0Ad8Avq62pI280DY6Buj45ek/baNngI6fSn8nSJ9JDtNk+an0d4HEWWQo2k8lw+7nEzE7Q+J3RsScK/qtVov1KzL/fmax6fdp4X5Q9TAZv7TrXTeqftc4SZ7c4nTy+j3gJDrx3KB8wumY+jUchMZDsrLHnecvku13Av04dfP7zYHXfMhrxhheMn7UjfKB0+m68Tp0/fh4TH3L4LPCON1x43cDx/7idLI8ZPsbiudUNdOV+O8pV3ycql90Xgcd0ZyfhvWT9W0QEc35aWTeNuLAdYkFz/D7SnKfaM5PI/Melsi8becZxuxFMG5lpwbPwjoJSp46N89QmQe8AY8M7xouo9DeWEiUJmy3SFCKyPJj7999uJa/Ob8fDb8ZaG82JErNCRC5tTT9rsBvlyThIztHG7C9GRKl6QTUJOj40VyQJDQjzLNRNgZHsH0cwify5NH1k4V9/25B+9ukX9pKHr8lwTulA05d0i9tpYjvI5vvRJGHj8r9huPX6/h0UNxx0Pgovl7Hp8c4lgG7fid7z/aQ+pqnbWTrlSLHMoiyBnOHdYX5g1fAHLWqUOcBuB1K/NL+s5Ei+lx2/gDNVNwq
+  </data>
+ </layer>
+ <layer name="Upper" width="40" height="40">
+  <properties>
+   <property name="above" value="true"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUDCbAykZ/O9uYiVerSgf3cbBCaHcOCL2MBPeNgqEFBiK9kwLokd5HGmBjGWgXUAeEA/0RQSW/vGRC5TMD0x3LIEh7hRwINnK8KQPdpkKk+04wEVYzGIAjB2E1o2BogYfAtsQjVkzxZixio2AUjILBCRrp0AegpF2yEOq+41Sq61iB5ZMHmfVRIRH6Rus6BgbX0TAYBaNg0IHB2D90B5XHo23GYQUAHb0L/w==
+  </data>
+ </layer>
+ <objectgroup name="NPCs">
+  <object id="2" name="Player" type="player" gid="2072" x="1152" y="1216" width="64" height="64"/>
+  <object id="3" name="Tobias" type="npc" gid="2264" x="1600" y="1216" width="64" height="64"/>
+  <object id="4" name="Rudolf" type="npc" gid="2240" x="512" y="1216" width="64" height="64"/>
+  <object id="5" name="Miss Jamie" type="npc" gid="2363" x="448" y="1920" width="64" height="64"/>
+  <object id="7" name="Black Knight" type="npc" gid="2312" x="1024" y="576" width="64" height="64"/>
+  <object id="9" name="Salomon" type="npc" gid="2408" x="1728" y="1216" width="64" height="64"/>
+  <object id="12" name="Raymond" type="npc" gid="2075" x="960" y="1408" width="64" height="64">
+   <properties>
+    <property name="dialog" value="0"/>
+   </properties>
+  </object>
+  <object id="15" name="Agamenon" type="npc" gid="2048" x="896" y="1472" width="64" height="64">
+   <properties>
+    <property name="dialog" value="2"/>
+   </properties>
+  </object>
+  <object id="17" name="Luna" type="npc" gid="2492" x="1856" y="1472" width="64" height="64"/>
+  <object id="18" name="Nadia" type="npc" gid="2078" x="1024" y="1472" width="64" height="64"/>
+  <object id="36" name="Dingus" type="npc" gid="2450" x="1856" y="576" width="64" height="64"/>
+ </objectgroup>
+ <objectgroup name="Teleports">
+  <object id="27" name="Teleport: exampleMap" type="teleport" x="2112" y="0" width="192" height="64">
+   <properties>
+    <property name="teleport" value="exampleMap,11,8,up"/>
+   </properties>
+  </object>
+  <object id="28" name="Teleport: inner_deposit" type="teleport" x="1408" y="1792" width="64" height="64">
+   <properties>
+    <property name="teleport" value="inner_deposit,7,8,up"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

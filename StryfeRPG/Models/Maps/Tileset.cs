@@ -23,7 +23,7 @@ namespace StryfeRPG.Models.Maps
             Texture = Global.GetTexture(tmxTileset.Name);
 
             FirstGid = tmxTileset.FirstGid;
-            FinalGid = FirstGid + (int)tmxTileset.TileCount;
+            FinalGid = FirstGid + (int)tmxTileset.TileCount-1;
 
             TilesWide = Texture.Width / Global.TileSize;
             TilesHigh = Texture.Height / Global.TileSize;

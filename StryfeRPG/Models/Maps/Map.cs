@@ -13,15 +13,26 @@ namespace StryfeRPG.Models.Maps
 {
     public class Map
     {
+        // The TmxMap with every information of the XML
         public TmxMap TmxMap { get; set; }
+
+        // References for the 
         public List<Tileset> Tilesets { get; set; }
-        public List<Character> Npcs { get; set; } //TODO: maybe change it to generic MapObject
+        public List<MapObject> Objects { get; set; } //TODO: maybe change it to generic MapObject
         public Player PlayerReference { get; set; }
 
+        // A control array for collisions
         public int[] CollisionMap { get; set; }
 
+        // Width and height in tiles
         public int Width { get; set; }
         public int Height { get; set; }
+
+        // The layers that are supposed to be rendered after the player
+        public List<TmxLayer> AboveLayers;
+
+        // The song name for the map
+        public string song { get; set; }
 
         public Map(TmxMap tmxMap)
         {
@@ -36,19 +47,36 @@ namespace StryfeRPG.Models.Maps
                 Tilesets.Add(new Tileset(tmxTileset));
             }
 
-            Npcs = new List<Character>();
+            Objects = new List<MapObject>();
             foreach (TmxObjectGroup group in tmxMap.ObjectGroups)
             {
                 foreach (TmxObject obj in group.Objects)
                 {
                     if (obj.Type == "npc")
                     {
-                        Npcs.Add(new Character(obj, GetTileset(obj.Tile.Gid)));
+                        Objects.Add(new Character(obj, GetTileset(obj.Tile != null ? obj.Tile.Gid : -1)));
                     } else if (obj.Type == "player")
                     {
-                        PlayerReference = new Player(obj, GetTileset(obj.Tile.Gid));
+                        PlayerReference = new Player(obj, GetTileset(obj.Tile != null ? obj.Tile.Gid : -1));
+                    } else if (obj.Type == "teleport")
+                    {
+                        Objects.Add(new Teleport(obj, GetTileset(obj.Tile != null ? obj.Tile.Gid : -1)));
                     }
                 }
+            }
+
+            // Populate above layers
+            AboveLayers = new List<TmxLayer>();
+            foreach (TmxLayer layer in tmxMap.Layers)
+            {
+                if (layer.Properties.ContainsKey("above") && layer.Properties["above"] == "true")
+                    AboveLayers.Add(layer);
+            }
+
+            // Gets the song
+            if (TmxMap.Properties.ContainsKey("song"))
+            {
+                song = TmxMap.Properties["song"];
             }
 
             PopulateCollisions();
@@ -56,11 +84,20 @@ namespace StryfeRPG.Models.Maps
 
         public void PopulateCollisions()
         {
+            // Populate collisions
             CollisionMap = new int[Width * Height];
             for (int y = 0; y < Height; y++)
             {
                 for (int x = 0; x < Width; x++)
                 {
+                    // Populate teleports
+                    MapObject obj = GetObject(new Vector2(x, y));
+                    if (obj is Teleport)
+                    {
+                        CollisionMap[y * Width + x] = 2;
+                    }
+                    
+                    // Populate collisions
                     foreach (TmxLayer layer in TmxMap.Layers)
                     {
                         if (layer.Tiles[y * Width + x].Gid != 0 &&
@@ -96,11 +133,11 @@ namespace StryfeRPG.Models.Maps
 
         public MapObject GetObject(Vector2 position)
         {
-            // Checks NPCs
-            foreach (MapObject npc in Npcs)
+            foreach (MapObject obj in Objects)
             {
-                if (npc.MapPosition == position)
-                    return npc;
+                if (position.X >= obj.MapPosition.X && position.X <= obj.MapPosition.X + obj.Size.X - 1 &&
+                    position.Y >= obj.MapPosition.Y && position.Y <= obj.MapPosition.Y + obj.Size.Y - 1)
+                    return obj;
             }
 
             return null;

@@ -31,8 +31,8 @@ namespace StryfeRPG.Managers
         private int marginY = 15;
 
         // Animation control
-        private float cooldown = 0;
-        private float charsBySecond = 100;
+        private double cooldown = 0;
+        private double charsBySecond = 60;
         private bool isAnimating = false;
         private int animationIndex = 0;
         private string animatedText = "";
@@ -108,7 +108,9 @@ namespace StryfeRPG.Managers
                 if (cooldown > 0)
                 {
                     cooldown -= (float)timePassed;
-                } else
+                }
+
+                if (cooldown <= 0)
                 {
                     cooldown = 1 / charsBySecond;
                     animatedText = currentText.Substring(0, animationIndex);

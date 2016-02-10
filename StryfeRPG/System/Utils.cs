@@ -25,9 +25,10 @@ namespace StryfeRPG.System
             collision = Global.Player.MapPosition == movement ? 1 : collision;
 
             // Checks NPC collision
-            foreach (MapObject obj in map.Npcs)
+            foreach (MapObject obj in map.Objects)
             {
-                collision = obj.MapPosition == movement ? 1 : collision;
+                if (obj is Teleport == false)
+                    collision = obj.MapPosition == movement ? 1 : collision;
             }
 
             return collision == 1;
@@ -35,7 +36,7 @@ namespace StryfeRPG.System
 
         public static void LoadDialogs()
         {
-            Global.SetDialogs(JsonConvert.DeserializeObject<Dictionary<int, Dialog>>(File.ReadAllText("Content/dialogs.json")));
+            Global.SetDialogs(JsonConvert.DeserializeObject<Dictionary<int, Dialog>>(File.ReadAllText("Content/Data/dialogs.json")));
         }
     }
 }

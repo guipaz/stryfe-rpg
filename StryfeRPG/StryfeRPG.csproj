@@ -38,10 +38,12 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Managers\AudioManager.cs" />
     <Compile Include="Managers\DialogManager.cs" />
     <Compile Include="Managers\HUDManager.cs" />
     <Compile Include="Models\Characters\AttributeSheet.cs" />
     <Compile Include="Models\Characters\CharacterSheet.cs" />
+    <Compile Include="Models\Maps\Teleport.cs" />
     <Compile Include="Models\Utils\Dialog.cs" />
     <Compile Include="System\Runtime\Stryfe.cs" />
     <Compile Include="Managers\CameraManager.cs" />
@@ -80,17 +82,20 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <None Include="Content\DialogFont.spritefont" />
-    <None Include="Content\dialogs.json">
+    <None Include="Content\Data\dialogs.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Fonts\DialogFont.spritefont" />
+    <None Include="Content\Fonts\MapFont.spritefont" />
     <None Include="Content\Maps\exampleMap.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Maps\indoor.tmx">
+    <None Include="Content\Maps\inner_deposit.tmx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\MapFont.spritefont" />
+    <None Include="Content\Maps\testMap.tmx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

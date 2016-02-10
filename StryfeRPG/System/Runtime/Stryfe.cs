@@ -8,6 +8,7 @@ using StryfeRPG.Models.Characters;
 using StryfeRPG.System;
 using StryfeRPG.Models.Utils;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Media;
 
 namespace StryfeRPG
 {
@@ -30,19 +31,21 @@ namespace StryfeRPG
         protected override void Initialize()
         {
             CameraManager.Instance.Bounds = GraphicsDevice.Viewport.Bounds;
-        
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 0.0f; // debug
+
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            Global.MapFont = Content.Load<SpriteFont>("DialogFont"); //TODO: get this straight
-            Global.DialogFont = Content.Load<SpriteFont>("DialogFont");
+            Global.MapFont = Content.Load<SpriteFont>("Fonts/DialogFont"); //TODO: get this straight
+            Global.DialogFont = Content.Load<SpriteFont>("Fonts/DialogFont");
             Global.Viewport = GraphicsDevice.Viewport;
 
             MapManager.Instance.spriteBatch = spriteBatch;
-            MapManager.Instance.LoadMap("exampleMap");
+            MapManager.Instance.LoadMap("testMap");
 
             Utils.LoadDialogs();
         }
@@ -59,20 +62,19 @@ namespace StryfeRPG
 
             KeyboardManager.Instance.Update(gameTime.ElapsedGameTime.TotalSeconds);
             MapManager.Instance.Update(gameTime.ElapsedGameTime.TotalSeconds);
-
+            
             base.Update(gameTime);
         }
         
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             CameraManager.Instance.Position = Global.Player.CurrentPosition;
 
             // Maps (and everything in them)
             spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: CameraManager.Instance.TransformMatrix);
             MapManager.Instance.Draw(gameTime.ElapsedGameTime.TotalSeconds);
-            HUDManager.Instance.DrawObjectNames(spriteBatch);
             spriteBatch.End();
 
             // Dialogs
