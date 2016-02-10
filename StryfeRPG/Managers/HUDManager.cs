@@ -17,10 +17,10 @@ namespace StryfeRPG.Managers
         public void Draw(SpriteBatch spriteBatch)
         {
             // Draw the player's name (top)
-            Vector2 measure = Global.DialogFont.MeasureString(Global.Player.Name);
-            spriteBatch.Draw(DialogTexture, destinationRectangle: new Rectangle(0, 0, (int)measure.X + 20, (int)measure.Y + 20), color: new Color(Color.White, 0.8f));
-            spriteBatch.DrawString(Global.DialogFont, Global.Player.Name, new Vector2(11, 11), new Color(Color.Black, 0.5f));
-            spriteBatch.DrawString(Global.DialogFont, Global.Player.Name, new Vector2(10, 10), Color.White);
+            //Vector2 measure = Global.DialogFont.MeasureString(Global.Player.Name);
+            //spriteBatch.Draw(DialogTexture, destinationRectangle: new Rectangle(0, 0, (int)measure.X + 20, (int)measure.Y + 20), color: new Color(Color.White, 0.8f));
+            //spriteBatch.DrawString(Global.DialogFont, Global.Player.Name, new Vector2(11, 11), new Color(Color.Black, 0.5f));
+            //spriteBatch.DrawString(Global.DialogFont, Global.Player.Name, new Vector2(10, 10), Color.White);
         }
         
         // Singleton stuff

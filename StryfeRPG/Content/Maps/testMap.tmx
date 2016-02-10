@@ -72,7 +72,11 @@
     <property name="dialog" value="2"/>
    </properties>
   </object>
-  <object id="17" name="Luna" type="npc" gid="2492" x="1856" y="1472" width="64" height="64"/>
+  <object id="17" name="Luna" type="npc" gid="2492" x="1856" y="1472" width="64" height="64">
+   <properties>
+    <property name="dialog" value="1"/>
+   </properties>
+  </object>
   <object id="18" name="Nadia" type="npc" gid="2078" x="1024" y="1472" width="64" height="64"/>
   <object id="36" name="Dingus" type="npc" gid="2450" x="1856" y="576" width="64" height="64"/>
  </objectgroup>
