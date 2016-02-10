@@ -128,14 +128,22 @@ namespace StryfeRPG.Managers
             }
 
             // Draw dialog box
+            Vector2 nameBoxSize = Vector2.Zero;
+            if (currentDialog.CharacterName != null)
+                nameBoxSize = new Vector2(Global.DialogFont.MeasureString(currentDialog.CharacterName).X + marginX * 2, Global.DialogFont.LineSpacing + marginY * 1.5f);
+
+            spriteBatch.Draw(texture,
+                             destinationRectangle: new Rectangle(0, bounds.Height - yOffset - (int)nameBoxSize.Y, (int)nameBoxSize.X, (int)nameBoxSize.Y),
+                             color: new Color(Color.White, 0.8f));
+
             spriteBatch.Draw(texture,
                              destinationRectangle: new Rectangle(0, bounds.Height - yOffset, bounds.Width, yOffset),
                              color: new Color(Color.White, 0.8f));
 
             // Draw text
-            spriteBatch.DrawString(Global.DialogFont, animatedText, new Vector2(marginX + 1, bounds.Height - yOffset + marginY + 1), Color.Black);
-            spriteBatch.DrawString(Global.DialogFont, animatedText, new Vector2(marginX + 2, bounds.Height - yOffset + marginY + 2), new Color(Color.Black, 0.5f));
-            spriteBatch.DrawString(Global.DialogFont, animatedText, new Vector2(marginX, bounds.Height - yOffset + marginY), Color.White);
+            if (currentDialog.CharacterName != null)
+                Utils.DrawText(Global.DialogFont, spriteBatch, currentDialog.CharacterName, new Vector2(marginX, bounds.Height - yOffset + marginY - nameBoxSize.Y), Color.Yellow);
+            Utils.DrawText(Global.DialogFont, spriteBatch, animatedText, new Vector2(marginX, bounds.Height - yOffset + marginY), Color.White);
         }
 
         private void SetCurrentText(string text)

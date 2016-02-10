@@ -14,6 +14,13 @@ namespace StryfeRPG.System
 {
     public static class Utils
     {
+        public static void DrawText(SpriteFont font, SpriteBatch spriteBatch, string text, Vector2 position, Color color)
+        {
+            spriteBatch.DrawString(font, text, position + new Vector2(1, 1), Color.Black);
+            spriteBatch.DrawString(font, text, position + new Vector2(2, 2), new Color(Color.Black, 0.5f));
+            spriteBatch.DrawString(font, text, position, color);
+        }
+
         public static bool GetCollision(Vector2 movement)
         {
             Map map = MapManager.Instance.currentMap;

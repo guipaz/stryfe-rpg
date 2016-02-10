@@ -8,6 +8,7 @@ namespace StryfeRPG.Models.Utils
     public class Dialog
     {
         public int Id { get; set; }
+        public string CharacterName { get; set; }
         public List<string> Messages { get; set; }
     }
 }

@@ -51,8 +51,16 @@
   <object id="2" name="Player" type="player" gid="2072" x="1152" y="1216" width="64" height="64"/>
   <object id="3" name="Tobias" type="npc" gid="2264" x="1600" y="1216" width="64" height="64"/>
   <object id="4" name="Rudolf" type="npc" gid="2240" x="512" y="1216" width="64" height="64"/>
-  <object id="5" name="Miss Jamie" type="npc" gid="2363" x="448" y="1920" width="64" height="64"/>
-  <object id="7" name="Black Knight" type="npc" gid="2312" x="1024" y="576" width="64" height="64"/>
+  <object id="5" name="Miss Jamie" type="npc" gid="2363" x="448" y="1920" width="64" height="64">
+   <properties>
+    <property name="dialog" value="3"/>
+   </properties>
+  </object>
+  <object id="7" name="Black Knight" type="npc" gid="2312" x="1024" y="576" width="64" height="64">
+   <properties>
+    <property name="dialog" value="4"/>
+   </properties>
+  </object>
   <object id="9" name="Salomon" type="npc" gid="2408" x="1728" y="1216" width="64" height="64"/>
   <object id="12" name="Raymond" type="npc" gid="2075" x="960" y="1408" width="64" height="64">
    <properties>
