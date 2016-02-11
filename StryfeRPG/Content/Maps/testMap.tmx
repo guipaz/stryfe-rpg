@@ -58,6 +58,7 @@
   </object>
   <object id="7" name="Black Knight" type="npc" gid="2312" x="1024" y="576" width="64" height="64">
    <properties>
+    <property name="color" value="1,0,0,1"/>
     <property name="dialog" value="4"/>
    </properties>
   </object>

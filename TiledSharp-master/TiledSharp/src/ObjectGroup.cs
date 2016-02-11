@@ -49,6 +49,7 @@ namespace TiledSharp
     {
         // Many TmxObjectTypes are distinguished by null values in fields
         // It might be smart to subclass TmxObject
+        public int Id { get; private set; }
         public string Name {get; private set;}
         public TmxObjectType ObjectType {get; private set;}
         public string Type {get; private set;}
@@ -65,6 +66,7 @@ namespace TiledSharp
 
         public TmxObject(XElement xObject)
         {
+            Id = (int)xObject.Attribute("id");
             Name = (string)xObject.Attribute("name") ?? String.Empty;
             X = (double)xObject.Attribute("x");
             Y = (double)xObject.Attribute("y");

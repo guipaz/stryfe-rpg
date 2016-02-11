@@ -11,14 +11,6 @@
 				"Raymond",
 				"My name is Raymond, and I'm a knight of the Templars of the Sun.",
 				"Maybe someday you can join the Templars and help me purge the evil out of this lands.",
-				"Bia is very pretty!"
-			]
-		},
-		{
-			"command": "wait",
-			"arguments":
-			[
-				"1"
 			]
 		},
 		{
@@ -27,14 +19,6 @@
 			[
 				"$player's thought",
 				"(What a bold knight.)"
-			]
-		},
-		{
-			"command": "teleport",
-			"arguments":
-			[
-				"inner_deposit",
-				"7", "8", "up"
 			]
 		}
 	]

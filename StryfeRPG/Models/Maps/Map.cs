@@ -13,6 +13,7 @@ namespace StryfeRPG.Models.Maps
 {
     public class Map
     {
+        public string Name { get; set; }
         // The TmxMap with every information of the XML
         public TmxMap TmxMap { get; set; }
 
@@ -34,9 +35,10 @@ namespace StryfeRPG.Models.Maps
         // The song name for the map
         public string song { get; set; }
 
-        public Map(TmxMap tmxMap)
+        public Map(TmxMap tmxMap, string name)
         {
             this.TmxMap = tmxMap;
+            Name = name;
 
             Width = tmxMap.Width;
             Height = tmxMap.Height;
@@ -54,7 +56,7 @@ namespace StryfeRPG.Models.Maps
                 {
                     if (obj.Type == "npc")
                     {
-                        Objects.Add(new Character(obj, GetTileset(obj.Tile != null ? obj.Tile.Gid : -1)));
+                        Objects.Add(new Character(obj, GetTileset(obj.Tile != null ? obj.Tile.Gid : -1), Name));
                     } else if (obj.Type == "player")
                     {
                         PlayerReference = new Player(obj, GetTileset(obj.Tile != null ? obj.Tile.Gid : -1));

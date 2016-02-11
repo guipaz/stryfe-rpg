@@ -45,7 +45,7 @@ namespace StryfeRPG.Managers
         public void LoadMap(string mapName)
         {
             TmxMap tmxMap = new TmxMap(String.Format("Content/Maps/{0}.tmx", mapName));
-            currentMap = new Map(tmxMap);
+            currentMap = new Map(tmxMap, mapName);
 
             // Loads player
             if (currentMap.PlayerReference != null)

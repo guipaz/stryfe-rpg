@@ -18,13 +18,17 @@ namespace StryfeRPG.System
         public static SpriteFont MapFont;
         public static SpriteFont DialogFont;
 
+        // Loaded resources
         private static ContentManager Content;
         private static Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
-        private static Dictionary<int, Dialog> dialogs = new Dictionary<int, Dialog>();
         private static Dictionary<string, Song> songs = new Dictionary<string, Song>();
 
-        //testing
+        // Loaded data
+        private static Dictionary<int, Dialog> dialogs = new Dictionary<int, Dialog>();
         private static Dictionary<int, Script> scripts = new Dictionary<int, Script>();
+
+        // Saved data
+
 
         public static void SetContent(ContentManager content)
         {

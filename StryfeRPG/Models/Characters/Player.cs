@@ -11,7 +11,7 @@ namespace StryfeRPG.Models.Characters
 {
     public class Player : Character
     {
-        public Player(TmxObject obj, Tileset tileset) : base(obj, tileset)
+        public Player(TmxObject obj, Tileset tileset) : base(obj, tileset, "")
         {
             Name = "Stryfe";
             NameColor = Color.White;

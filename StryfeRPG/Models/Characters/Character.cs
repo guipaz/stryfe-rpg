@@ -29,7 +29,7 @@ namespace StryfeRPG.Models.Characters
         public Character() { }
 
         // Map characters
-        public Character(TmxObject obj, Tileset tileset) : base(obj, tileset)
+        public Character(TmxObject obj, Tileset tileset, string mapName) : base(obj, tileset, mapName)
         {
             Sheet = new CharacterSheet(TextureId, tileset);
             DialogId = obj.Properties.ContainsKey("dialog") ? int.Parse(obj.Properties["dialog"]) : -1;
