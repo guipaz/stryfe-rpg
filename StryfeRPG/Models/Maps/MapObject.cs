@@ -12,9 +12,12 @@ namespace StryfeRPG.Models.Maps
 {
     public class MapObject
     {
+        // Basic information
         public string Identifier { get; set; }
         public string Name { get; set; }
         public Color NameColor { get; set; }
+        public ObjectInfo Information { get; set; }
+        public int ScriptId { get; set; }
 
         // Texture stuff
         public Texture2D Texture { get; set; }
@@ -24,21 +27,32 @@ namespace StryfeRPG.Models.Maps
         public Vector2 MapPosition { get; set; }
         public Vector2 Size { get; set; }
 
-        // Moving stuff (pixel-based)
+        // Moving stuff (positions are pixel-based)
         public bool IsMoving { get; set; }
-        
         public Vector2 CurrentPosition { get; set; }
         public Vector2 DestinationPosition { get; set; }
-
         public double LerpTime = 0;
         public double AnimationSpeed = 5;
 
-        public MapObject() { }
         public MapObject(TmxObject obj, Tileset tileset, string mapName = "")
         {
+            // Name
             Name = obj.Name != null ? obj.Name : "NoName";
+
+            // Identifier used for ObjectInfo instance
             Identifier = String.Format("{0}_{1}_{2}", obj.Id, mapName, Name).Replace(" ", string.Empty);
-            
+
+            // ObjectInfo instance, holding information about the object in runtime
+            Information = new ObjectInfo(Identifier);
+            if (obj.Properties.ContainsKey("active"))
+            {
+                Information.IsActive = obj.Properties["active"] == "true" ? true : false;
+            }
+
+            // Gets the script id
+            ScriptId = obj.Properties.ContainsKey("script") ? int.Parse(obj.Properties["script"]) : -1;
+
+            // Gets the name color
             if (obj.Properties.ContainsKey("color"))
             {
                 string[] rgba = obj.Properties["color"].Split(',');
@@ -48,17 +62,20 @@ namespace StryfeRPG.Models.Maps
                 NameColor = Color.White;
             }
 
+            // Gets texture information
             Texture = tileset.Texture;
             TextureId = obj.Tile != null ? obj.Tile.Gid - tileset.FirstGid : -1;
 
             // Workaround for the Y axis when it's a tile object (instead of rectangle)
             int y = obj.ObjectType == TmxObjectType.Tile ? (int)obj.Y - 1 : (int)obj.Y;
 
+            // Sets position
             MapPosition = new Vector2((int)obj.X / Global.TileSize, y / Global.TileSize);
             CurrentPosition = MapPosition * Global.TileSize;
             DestinationPosition = CurrentPosition;
             IsMoving = false;
 
+            // Width and height for objects bigger than a tile
             Size = new Vector2((int)obj.Width / Global.TileSize, (int)obj.Height / Global.TileSize);
         }
 
@@ -72,12 +89,21 @@ namespace StryfeRPG.Models.Maps
 
         public virtual void PerformAction()
         {
-            //TODO
+            if (ScriptId != -1)
+            {
+                ScriptInterpreter.Instance.RunScript(ScriptId, this);
+                return;
+            }
         }
 
         public virtual void Dismiss()
         {
             //TODO
+        }
+
+        public virtual int GetSprite()
+        {
+            return TextureId;
         }
     }
 }

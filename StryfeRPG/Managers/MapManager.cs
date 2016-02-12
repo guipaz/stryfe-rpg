@@ -42,6 +42,25 @@ namespace StryfeRPG.Managers
             Global.Player.Direction = direction;
         }
 
+        public bool GetCollision(Vector2 movement)
+        {
+            // Checks map collision
+            int collision = currentMap.GetCollision(movement);
+
+            // Checks player collision
+            collision = Global.Player.MapPosition == movement ? 1 : collision;
+
+            // Checks NPC collision
+            MapObject obj = currentMap.GetObject(movement);
+            if (obj != null)
+            {
+                if (obj is Teleport == false)
+                    collision = obj.MapPosition == movement ? 1 : collision;
+            }
+
+            return collision == 1;
+        }
+
         public void LoadMap(string mapName)
         {
             TmxMap tmxMap = new TmxMap(String.Format("Content/Maps/{0}.tmx", mapName));
@@ -68,7 +87,8 @@ namespace StryfeRPG.Managers
             // Update NPCs
             foreach (MapObject obj in currentMap.Objects)
             {
-                UpdateObject(obj, timePassed);
+                if (obj.Information.IsActive)
+                    UpdateObject(obj, timePassed);
             }
 
             if (mustTeleport)
@@ -127,7 +147,7 @@ namespace StryfeRPG.Managers
             }
 
             // Draw the player
-            DrawCharacter(Global.Player);
+            DrawObject(Global.Player);
 
             // Draw above tiles of the map
             foreach (TmxLayer layer in currentMap.AboveLayers)
@@ -138,8 +158,10 @@ namespace StryfeRPG.Managers
             //Draw the Objects
             foreach (MapObject obj in currentMap.Objects)
             {
-                if (obj is Character)
-                    DrawCharacter((Character)obj);
+                if (obj.Information.IsActive)
+                {
+                    DrawObject(obj);
+                }
             }
 
             // Draw the Objects names
@@ -153,7 +175,7 @@ namespace StryfeRPG.Managers
             //DrawObjectName(Global.Player, spriteBatch);
         }
 
-        private void DrawCharacter(Character obj)
+        private void DrawObject(MapObject obj)
         {
             int size = Global.TileSize;
             int textureId = obj.GetSprite();
@@ -172,7 +194,7 @@ namespace StryfeRPG.Managers
         private void DrawObjectName(MapObject obj, SpriteBatch spriteBatch)
         {
             // Draw the name
-            if (obj.Name != null)
+            if (obj.Name != null && obj.Information.IsActive)
             {
                 Vector2 textSize = Global.MapFont.MeasureString(obj.Name);
                 int zoom = (int)CameraManager.Instance.Zoom;

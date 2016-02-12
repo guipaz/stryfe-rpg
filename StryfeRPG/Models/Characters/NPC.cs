@@ -16,24 +16,25 @@ namespace StryfeRPG.Models.Characters
         Down, Left, Right, Up
     }
 
-    public class Character : Maps.MapObject
+    public class NPC : Maps.MapObject
     {
+        // Attributes
         public AttributeSheet Attributes { get; set; }
-
+        
+        // Sprite direction
         public FacingDirection DefaultDirection { get; set; }
         public FacingDirection Direction { get; set; }
-        public CharacterSheet Sheet { get; set; }
+
+        // Sprite sheet
+        public SpriteSheet Sheet { get; set; }
+
+        // Dialog and script ids
         public int DialogId { get; set; }
-        public int ScriptId { get; set; }
-
-        public Character() { }
-
-        // Map characters
-        public Character(TmxObject obj, Tileset tileset, string mapName) : base(obj, tileset, mapName)
+        
+        public NPC(TmxObject obj, Tileset tileset, string mapName) : base(obj, tileset, mapName)
         {
-            Sheet = new CharacterSheet(TextureId, tileset);
+            Sheet = new SpriteSheet(TextureId, tileset);
             DialogId = obj.Properties.ContainsKey("dialog") ? int.Parse(obj.Properties["dialog"]) : -1;
-            ScriptId = obj.Properties.ContainsKey("script") ? int.Parse(obj.Properties["script"]) : -1;
 
             if (TextureId == Sheet.GidUp)
                 Direction = FacingDirection.Up;
@@ -47,7 +48,27 @@ namespace StryfeRPG.Models.Characters
             DefaultDirection = Direction;
         }
 
-        public int GetSprite()
+        public void LookAt(Vector2 position)
+        {
+            if (MapPosition.X < position.X)
+            {
+                Direction = FacingDirection.Right;
+            }
+            else if (MapPosition.X > position.X)
+            {
+                Direction = FacingDirection.Left;
+            }
+            else if (MapPosition.Y > position.Y)
+            {
+                Direction = FacingDirection.Up;
+            }
+            else
+            {
+                Direction = FacingDirection.Down;
+            }
+        }
+
+        public override int GetSprite()
         {
             if (Sheet == null)
                 return TextureId;
@@ -67,35 +88,17 @@ namespace StryfeRPG.Models.Characters
             return TextureId;
         }
         
-        public void LookAt(Vector2 position)
-        {
-            if (MapPosition.X < position.X)
-            {
-                Direction = FacingDirection.Right;
-            } else if (MapPosition.X > position.X)
-            {
-                Direction = FacingDirection.Left;
-            } else if (MapPosition.Y > position.Y)
-            {
-                Direction = FacingDirection.Up;
-            } else
-            {
-                Direction = FacingDirection.Down;
-            }
-        }
-
         public override void PerformAction()
         {
-            if (ScriptId != -1)
+            if (ScriptId != -1 || DialogId != -1)
             {
                 LookAt(Global.Player.MapPosition);
-                ScriptInterpreter.Instance.RunScript(ScriptId, this);
-                return;
             }
 
-            if (DialogId != -1)
+            base.PerformAction();
+
+            if (DialogId != -1 && ScriptId != -1)
             {
-                LookAt(Global.Player.MapPosition);
                 DialogManager.Instance.ActivateDialog(Global.GetDialog(DialogId), this);
             }
         }

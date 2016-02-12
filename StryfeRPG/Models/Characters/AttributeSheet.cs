@@ -5,62 +5,76 @@ using System.Text;
 
 namespace StryfeRPG.Models.Characters
 {
+    public enum CharacterAttribute
+    {
+        Level,
+        Experience,
+        Vitality, // Max HP
+        Wisdom, // Max MP
+        Endurance, // Max Stamina, Equip burden
+        Strenght, // Equip requirements, physical damage
+        Dexterity, // Equip requirements, physical damage, stamina
+        Intelligence, // Sorcery requirements, magical damage, Max MP
+        Faith, // Miracle requirements, magical damage, Max MP
+        Luck, // Critical, luck rolls
+        HP,
+        MP,
+        Stamina,
+        PhysicalDamage,
+        MagicalDamage,
+        CriticalChance
+    }
+
     public class AttributeSheet
     {
-        // Level information
-        public int Level = 1;
-        public int Experience = 0;
+        public Dictionary<CharacterAttribute, int> Base = new Dictionary<CharacterAttribute, int>();
+        public Dictionary<CharacterAttribute, int> Calculated = new Dictionary<CharacterAttribute, int>();
+        public Dictionary<CharacterAttribute, int> Current = new Dictionary<CharacterAttribute, int>();
+        public Dictionary<CharacterAttribute, int> PermanentBonus = new Dictionary<CharacterAttribute, int>();
+        public Dictionary<CharacterAttribute, int> TemporaryBonus = new Dictionary<CharacterAttribute, int>();
 
-        // Base attributes
-        public int Vitality = 1; // Max HP
-        public int Wisdom = 1; // Max MP
-        public int Endurance = 1; // Max Stamina, Equip burden
-        public int Strenght = 1; // Equip requirements, physical damage
-        public int Dexterity = 1; // Equip requirements, physical damage, stamina
-        public int Intelligence = 1; // Sorcery requirements, magical damage, Max MP
-        public int Faith = 1; // Miracle requirements, magical damage, Max MP
-        public int Luck = 1; // Critical, luck rolls
+        public AttributeSheet()
+        {
+            Base[CharacterAttribute.Level] = 1;
+            Base[CharacterAttribute.Experience] = 0;
 
-        // Calculated attributes
-        public int MaxHP;
-        public int MaxMP;
-        public int MaxStamina;
-        public int PhysicalDamage;
-        public int MagicalDamage;
-        public int CriticalChance;
+            Base[CharacterAttribute.Vitality] = 1;
+            Base[CharacterAttribute.Wisdom] = 1;
+            Base[CharacterAttribute.Endurance] = 1;
+            Base[CharacterAttribute.Strenght] = 1;
+            Base[CharacterAttribute.Dexterity] = 1;
+            Base[CharacterAttribute.Intelligence] = 1;
+            Base[CharacterAttribute.Faith] = 1;
+            Base[CharacterAttribute.Luck] = 1;
 
-        // Current Attributes
-        public int CurrentHP;
-        public int CurrentMP;
-        public int CurrentStamina;
-        public int CurrentPhysicalDamage;
-        public int CurrentMagicalDamage;
-        public int CurrentCriticalChance;
-        
+            Recalculate();
+            ResetCurrent();
+        }
+
         public void Recalculate()
         {
-            if (Experience >= Level * 100)
+            if (Base[CharacterAttribute.Experience] >= Base[CharacterAttribute.Level] * 100)
             {
-                Level++;
-                Experience = 0;
+                Base[CharacterAttribute.Level]++;
+                Base[CharacterAttribute.Experience] = 0;
             }
 
-            MaxHP = Vitality * 3 + Strenght;
-            MaxMP = Wisdom * 3 + Intelligence + Faith;
-            MaxStamina = Endurance * 3 + Dexterity;
-            PhysicalDamage = Strenght * 3 + Dexterity * 3;
-            MagicalDamage = Intelligence * 3 + Faith * 3;
-            CriticalChance = (int)(Luck * 1.5f);
+            Calculated[CharacterAttribute.HP] = Base[CharacterAttribute.Vitality] * 3 + Base[CharacterAttribute.Strenght];
+            Calculated[CharacterAttribute.MP] = Base[CharacterAttribute.Wisdom] * 3 + Base[CharacterAttribute.Intelligence] + Base[CharacterAttribute.Faith];
+            Calculated[CharacterAttribute.Stamina] = Base[CharacterAttribute.Endurance] * 3 + Base[CharacterAttribute.Dexterity];
+            Calculated[CharacterAttribute.PhysicalDamage] = Base[CharacterAttribute.Strenght] * 3 + Base[CharacterAttribute.Dexterity] * 3;
+            Calculated[CharacterAttribute.MagicalDamage] = Base[CharacterAttribute.Intelligence] * 3 + Base[CharacterAttribute.Faith] * 3;
+            Calculated[CharacterAttribute.CriticalChance] = (int)(Base[CharacterAttribute.Luck] * 1.5f);
         }
 
         public void ResetCurrent()
         {
-            CurrentHP = MaxHP;
-            CurrentMP = MaxMP;
-            CurrentStamina = MaxStamina;
-            CurrentPhysicalDamage = PhysicalDamage;
-            CurrentMagicalDamage = MagicalDamage;
-            CurrentCriticalChance = CriticalChance;
+            Current[CharacterAttribute.HP] = Calculated[CharacterAttribute.HP];
+            Current[CharacterAttribute.MP] = Calculated[CharacterAttribute.MP];
+            Current[CharacterAttribute.Stamina] = Calculated[CharacterAttribute.Stamina];
+            Current[CharacterAttribute.PhysicalDamage] = Calculated[CharacterAttribute.PhysicalDamage];
+            Current[CharacterAttribute.MagicalDamage] = Calculated[CharacterAttribute.MagicalDamage];
+            Current[CharacterAttribute.CriticalChance] = Calculated[CharacterAttribute.CriticalChance];
         }
     }
 }

@@ -96,7 +96,7 @@ namespace StryfeRPG.Managers
 
                 // Make movement
                 Vector2 movement = new Vector2(moveX, moveY);
-                if (!Utils.GetCollision(Global.Player.MapPosition + movement))
+                if (!MapManager.Instance.GetCollision(Global.Player.MapPosition + movement))
                 {
                     Global.Player.Move(movement);
                     currentCooldown = 1 / actionsPerSecond;

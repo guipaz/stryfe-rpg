@@ -43,7 +43,11 @@
     <Compile Include="Managers\HUDManager.cs" />
     <Compile Include="Managers\PauseManager.cs" />
     <Compile Include="Models\Characters\AttributeSheet.cs" />
-    <Compile Include="Models\Characters\CharacterSheet.cs" />
+    <Compile Include="Models\Characters\SpriteSheet.cs" />
+    <Compile Include="Models\Items\AttributeModifier.cs" />
+    <Compile Include="Models\Items\Item.cs" />
+    <Compile Include="Models\Items\UsableItem.cs" />
+    <Compile Include="Models\Maps\ObjectInfo.cs" />
     <Compile Include="Models\Maps\Teleport.cs" />
     <Compile Include="Models\Utils\Dialog.cs" />
     <Compile Include="Models\Utils\Script.cs" />
@@ -52,7 +56,7 @@
     <Compile Include="Managers\CameraManager.cs" />
     <Compile Include="Managers\KeyboardManager.cs" />
     <Compile Include="Managers\MapManager.cs" />
-    <Compile Include="Models\Characters\Character.cs" />
+    <Compile Include="Models\Characters\NPC.cs" />
     <Compile Include="Models\Characters\Player.cs" />
     <Compile Include="Models\Maps\Map.cs" />
     <Compile Include="Models\Maps\MapObject.cs" />
@@ -87,6 +91,9 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="Content\Data\dialogs.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\Data\items_usable.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Data\scripts.json">

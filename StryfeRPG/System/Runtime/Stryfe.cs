@@ -26,6 +26,8 @@ namespace StryfeRPG
 
             Content.RootDirectory = "Content";
             Global.SetContent(Content);
+
+            Utils.LoadItems();
         }
 
         protected override void Initialize()

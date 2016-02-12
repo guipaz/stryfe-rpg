@@ -1,0 +1,17 @@
+{
+	"0":
+	{
+		"name": "Red Potion",
+		"price": 10,
+		"description": "A red, drinkable potion. It restores HP.",
+		"modifiers":
+		[
+			{
+				"attribute": "hp",
+				"type": "current",
+				"value": 10
+			}
+		]
+	},
+
+}

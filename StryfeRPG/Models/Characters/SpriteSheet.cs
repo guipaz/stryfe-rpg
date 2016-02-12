@@ -6,7 +6,7 @@ using System.Text;
 
 namespace StryfeRPG.Models.Characters
 {
-    public class CharacterSheet
+    public class SpriteSheet
     {
         public Tileset Tileset { get; set; }
 
@@ -15,7 +15,7 @@ namespace StryfeRPG.Models.Characters
         public int GidLeft { get; set; }
         public int GidRight { get; set; }
 
-        public CharacterSheet(int textureId, Tileset tileset)
+        public SpriteSheet(int textureId, Tileset tileset)
         {
             this.Tileset = tileset;
 

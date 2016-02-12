@@ -19,7 +19,7 @@ namespace StryfeRPG.Models.Maps
 
         // References for the 
         public List<Tileset> Tilesets { get; set; }
-        public List<MapObject> Objects { get; set; } //TODO: maybe change it to generic MapObject
+        public List<MapObject> Objects { get; set; }
         public Player PlayerReference { get; set; }
 
         // A control array for collisions
@@ -54,15 +54,20 @@ namespace StryfeRPG.Models.Maps
             {
                 foreach (TmxObject obj in group.Objects)
                 {
+                    Tileset tileset = GetTileset(obj.Tile != null ? obj.Tile.Gid : -1);
+
                     if (obj.Type == "npc")
                     {
-                        Objects.Add(new Character(obj, GetTileset(obj.Tile != null ? obj.Tile.Gid : -1), Name));
+                        Objects.Add(new NPC(obj, tileset, Name));
                     } else if (obj.Type == "player")
                     {
-                        PlayerReference = new Player(obj, GetTileset(obj.Tile != null ? obj.Tile.Gid : -1));
+                        PlayerReference = new Player(obj, tileset);
                     } else if (obj.Type == "teleport")
                     {
-                        Objects.Add(new Teleport(obj, GetTileset(obj.Tile != null ? obj.Tile.Gid : -1)));
+                        Objects.Add(new Teleport(obj, tileset));
+                    } else
+                    {
+                        Objects.Add(new MapObject(obj, tileset, Name));
                     }
                 }
             }
@@ -138,7 +143,8 @@ namespace StryfeRPG.Models.Maps
             foreach (MapObject obj in Objects)
             {
                 if (position.X >= obj.MapPosition.X && position.X <= obj.MapPosition.X + obj.Size.X - 1 &&
-                    position.Y >= obj.MapPosition.Y && position.Y <= obj.MapPosition.Y + obj.Size.Y - 1)
+                    position.Y >= obj.MapPosition.Y && position.Y <= obj.MapPosition.Y + obj.Size.Y - 1 &&
+                    obj.Information.IsActive)
                     return obj;
             }
 
