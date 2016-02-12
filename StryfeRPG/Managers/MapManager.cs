@@ -167,7 +167,7 @@ namespace StryfeRPG.Managers
             // Draw the Objects names
             foreach (MapObject obj in currentMap.Objects)
             {
-                if (obj is Teleport == false)
+                if (obj is NPC)
                     DrawObjectName(obj, spriteBatch);
             }
 

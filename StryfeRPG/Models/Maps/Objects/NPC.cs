@@ -16,7 +16,7 @@ namespace StryfeRPG.Models.Characters
         Down, Left, Right, Up
     }
 
-    public class NPC : Maps.MapObject
+    public class NPC : MapObject
     {
         // Attributes
         public AttributeSheet Attributes { get; set; }

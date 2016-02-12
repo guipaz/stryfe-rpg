@@ -8,11 +8,20 @@ using System.Text;
 
 namespace StryfeRPG.Models.Items
 {
+    public enum ModifierType
+    {
+        Equipment, Temporary, Permanent
+    }
     public class AttributeModifier
     {
         [JsonConverter(typeof(StringEnumConverter))]
         public CharacterAttribute Attribute { get; set; }
         public int Value { get; set; }
-        public string Type { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public ModifierType Type { get; set; }
+
+        // For temporary modifiers outside battle
+        public int Duration { get; set; }
+        public double TimeLeft { get; set; }
     }
 }

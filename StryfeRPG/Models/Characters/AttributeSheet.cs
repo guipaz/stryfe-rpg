@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StryfeRPG.Models.Items;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace StryfeRPG.Models.Characters
         Experience,
         Vitality, // Max HP
         Wisdom, // Max MP
-        Endurance, // Max Stamina, Equip burden
+        Endurance, // Max Stamina, Equip burden, Defense
         Strenght, // Equip requirements, physical damage
         Dexterity, // Equip requirements, physical damage, stamina
         Intelligence, // Sorcery requirements, magical damage, Max MP
@@ -22,7 +23,9 @@ namespace StryfeRPG.Models.Characters
         Stamina,
         PhysicalDamage,
         MagicalDamage,
-        CriticalChance
+        CriticalChance,
+        PhysicalDefense,
+        MagicalDefense
     }
 
     public class AttributeSheet
@@ -30,8 +33,9 @@ namespace StryfeRPG.Models.Characters
         public Dictionary<CharacterAttribute, int> Base = new Dictionary<CharacterAttribute, int>();
         public Dictionary<CharacterAttribute, int> Calculated = new Dictionary<CharacterAttribute, int>();
         public Dictionary<CharacterAttribute, int> Current = new Dictionary<CharacterAttribute, int>();
-        public Dictionary<CharacterAttribute, int> PermanentBonus = new Dictionary<CharacterAttribute, int>();
-        public Dictionary<CharacterAttribute, int> TemporaryBonus = new Dictionary<CharacterAttribute, int>();
+
+        // Item bonuses, equipment modifiers and such
+        public List<AttributeModifier> Modifiers = new List<AttributeModifier>();
 
         public AttributeSheet()
         {
@@ -65,6 +69,8 @@ namespace StryfeRPG.Models.Characters
             Calculated[CharacterAttribute.PhysicalDamage] = Base[CharacterAttribute.Strenght] * 3 + Base[CharacterAttribute.Dexterity] * 3;
             Calculated[CharacterAttribute.MagicalDamage] = Base[CharacterAttribute.Intelligence] * 3 + Base[CharacterAttribute.Faith] * 3;
             Calculated[CharacterAttribute.CriticalChance] = (int)(Base[CharacterAttribute.Luck] * 1.5f);
+            Calculated[CharacterAttribute.PhysicalDefense] = Base[CharacterAttribute.Endurance] * 3 + Base[CharacterAttribute.Strenght] + Base[CharacterAttribute.Dexterity];
+            Calculated[CharacterAttribute.MagicalDefense] = Base[CharacterAttribute.Endurance] * 2 + Base[CharacterAttribute.Intelligence] + Base[CharacterAttribute.Faith];
         }
 
         public void ResetCurrent()

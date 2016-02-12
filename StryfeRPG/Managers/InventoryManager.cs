@@ -22,6 +22,11 @@ namespace StryfeRPG.Managers
             Global.Player.Inventory.Add(item); //TODO quantity
         }
 
+        public void UseItem(Item item)
+        {
+
+        }
+
         // Singleton stuff
         private static InventoryManager instance;
         protected InventoryManager() { }

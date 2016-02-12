@@ -51,7 +51,6 @@
     <Compile Include="Models\Characters\SpriteSheet.cs" />
     <Compile Include="Models\Items\AttributeModifier.cs" />
     <Compile Include="Models\Items\Item.cs" />
-    <Compile Include="Models\Items\UsableItem.cs" />
     <Compile Include="Models\Maps\ObjectInfo.cs" />
     <Compile Include="Models\Maps\Objects\ItemObject.cs" />
     <Compile Include="Models\Maps\Objects\Teleport.cs" />
@@ -100,7 +99,7 @@
     <None Include="Content\Data\dialogs.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\Data\items_usable.json">
+    <None Include="Content\Data\items.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Content\Data\scripts.json">

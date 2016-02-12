@@ -2,6 +2,7 @@
 	"0":
 	{
 		"name": "Red Potion",
+		"type": "usable",
 		"price": 10,
 		"description": "A red, drinkable potion. It restores HP.",
 		"modifiers":
@@ -14,4 +15,19 @@
 		]
 	},
 
+	"1":
+	{
+		"name": "Steel Armor",
+		"type": "armor",
+		"price": 50,
+		"description": "A simple steel cuirass for protection. Better than bare naked.",
+		"modifiers":
+		[
+			{
+				"attribute": "",
+				"type": "calculated",
+				"value": 10
+			}
+		]
+	},
 }
