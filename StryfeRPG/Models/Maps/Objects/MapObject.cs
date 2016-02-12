@@ -16,8 +16,8 @@ namespace StryfeRPG.Models.Maps
         public string Identifier { get; set; }
         public string Name { get; set; }
         public Color NameColor { get; set; }
-        public ObjectInfo Information { get; set; }
         public int ScriptId { get; set; }
+        public ObjectInfo SavedInformation { get; set; }
 
         // Texture stuff
         public Texture2D Texture { get; set; }
@@ -43,10 +43,10 @@ namespace StryfeRPG.Models.Maps
             Identifier = String.Format("{0}_{1}_{2}", obj.Id, mapName, Name).Replace(" ", string.Empty);
 
             // ObjectInfo instance, holding information about the object in runtime
-            Information = new ObjectInfo(Identifier);
+            SavedInformation = new ObjectInfo(Identifier);
             if (obj.Properties.ContainsKey("active"))
             {
-                Information.IsActive = obj.Properties["active"] == "true" ? true : false;
+                SavedInformation.IsActive = obj.Properties["active"] == "true" ? true : false;
             }
 
             // Gets the script id
@@ -89,6 +89,8 @@ namespace StryfeRPG.Models.Maps
 
         public virtual void PerformAction()
         {
+            SavedInformation.NumberOfInteractions++;
+
             if (ScriptId != -1)
             {
                 ScriptInterpreter.Instance.RunScript(ScriptId, this);

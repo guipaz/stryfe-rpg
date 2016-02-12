@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using StryfeRPG.Models.Characters;
 using StryfeRPG.Models.Items;
+using StryfeRPG.Models.Maps;
 using StryfeRPG.Models.Utils;
 using System;
 using System.Collections.Generic;
@@ -28,10 +29,7 @@ namespace StryfeRPG.System
         private static Dictionary<int, Dialog> dialogs = new Dictionary<int, Dialog>();
         private static Dictionary<int, Script> scripts = new Dictionary<int, Script>();
         private static Dictionary<int, Item> items = new Dictionary<int, Item>();
-
-        // Saved data
-
-
+        
         public static void SetContent(ContentManager content)
         {
             Content = content;
@@ -73,6 +71,13 @@ namespace StryfeRPG.System
         public static void SetScripts(Dictionary<int, Script> scripts)
         {
             Global.scripts = scripts;
+        }
+
+        public static Item GetItem(int id)
+        {
+            if (items.ContainsKey(id))
+                return items[id];
+            return null;
         }
 
         public static void SetItems(Dictionary<int, Item> items)

@@ -51,6 +51,7 @@ namespace StryfeRPG
 
             Utils.LoadDialogs();
             Utils.LoadScripts();
+            Utils.LoadItems();
         }
 
         protected override void UnloadContent()

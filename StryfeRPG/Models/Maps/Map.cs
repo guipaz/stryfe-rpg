@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StryfeRPG.Models.Characters;
+using StryfeRPG.Models.Maps.Objects;
 using StryfeRPG.System;
 using System;
 using System.Collections.Generic;
@@ -65,6 +66,10 @@ namespace StryfeRPG.Models.Maps
                     } else if (obj.Type == "teleport")
                     {
                         Objects.Add(new Teleport(obj, tileset));
+                    }
+                    else if (obj.Type == "item")
+                    {
+                        Objects.Add(new ItemObject(obj, tileset));
                     } else
                     {
                         Objects.Add(new MapObject(obj, tileset, Name));
@@ -144,7 +149,7 @@ namespace StryfeRPG.Models.Maps
             {
                 if (position.X >= obj.MapPosition.X && position.X <= obj.MapPosition.X + obj.Size.X - 1 &&
                     position.Y >= obj.MapPosition.Y && position.Y <= obj.MapPosition.Y + obj.Size.Y - 1 &&
-                    obj.Information.IsActive)
+                    obj.SavedInformation.IsActive)
                     return obj;
             }
 

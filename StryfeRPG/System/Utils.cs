@@ -35,8 +35,15 @@ namespace StryfeRPG.System
 
         public static void LoadItems()
         {
-            Dictionary<int, UsableItem> items = JsonConvert.DeserializeObject<Dictionary<int, UsableItem>>(File.ReadAllText("Content/Data/items_usable.json"));
-            Console.WriteLine(items);
+            Dictionary<int, Item> items = new Dictionary<int, Item>();
+
+            Dictionary<int, UsableItem> usable = JsonConvert.DeserializeObject<Dictionary<int, UsableItem>>(File.ReadAllText("Content/Data/items_usable.json"));
+            foreach (KeyValuePair<int, UsableItem> i in usable)
+            {
+                items.Add(i.Key, i.Value);
+            }
+
+            Global.SetItems(items);
         }
 
         public static FacingDirection GetDirection(string str)

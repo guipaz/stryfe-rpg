@@ -12,7 +12,7 @@ namespace StryfeRPG.Models.Characters
 {
     public class Player : NPC
     {
-        public List<Item> Inventory;
+        public List<Item> Inventory = new List<Item>();
 
         public Player(TmxObject obj, Tileset tileset) : base(obj, tileset, "")
         {

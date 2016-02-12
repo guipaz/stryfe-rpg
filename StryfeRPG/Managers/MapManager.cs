@@ -87,7 +87,7 @@ namespace StryfeRPG.Managers
             // Update NPCs
             foreach (MapObject obj in currentMap.Objects)
             {
-                if (obj.Information.IsActive)
+                if (obj.SavedInformation.IsActive)
                     UpdateObject(obj, timePassed);
             }
 
@@ -158,7 +158,7 @@ namespace StryfeRPG.Managers
             //Draw the Objects
             foreach (MapObject obj in currentMap.Objects)
             {
-                if (obj.Information.IsActive)
+                if (obj.SavedInformation.IsActive)
                 {
                     DrawObject(obj);
                 }
@@ -194,7 +194,7 @@ namespace StryfeRPG.Managers
         private void DrawObjectName(MapObject obj, SpriteBatch spriteBatch)
         {
             // Draw the name
-            if (obj.Name != null && obj.Information.IsActive)
+            if (obj.Name != null && obj.SavedInformation.IsActive)
             {
                 Vector2 textSize = Global.MapFont.MeasureString(obj.Name);
                 int zoom = (int)CameraManager.Instance.Zoom;

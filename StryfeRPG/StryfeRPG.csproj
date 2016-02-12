@@ -14,6 +14,8 @@
     <MonoGamePlatform>Windows</MonoGamePlatform>
     <MonoGameContentBuilderExe>
     </MonoGameContentBuilderExe>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -24,6 +26,7 @@
     <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -33,6 +36,7 @@
     <DefineConstants>TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
@@ -41,6 +45,7 @@
     <Compile Include="Managers\AudioManager.cs" />
     <Compile Include="Managers\DialogManager.cs" />
     <Compile Include="Managers\HUDManager.cs" />
+    <Compile Include="Managers\InventoryManager.cs" />
     <Compile Include="Managers\PauseManager.cs" />
     <Compile Include="Models\Characters\AttributeSheet.cs" />
     <Compile Include="Models\Characters\SpriteSheet.cs" />
@@ -48,7 +53,8 @@
     <Compile Include="Models\Items\Item.cs" />
     <Compile Include="Models\Items\UsableItem.cs" />
     <Compile Include="Models\Maps\ObjectInfo.cs" />
-    <Compile Include="Models\Maps\Teleport.cs" />
+    <Compile Include="Models\Maps\Objects\ItemObject.cs" />
+    <Compile Include="Models\Maps\Objects\Teleport.cs" />
     <Compile Include="Models\Utils\Dialog.cs" />
     <Compile Include="Models\Utils\Script.cs" />
     <Compile Include="Models\Utils\ScriptCommand.cs" />
@@ -56,10 +62,10 @@
     <Compile Include="Managers\CameraManager.cs" />
     <Compile Include="Managers\KeyboardManager.cs" />
     <Compile Include="Managers\MapManager.cs" />
-    <Compile Include="Models\Characters\NPC.cs" />
+    <Compile Include="Models\Maps\Objects\NPC.cs" />
     <Compile Include="Models\Characters\Player.cs" />
     <Compile Include="Models\Maps\Map.cs" />
-    <Compile Include="Models\Maps\MapObject.cs" />
+    <Compile Include="Models\Maps\Objects\MapObject.cs" />
     <Compile Include="Models\Maps\Tileset.cs" />
     <Compile Include="System\Runtime\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -90,6 +96,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Content\Data\dialogs.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
