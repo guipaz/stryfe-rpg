@@ -26,8 +26,6 @@ namespace StryfeRPG
 
             Content.RootDirectory = "Content";
             Global.SetContent(Content);
-
-            Utils.LoadItems();
         }
 
         protected override void Initialize()
@@ -46,12 +44,12 @@ namespace StryfeRPG
             Global.DialogFont = Content.Load<SpriteFont>("Fonts/DialogFont");
             Global.Viewport = GraphicsDevice.Viewport;
 
-            MapManager.Instance.spriteBatch = spriteBatch;
-            MapManager.Instance.LoadMap("testMap");
-
             Utils.LoadDialogs();
             Utils.LoadScripts();
             Utils.LoadItems();
+
+            MapManager.Instance.spriteBatch = spriteBatch;
+            MapManager.Instance.LoadMap("testMap");
         }
 
         protected override void UnloadContent()
@@ -64,12 +62,20 @@ namespace StryfeRPG
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            PauseManager.Instance.Update(gameTime.ElapsedGameTime.TotalSeconds);
+            double timePassed = gameTime.ElapsedGameTime.TotalSeconds;
+
+            // If game is waiting, doesn't listen to any keyboard event
+            PauseManager.Instance.Update(timePassed);
             if (PauseManager.Instance.Waiting)
                 return;
 
-            KeyboardManager.Instance.Update(gameTime.ElapsedGameTime.TotalSeconds);
-            MapManager.Instance.Update(gameTime.ElapsedGameTime.TotalSeconds);
+            KeyboardManager.Instance.Update(timePassed);
+
+            // If game is paused, doesn't update the map
+            if (PauseManager.Instance.Paused)
+                return;
+
+            MapManager.Instance.Update(timePassed);
             
             base.Update(gameTime);
         }
@@ -79,20 +85,25 @@ namespace StryfeRPG
             GraphicsDevice.Clear(Color.Black);
 
             CameraManager.Instance.Position = Global.Player.CurrentPosition;
+            double timePassed = gameTime.ElapsedGameTime.TotalSeconds;
 
             // Maps (and everything in them)
             spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: CameraManager.Instance.TransformMatrix);
-            MapManager.Instance.Draw(gameTime.ElapsedGameTime.TotalSeconds);
+            MapManager.Instance.Draw(timePassed);
             spriteBatch.End();
-
-            // Dialogs
-            spriteBatch.Begin();
-            DialogManager.Instance.Draw(spriteBatch, gameTime.ElapsedGameTime.TotalSeconds);
 
             // HUD
+            spriteBatch.Begin();
             HUDManager.Instance.Draw(spriteBatch);
-            spriteBatch.End();
 
+            // Dialogs
+            DialogManager.Instance.Draw(spriteBatch, timePassed);
+
+            // Inventory
+            InventoryManager.Instance.Draw(spriteBatch, timePassed);
+
+            spriteBatch.End();
+            
             base.Draw(gameTime);
         }
     }

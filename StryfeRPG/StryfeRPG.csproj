@@ -53,6 +53,7 @@
     <Compile Include="Models\Items\Item.cs" />
     <Compile Include="Models\Maps\ObjectInfo.cs" />
     <Compile Include="Models\Maps\Objects\ItemObject.cs" />
+    <Compile Include="Models\Maps\Objects\Player.cs" />
     <Compile Include="Models\Maps\Objects\Teleport.cs" />
     <Compile Include="Models\Utils\Dialog.cs" />
     <Compile Include="Models\Utils\Script.cs" />
@@ -62,7 +63,6 @@
     <Compile Include="Managers\KeyboardManager.cs" />
     <Compile Include="Managers\MapManager.cs" />
     <Compile Include="Models\Maps\Objects\NPC.cs" />
-    <Compile Include="Models\Characters\Player.cs" />
     <Compile Include="Models\Maps\Map.cs" />
     <Compile Include="Models\Maps\Objects\MapObject.cs" />
     <Compile Include="Models\Maps\Tileset.cs" />

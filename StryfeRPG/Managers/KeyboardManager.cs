@@ -14,21 +14,27 @@ namespace StryfeRPG.Managers
         double currentCooldown = 0;
         double actionsPerSecond = 5;
 
-        bool didPressControl = false;
+        double hudCooldown = 0;
+        double hudActionsPerSecond = 5;
+
+        private Keys ActionButton = Keys.Z;
+        private Keys CancelButton = Keys.X;
+        private Keys InventoryButton = Keys.I;
+
+        //TODO: use an array of "key released"
+        KeyboardState currentState;
+        KeyboardState lastFrameState;
+        KeyboardState oldState;
 
         public void Update(double timePassed)
         {
-            KeyboardState state = Keyboard.GetState();
-
-            // Control management
-            if (state.IsKeyDown(Keys.LeftControl) && !didPressControl)
+            currentState = Keyboard.GetState();
+            lastFrameState = oldState;
+            oldState = currentState; // for the next frame
+            
+            // Action management
+            if (IsKeyReleased(ActionButton))
             {
-                didPressControl = true;
-            }
-            else if (!state.IsKeyDown(Keys.LeftControl) && didPressControl)
-            {
-                didPressControl = false;
-
                 // Dialog action
                 if (DialogManager.Instance.IsDialogActive())
                 {
@@ -37,7 +43,6 @@ namespace StryfeRPG.Managers
                 }
 
                 // Map action
-
                 Vector2 position = Global.Player.MapPosition;
                 Vector2 direction = Vector2.Zero;
                 switch (Global.Player.Direction)
@@ -59,31 +64,67 @@ namespace StryfeRPG.Managers
                 MapManager.Instance.PerformAction(position + direction);
             }
 
+            // Cancel management
+            if (IsKeyReleased(CancelButton))
+            {
+                if (DialogManager.Instance.IsDialogActive())
+                {
+                    DialogManager.Instance.SkipMessage();
+                    return;
+                }
+            }
+
             // If there's a dialog active, does nothing other than press Control
             if (DialogManager.Instance.IsDialogActive())
                 return;
 
+            // Inventory button
+            if (IsKeyReleased(InventoryButton))
+            {
+                InventoryManager.Instance.ToggleInventory();
+            }
+
             // Movement cooldown
-                if (currentCooldown > 0)
+            if (!Utils.IsMenuOpened() && currentCooldown > 0)
             {
                 currentCooldown -= timePassed;
+                return;
+            } else if (Utils.IsMenuOpened() && hudCooldown > 0)
+            {
+                hudCooldown -= timePassed;
                 return;
             }
 
             int moveX = 0;
             int moveY = 0;
 
-            if (state.IsKeyDown(Keys.Up))
+            if (currentState.IsKeyDown(Keys.Up))
                 moveY--;
-            else if (state.IsKeyDown(Keys.Right))
+            else if (currentState.IsKeyDown(Keys.Right))
                 moveX++;
-            else if (state.IsKeyDown(Keys.Down))
+            else if (currentState.IsKeyDown(Keys.Down))
                 moveY++;
-            else if (state.IsKeyDown(Keys.Left))
+            else if (currentState.IsKeyDown(Keys.Left))
                 moveX--;
 
             if (moveX != 0 || moveY != 0)
             {
+                Vector2 movement = new Vector2(moveX, moveY);
+
+                Console.WriteLine(movement);
+
+                // If inventory is opened, send the movement to it
+                if (Utils.IsMenuOpened())
+                {
+                    if (InventoryManager.Instance.IsOpened)
+                    {
+                        InventoryManager.Instance.Move(movement);
+                    }
+
+                    hudCooldown = 1 / hudActionsPerSecond;
+                    return;
+                }
+
                 // Change direction
                 if (moveX > 0)
                     Global.Player.Direction = FacingDirection.Right;
@@ -95,7 +136,6 @@ namespace StryfeRPG.Managers
                     Global.Player.Direction = FacingDirection.Up;
 
                 // Make movement
-                Vector2 movement = new Vector2(moveX, moveY);
                 if (!MapManager.Instance.GetCollision(Global.Player.MapPosition + movement))
                 {
                     Global.Player.Move(movement);
@@ -104,9 +144,20 @@ namespace StryfeRPG.Managers
             }
         }
 
+        private bool IsKeyReleased(Keys key)
+        {
+            return currentState.IsKeyUp(key) && lastFrameState.IsKeyDown(key);
+        }
+
         // Singleton stuff
         private static KeyboardManager instance;
-        protected KeyboardManager() { }
+        protected KeyboardManager()
+        {
+            currentState = new KeyboardState();
+            lastFrameState = new KeyboardState();
+            oldState = new KeyboardState();
+        }
+
         public static KeyboardManager Instance
         {
             get

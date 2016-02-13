@@ -97,7 +97,7 @@ namespace StryfeRPG.Models.Characters
 
             base.PerformAction();
 
-            if (DialogId != -1 && ScriptId != -1)
+            if (DialogId != -1 && ScriptId == -1) // Only use dialog if there's no script
             {
                 DialogManager.Instance.ActivateDialog(Global.GetDialog(DialogId), this);
             }

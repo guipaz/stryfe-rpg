@@ -30,9 +30,6 @@ namespace StryfeRPG.Models.Maps.Objects
                 InventoryManager.Instance.AddItem(Item, Quantity);
                 SavedInformation.IsActive = false;
             }
-
-            foreach (Item i in Global.Player.Inventory)
-                Console.WriteLine(i.Name);
         }
     }
 }

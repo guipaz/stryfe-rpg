@@ -71,7 +71,7 @@ namespace StryfeRPG.Managers
                 // Checks if there's a remaining text
                 if (remainingText != null && remainingText != "")
                 {
-                    SetCurrentText(remainingText);
+                    currentText = GetCurrentText(remainingText);
                     remainingText = null;
                     return;
                 }
@@ -96,9 +96,18 @@ namespace StryfeRPG.Managers
                     }
                 } else // or shows the next message
                 {
-                    SetCurrentText(currentDialog.Messages[nextTextIndex]);
+                    currentText = GetCurrentText(currentDialog.Messages[nextTextIndex]);
                     nextTextIndex++;
                 }
+            }
+        }
+
+        public void SkipMessage()
+        {
+            if (isAnimating)
+            {
+                isAnimating = false;
+                return;
             }
         }
         
@@ -152,65 +161,18 @@ namespace StryfeRPG.Managers
             Utils.DrawText(Global.DialogFont, spriteBatch, animatedText, new Vector2(marginX, bounds.Height - yOffset + marginY), Color.White);
         }
 
-        private void SetCurrentText(string text)
+        private string GetCurrentText(string text)
         {
-            this.currentText = text;
-
             // Calculates the text area
-            Rectangle bounds = Global.Viewport.Bounds;
-            float maximumWidth = bounds.Width - (marginX * 2);
-            string finalString = "";
+            float maximumWidth = Global.Viewport.Bounds.Width - (marginX * 2);
 
-            // Iterates the whole text for horizontal adjust
-            Vector2 measure;
-            while (currentText.Count() > 0)
-            {
-                measure = Global.DialogFont.MeasureString(currentText);
-                if (measure.X > maximumWidth)
-                {
-                    // Gets how many characters fit in the screen
-                    int charsThatFit = (int)(currentText.Count() * maximumWidth / measure.X) - 1;
-
-                    // Gets the index of the last space so we put a break there
-                    int breakIndex = currentText.LastIndexOf(' ', charsThatFit, charsThatFit);
-
-                    // Adds the break
-                    string currentWithBreak = currentText.Insert(breakIndex, "\n");
-
-                    // Adds this line to the finalString and remove it from the rest of the text that will be examined
-                    finalString += currentWithBreak.Substring(0, currentWithBreak.IndexOf("\n") + 1);
-                    currentText = currentWithBreak.Substring(currentWithBreak.IndexOf("\n") + 1).Trim();
-                } else
-                {
-                    finalString += currentText;
-                    break;
-                }
-            }
-
-            // Iterates the words for height fit, if needed
-            measure = Global.DialogFont.MeasureString(finalString);
-            int cutIndex = 0;
-            string originalString = finalString;
-            char[] chars = new char[2] { ' ', '\n'};
-
-            while (measure.Y > lineHeight * 5)
-            {
-                cutIndex = finalString.LastIndexOfAny(chars, finalString.Count() - 1, finalString.Count() - 1);
-
-                finalString = finalString.Substring(0, cutIndex);
-                measure = Global.DialogFont.MeasureString(finalString);
-            }
-
-            // Sets the final variables for use
-            string remaining = originalString.Substring(cutIndex);
-            if (remaining.Count() > 0 && remaining[0] == '\n')
-                remaining = remaining.Substring(1);
-            remainingText = remaining.Count() != finalString.Count() ? remaining : null;
-            currentText = finalString;
+            string[] str = Utils.GetCroppedString(text, Global.DialogFont, maximumWidth, Global.DialogFont.LineSpacing * 5);
+            remainingText = str[1];
 
             isAnimating = true;
+            return str[0];
         }
-
+        
         // Singleton stuff
         private static DialogManager instance;
         protected DialogManager()

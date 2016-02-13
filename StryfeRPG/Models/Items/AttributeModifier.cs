@@ -10,7 +10,7 @@ namespace StryfeRPG.Models.Items
 {
     public enum ModifierType
     {
-        Equipment, Temporary, Permanent
+        Current, Equipment, Temporary, Permanent
     }
     public class AttributeModifier
     {
