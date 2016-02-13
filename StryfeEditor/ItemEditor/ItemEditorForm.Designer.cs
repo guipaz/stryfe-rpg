@@ -28,41 +28,44 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.name = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.price = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.description = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.modAttribute = new System.Windows.Forms.ComboBox();
+            this.modType = new System.Windows.Forms.ComboBox();
+            this.modNewButton = new System.Windows.Forms.Button();
+            this.modList = new System.Windows.Forms.ListBox();
+            this.modDelButton = new System.Windows.Forms.Button();
+            this.modEditButton = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.modValue = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.script = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.listBox2 = new System.Windows.Forms.ListBox();
-            this.button4 = new System.Windows.Forms.Button();
-            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.itemList = new System.Windows.Forms.ListBox();
+            this.changeTextureButton = new System.Windows.Forms.Button();
+            this.tileSize = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.gidLabel = new System.Windows.Forms.Label();
+            this.newButton = new System.Windows.Forms.Button();
+            this.delButton = new System.Windows.Forms.Button();
+            this.editButton = new System.Windows.Forms.Button();
+            this.type = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // textBox1
+            // name
             // 
-            this.textBox1.Location = new System.Drawing.Point(81, 12);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(193, 20);
-            this.textBox1.TabIndex = 1;
+            this.name.Location = new System.Drawing.Point(81, 12);
+            this.name.Name = "name";
+            this.name.Size = new System.Drawing.Size(193, 20);
+            this.name.TabIndex = 1;
             // 
             // label1
             // 
@@ -73,14 +76,6 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Name:";
             // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(81, 39);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(193, 21);
-            this.comboBox1.TabIndex = 3;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -90,12 +85,12 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "Type:";
             // 
-            // textBox2
+            // price
             // 
-            this.textBox2.Location = new System.Drawing.Point(163, 67);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(111, 20);
-            this.textBox2.TabIndex = 5;
+            this.price.Location = new System.Drawing.Point(163, 67);
+            this.price.Name = "price";
+            this.price.Size = new System.Drawing.Size(111, 20);
+            this.price.TabIndex = 5;
             // 
             // label3
             // 
@@ -106,12 +101,12 @@
             this.label3.TabIndex = 6;
             this.label3.Text = "Price:";
             // 
-            // textBox3
+            // description
             // 
-            this.textBox3.Location = new System.Drawing.Point(81, 94);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(193, 20);
-            this.textBox3.TabIndex = 7;
+            this.description.Location = new System.Drawing.Point(81, 94);
+            this.description.Name = "description";
+            this.description.Size = new System.Drawing.Size(193, 20);
+            this.description.TabIndex = 7;
             // 
             // label4
             // 
@@ -124,16 +119,16 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.listBox2);
-            this.groupBox1.Controls.Add(this.button3);
-            this.groupBox1.Controls.Add(this.button2);
-            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.modAttribute);
+            this.groupBox1.Controls.Add(this.modType);
+            this.groupBox1.Controls.Add(this.modNewButton);
+            this.groupBox1.Controls.Add(this.modList);
+            this.groupBox1.Controls.Add(this.modDelButton);
+            this.groupBox1.Controls.Add(this.modEditButton);
             this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.textBox5);
-            this.groupBox1.Controls.Add(this.comboBox2);
+            this.groupBox1.Controls.Add(this.modValue);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.textBox4);
             this.groupBox1.Location = new System.Drawing.Point(12, 179);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(262, 130);
@@ -141,45 +136,83 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Modifiers";
             // 
-            // textBox4
+            // modAttribute
             // 
-            this.textBox4.Location = new System.Drawing.Point(69, 19);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(60, 20);
-            this.textBox4.TabIndex = 1;
+            this.modAttribute.FormattingEnabled = true;
+            this.modAttribute.Items.AddRange(new object[] {
+            "Level",
+            "Experience",
+            "Vitality",
+            "Wisdom",
+            "Endurance",
+            "Strenght",
+            "Dexterity",
+            "Intelligence",
+            "Faith",
+            "Luck",
+            "HP",
+            "MP",
+            "Stamina",
+            "PhysicalDamage",
+            "MagicalDamage",
+            "CriticalChance",
+            "PhysicalDefense",
+            "MagicalDefense"});
+            this.modAttribute.Location = new System.Drawing.Point(69, 19);
+            this.modAttribute.Name = "modAttribute";
+            this.modAttribute.Size = new System.Drawing.Size(82, 21);
+            this.modAttribute.TabIndex = 13;
             // 
-            // label5
+            // modType
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 22);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(49, 13);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "Attribute:";
+            this.modType.FormattingEnabled = true;
+            this.modType.Items.AddRange(new object[] {
+            "Current",
+            "Equipment",
+            "Temporary",
+            "Permanent"});
+            this.modType.Location = new System.Drawing.Point(69, 43);
+            this.modType.Name = "modType";
+            this.modType.Size = new System.Drawing.Size(82, 21);
+            this.modType.TabIndex = 12;
             // 
-            // label6
+            // modNewButton
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 46);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(34, 13);
-            this.label6.TabIndex = 3;
-            this.label6.Text = "Type:";
+            this.modNewButton.Location = new System.Drawing.Point(6, 97);
+            this.modNewButton.Name = "modNewButton";
+            this.modNewButton.Size = new System.Drawing.Size(57, 23);
+            this.modNewButton.TabIndex = 11;
+            this.modNewButton.Text = "New";
+            this.modNewButton.UseVisualStyleBackColor = true;
+            this.modNewButton.Click += new System.EventHandler(this.modNewButton_Click);
             // 
-            // comboBox2
+            // modList
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(47, 43);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(82, 21);
-            this.comboBox2.TabIndex = 4;
+            this.modList.FormattingEnabled = true;
+            this.modList.Location = new System.Drawing.Point(163, 19);
+            this.modList.Name = "modList";
+            this.modList.Size = new System.Drawing.Size(93, 95);
+            this.modList.TabIndex = 10;
+            this.modList.SelectedIndexChanged += new System.EventHandler(this.modList_SelectedIndexChanged);
             // 
-            // textBox5
+            // modDelButton
             // 
-            this.textBox5.Location = new System.Drawing.Point(69, 71);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(60, 20);
-            this.textBox5.TabIndex = 5;
+            this.modDelButton.Location = new System.Drawing.Point(123, 97);
+            this.modDelButton.Name = "modDelButton";
+            this.modDelButton.Size = new System.Drawing.Size(34, 23);
+            this.modDelButton.TabIndex = 9;
+            this.modDelButton.Text = "Del";
+            this.modDelButton.UseVisualStyleBackColor = true;
+            // 
+            // modEditButton
+            // 
+            this.modEditButton.Location = new System.Drawing.Point(69, 97);
+            this.modEditButton.Name = "modEditButton";
+            this.modEditButton.Size = new System.Drawing.Size(48, 23);
+            this.modEditButton.TabIndex = 8;
+            this.modEditButton.Text = "Save";
+            this.modEditButton.UseVisualStyleBackColor = true;
+            this.modEditButton.Click += new System.EventHandler(this.modEditButton_Click);
             // 
             // label7
             // 
@@ -190,39 +223,37 @@
             this.label7.TabIndex = 6;
             this.label7.Text = "Value:";
             // 
-            // button1
+            // modValue
             // 
-            this.button1.Location = new System.Drawing.Point(9, 97);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(34, 23);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "Add";
-            this.button1.UseVisualStyleBackColor = true;
+            this.modValue.Location = new System.Drawing.Point(91, 71);
+            this.modValue.Name = "modValue";
+            this.modValue.Size = new System.Drawing.Size(60, 20);
+            this.modValue.TabIndex = 5;
             // 
-            // button2
+            // label6
             // 
-            this.button2.Location = new System.Drawing.Point(47, 97);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(43, 23);
-            this.button2.TabIndex = 8;
-            this.button2.Text = "Edit";
-            this.button2.UseVisualStyleBackColor = true;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 46);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(34, 13);
+            this.label6.TabIndex = 3;
+            this.label6.Text = "Type:";
             // 
-            // button3
+            // label5
             // 
-            this.button3.Location = new System.Drawing.Point(96, 97);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(33, 23);
-            this.button3.TabIndex = 9;
-            this.button3.Text = "Del";
-            this.button3.UseVisualStyleBackColor = true;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 22);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(49, 13);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Attribute:";
             // 
-            // textBox6
+            // script
             // 
-            this.textBox6.Location = new System.Drawing.Point(227, 121);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(47, 20);
-            this.textBox6.TabIndex = 11;
+            this.script.Location = new System.Drawing.Point(227, 121);
+            this.script.Name = "script";
+            this.script.Size = new System.Drawing.Size(47, 20);
+            this.script.TabIndex = 11;
             // 
             // label8
             // 
@@ -233,39 +264,33 @@
             this.label8.TabIndex = 12;
             this.label8.Text = "Script:";
             // 
-            // listBox1
+            // itemList
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(280, 12);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(151, 277);
-            this.listBox1.TabIndex = 13;
+            this.itemList.FormattingEnabled = true;
+            this.itemList.Location = new System.Drawing.Point(280, 12);
+            this.itemList.Name = "itemList";
+            this.itemList.Size = new System.Drawing.Size(151, 251);
+            this.itemList.Sorted = true;
+            this.itemList.TabIndex = 13;
+            this.itemList.SelectedIndexChanged += new System.EventHandler(this.itemList_SelectedIndexChanged);
             // 
-            // listBox2
+            // changeTextureButton
             // 
-            this.listBox2.FormattingEnabled = true;
-            this.listBox2.Location = new System.Drawing.Point(136, 19);
-            this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(120, 95);
-            this.listBox2.TabIndex = 10;
+            this.changeTextureButton.Location = new System.Drawing.Point(15, 148);
+            this.changeTextureButton.Name = "changeTextureButton";
+            this.changeTextureButton.Size = new System.Drawing.Size(92, 23);
+            this.changeTextureButton.TabIndex = 14;
+            this.changeTextureButton.Text = "Change texture";
+            this.changeTextureButton.UseVisualStyleBackColor = true;
+            this.changeTextureButton.Click += new System.EventHandler(this.changeTextureButton_Click);
             // 
-            // button4
+            // tileSize
             // 
-            this.button4.Location = new System.Drawing.Point(15, 148);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(92, 23);
-            this.button4.TabIndex = 14;
-            this.button4.Text = "Change texture";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // textBox7
-            // 
-            this.textBox7.Location = new System.Drawing.Point(227, 150);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(47, 20);
-            this.textBox7.TabIndex = 15;
-            this.textBox7.TextChanged += new System.EventHandler(this.textBox7_TextChanged);
+            this.tileSize.Location = new System.Drawing.Point(227, 150);
+            this.tileSize.Name = "tileSize";
+            this.tileSize.Size = new System.Drawing.Size(47, 20);
+            this.tileSize.TabIndex = 15;
+            this.tileSize.TextChanged += new System.EventHandler(this.tileSize_TextChanged);
             // 
             // label9
             // 
@@ -285,27 +310,75 @@
             this.gidLabel.TabIndex = 17;
             this.gidLabel.Text = "gid: 0";
             // 
+            // newButton
+            // 
+            this.newButton.Location = new System.Drawing.Point(279, 276);
+            this.newButton.Name = "newButton";
+            this.newButton.Size = new System.Drawing.Size(54, 23);
+            this.newButton.TabIndex = 16;
+            this.newButton.Text = "New";
+            this.newButton.UseVisualStyleBackColor = true;
+            this.newButton.Click += new System.EventHandler(this.newButton_Click);
+            // 
+            // delButton
+            // 
+            this.delButton.Location = new System.Drawing.Point(396, 276);
+            this.delButton.Name = "delButton";
+            this.delButton.Size = new System.Drawing.Size(34, 23);
+            this.delButton.TabIndex = 15;
+            this.delButton.Text = "Del";
+            this.delButton.UseVisualStyleBackColor = true;
+            this.delButton.Click += new System.EventHandler(this.delButton_Click);
+            // 
+            // editButton
+            // 
+            this.editButton.Location = new System.Drawing.Point(339, 276);
+            this.editButton.Name = "editButton";
+            this.editButton.Size = new System.Drawing.Size(51, 23);
+            this.editButton.TabIndex = 14;
+            this.editButton.Text = "Save";
+            this.editButton.UseVisualStyleBackColor = true;
+            this.editButton.Click += new System.EventHandler(this.editButton_Click);
+            // 
+            // type
+            // 
+            this.type.FormattingEnabled = true;
+            this.type.Items.AddRange(new object[] {
+            "Armor",
+            "Misc",
+            "Quest",
+            "Usable",
+            "Weapon"});
+            this.type.Location = new System.Drawing.Point(153, 38);
+            this.type.Name = "type";
+            this.type.Size = new System.Drawing.Size(121, 21);
+            this.type.Sorted = true;
+            this.type.TabIndex = 18;
+            // 
             // ItemEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(441, 321);
+            this.Controls.Add(this.type);
+            this.Controls.Add(this.newButton);
+            this.Controls.Add(this.delButton);
             this.Controls.Add(this.gidLabel);
+            this.Controls.Add(this.editButton);
             this.Controls.Add(this.label9);
-            this.Controls.Add(this.textBox7);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.tileSize);
+            this.Controls.Add(this.changeTextureButton);
+            this.Controls.Add(this.itemList);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.textBox6);
+            this.Controls.Add(this.script);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.description);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.price);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.name);
             this.Name = "ItemEditorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Item Editor";
@@ -319,31 +392,34 @@
         }
 
         #endregion
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox name;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox price;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox description;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox modValue;
+        private System.Windows.Forms.Button modDelButton;
+        private System.Windows.Forms.Button modEditButton;
+        private System.Windows.Forms.TextBox script;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.ListBox listBox2;
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.ListBox modList;
+        private System.Windows.Forms.ListBox itemList;
+        private System.Windows.Forms.Button changeTextureButton;
+        private System.Windows.Forms.TextBox tileSize;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label gidLabel;
+        private System.Windows.Forms.Button modNewButton;
+        private System.Windows.Forms.Button newButton;
+        private System.Windows.Forms.Button delButton;
+        private System.Windows.Forms.Button editButton;
+        private System.Windows.Forms.ComboBox type;
+        private System.Windows.Forms.ComboBox modType;
+        private System.Windows.Forms.ComboBox modAttribute;
     }
 }

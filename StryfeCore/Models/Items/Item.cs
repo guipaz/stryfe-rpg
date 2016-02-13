@@ -23,5 +23,23 @@ namespace StryfeRPG.Models.Items
         public string Description { get; set; }
         public List<AttributeModifier> Modifiers { get; set; }
         public int ScriptId { get; set; } // Activated when used (usable), equipped (armor, weapon) or gathered (misc, quest)
+
+        // Graphic stuff
+        public string TextureName { get; set; }
+        public int Gid { get; set; }
+        public int TextureTileSize { get; set; }
+
+        public Item()
+        {
+            Modifiers = new List<AttributeModifier>();
+            ScriptId = -1;
+            TextureTileSize = 0;
+            Gid = -1;
+        }
+
+        public override string ToString()
+        {
+            return String.Format("{0} - {1}", Id, Name);
+        }
     }
 }

@@ -23,5 +23,10 @@ namespace StryfeRPG.Models.Items
         // For temporary modifiers outside battle
         public int Duration { get; set; }
         public double TimeLeft { get; set; }
+
+        public override string ToString()
+        {
+            return Attribute.ToString();
+        }
     }
 }

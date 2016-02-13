@@ -47,17 +47,11 @@
     <Compile Include="Managers\HUDManager.cs" />
     <Compile Include="Managers\InventoryManager.cs" />
     <Compile Include="Managers\PauseManager.cs" />
-    <Compile Include="Models\Characters\AttributeSheet.cs" />
     <Compile Include="Models\Characters\SpriteSheet.cs" />
-    <Compile Include="Models\Items\AttributeModifier.cs" />
-    <Compile Include="Models\Items\Item.cs" />
     <Compile Include="Models\Maps\ObjectInfo.cs" />
     <Compile Include="Models\Maps\Objects\ItemObject.cs" />
     <Compile Include="Models\Maps\Objects\Player.cs" />
     <Compile Include="Models\Maps\Objects\Teleport.cs" />
-    <Compile Include="Models\Utils\Dialog.cs" />
-    <Compile Include="Models\Utils\Script.cs" />
-    <Compile Include="Models\Utils\ScriptCommand.cs" />
     <Compile Include="System\Runtime\Stryfe.cs" />
     <Compile Include="Managers\CameraManager.cs" />
     <Compile Include="Managers\KeyboardManager.cs" />
@@ -93,7 +87,12 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\StryfeCore\StryfeCore.csproj">
+      <Project>{a54ebb60-4343-4a0f-a3ca-2c0f78644953}</Project>
+      <Name>StryfeCore</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Content\Data\dialogs.json">
