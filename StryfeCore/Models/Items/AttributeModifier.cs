@@ -12,7 +12,7 @@ namespace StryfeRPG.Models.Items
     {
         Current, Equipment, Temporary, Permanent
     }
-    public class AttributeModifier
+    public class AttributeModifier : ICloneable
     {
         [JsonConverter(typeof(StringEnumConverter))]
         public CharacterAttribute Attribute { get; set; }
@@ -27,6 +27,17 @@ namespace StryfeRPG.Models.Items
         public override string ToString()
         {
             return Attribute.ToString();
+        }
+
+        public object Clone()
+        {
+            AttributeModifier mod = new AttributeModifier();
+            mod.Attribute = Attribute;
+            mod.Value = Value;
+            mod.Type = Type;
+            mod.Duration = Duration;
+            mod.TimeLeft = TimeLeft;
+            return mod;
         }
     }
 }

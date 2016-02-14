@@ -158,6 +158,7 @@ namespace StryfeEditor.ItemEditor
                 }
             }
 
+            modifiers = (List<AttributeModifier>)currentItem.Modifiers.Clone();
             LoadModifiers();
         }
 
@@ -243,7 +244,7 @@ namespace StryfeEditor.ItemEditor
                 currentItem.Gid = imagePicker.gid;
             }
 
-            currentItem.Modifiers = modifiers;
+            currentItem.Modifiers = (List<AttributeModifier>)modifiers.Clone();
 
             if (pos > -1)
                 Global.Items[pos] = currentItem;
