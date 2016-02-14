@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using StryfeRPG.Managers.Data;
 using StryfeRPG.Models.Characters;
 using StryfeRPG.System;
 using System;
@@ -19,7 +20,9 @@ namespace StryfeRPG.Managers
 
         private Keys ActionButton = Keys.Z;
         private Keys CancelButton = Keys.X;
-        private Keys InventoryButton = Keys.C;
+        private Keys InventoryButton = Keys.E;
+        private Keys CharacterButton = Keys.C;
+        private Keys EquipmentButton = Keys.W;
 
         //TODO: use an array of "key released"
         KeyboardState currentState;
@@ -40,9 +43,10 @@ namespace StryfeRPG.Managers
                 {
                     DialogManager.Instance.NextMessage();
                     return;
-                } else if (InventoryManager.Instance.IsOpened)
+                } else if (WindowManager.IsWindowOpened)
                 {
-                    InventoryManager.Instance.PerformAction();
+                    WindowManager.CurrentManager.PerformAction();
+                    return;
                 }
 
                 // Map action
@@ -71,32 +75,33 @@ namespace StryfeRPG.Managers
             if (IsKeyReleased(CancelButton))
             {
                 if (DialogManager.Instance.IsDialogActive())
-                {
                     DialogManager.Instance.SkipMessage();
-                    return;
-                } else if (InventoryManager.Instance.IsOpened)
-                {
-                    InventoryManager.Instance.CloseInventory();
-                    return;
-                }
+                else if (WindowManager.IsWindowOpened)
+                    WindowManager.CurrentManager.CloseWindow();
+
+                return;
             }
 
             // If there's a dialog active, does nothing other than press Control
             if (DialogManager.Instance.IsDialogActive())
                 return;
 
-            // Inventory button
+            // Windows buttons
             if (IsKeyReleased(InventoryButton))
             {
-                InventoryManager.Instance.ToggleInventory();
+                InventoryManager.Instance.ToggleWindow();
+            }
+            else if (IsKeyReleased(EquipmentButton))
+            {
+                EquipmentManager.Instance.ToggleWindow();
             }
 
             // Movement cooldown
-            if (!Utils.IsMenuOpened() && currentCooldown > 0)
+            if (!WindowManager.IsWindowOpened && currentCooldown > 0)
             {
                 currentCooldown -= timePassed;
                 return;
-            } else if (Utils.IsMenuOpened() && hudCooldown > 0)
+            } else if (WindowManager.IsWindowOpened && hudCooldown > 0)
             {
                 hudCooldown -= timePassed;
                 return;

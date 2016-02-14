@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using StryfeCore.Models.Items;
 using StryfeRPG.Managers;
+using StryfeRPG.Managers.Data;
 using StryfeRPG.Models.Characters;
 using StryfeRPG.Models.Items;
 using StryfeRPG.Models.Maps;
@@ -120,7 +121,7 @@ namespace StryfeRPG.System
 
         public static bool IsMenuOpened() // Inventory, quests, equipments, etc
         {
-            return InventoryManager.Instance.IsOpened;
+            return InventoryManager.Instance.IsOpened || EquipmentManager.Instance.IsOpened;
         }
 
         public static Rectangle GetRectangleByGid(int gid, int tileSize, int textureWidth)

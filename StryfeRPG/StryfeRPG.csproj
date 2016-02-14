@@ -43,11 +43,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Managers\Data\EquipmentManager.cs" />
+    <Compile Include="Managers\Data\WindowManager.cs" />
     <Compile Include="Managers\System\AudioManager.cs" />
     <Compile Include="Managers\Data\CharacterManager.cs" />
     <Compile Include="Managers\GUI\DialogManager.cs" />
     <Compile Include="Managers\GUI\HUDManager.cs" />
-    <Compile Include="Managers\GUI\InventoryManager.cs" />
+    <Compile Include="Managers\Data\InventoryManager.cs" />
     <Compile Include="Managers\System\PauseManager.cs" />
     <Compile Include="Models\Characters\SpriteSheet.cs" />
     <Compile Include="Models\Maps\ObjectInfo.cs" />

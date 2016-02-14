@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace StryfeRPG.Managers
 {
-    public class InventoryManager
+    public class InventoryManager : WindowManager
     {
         // Data management
         private Dictionary<int, Item> Inventory = new Dictionary<int, Item>(); // Key: position - Value: item
@@ -21,34 +21,15 @@ namespace StryfeRPG.Managers
         private Vector2 selectedItemIndex;
 
         // Screen management
-        public bool IsOpened { get; private set; }
-        private int Width = 550;
-        private int Height = 300;
-
         private int tilesX = 4;
         private int tilesY = 4;
-
-        private Texture2D bgTexture;
+        
         private Texture2D itemTexture;
-        private Rectangle bounds;
 
-        public void ToggleInventory()
+        public override void OpenWindow()
         {
-            if (IsOpened)
-                CloseInventory();
-            else
-                OpenInventory();
-        }
-
-        public void OpenInventory()
-        {
-            IsOpened = true;
+            base.OpenWindow();
             CheckSelectedItem();
-        }
-
-        public void CloseInventory()
-        {
-            IsOpened = false;
         }
 
         public void AddItem(int id, int quantity)
@@ -62,14 +43,14 @@ namespace StryfeRPG.Managers
         {
             if (item != null)
             {
-                Inventory[GetAvailablePosition()] = item;
-                Quantities[item.Id] = quantity;
+                Inventory[GetAvailablePosition(item)] = item;
+                Quantities[item.Id] = Quantities.ContainsKey(item.Id) ? Quantities[item.Id] + quantity : quantity;
             }
 
             ScriptInterpreter.Instance.FinishedCommand();
         }
 
-        private int GetAvailablePosition()
+        private int GetAvailablePosition(Item item)
         {
             List<int> positions = Inventory.Keys.ToList();
             positions.Sort();
@@ -77,7 +58,9 @@ namespace StryfeRPG.Managers
             int pos = 0;
             foreach (int occupiedPos in positions)
             {
-                if (pos < occupiedPos)
+                if ((Inventory[occupiedPos].Id == item.Id &&
+                    item.Type != ItemType.Equipment) ||
+                    pos < occupiedPos)
                     return pos;
                 pos++;
             }
@@ -89,10 +72,7 @@ namespace StryfeRPG.Managers
         {
             if (selectedItem == null)
                 return;
-
-            //TODO: do a lot of other stuff
-            bool add = true;
-
+            
             // Check for equipment
             if (item.Type == ItemType.Equipment)
             {
@@ -101,21 +81,20 @@ namespace StryfeRPG.Managers
             }
 
             // Apply modifiers
-            if (add)
-                foreach (AttributeModifier mod in item.Modifiers)
-                    CharacterManager.Instance.AddModifier(mod);
-            else
-                CharacterManager.Instance.RemoveModifiers(item.Id);
+            foreach (AttributeModifier mod in item.Modifiers)
+                CharacterManager.Instance.AddModifier(mod);
 
             // Remove item if usable
             if (item.Type == ItemType.Usable)
             {
                 int i = (int)selectedItemIndex.Y * tilesX + (int)selectedItemIndex.X;
-                Inventory.Remove(i);
                 Quantities[item.Id]--;
                 if (Quantities[item.Id] <= 0)
+                {
+                    Inventory.Remove(i);
                     Quantities.Remove(item.Id);
-                selectedItem = null;
+                    selectedItem = null;
+                }
             }
         }
 
@@ -144,7 +123,7 @@ namespace StryfeRPG.Managers
             selectedItem = GetItem((int)selectedItemIndex.X, (int)selectedItemIndex.Y);
         }
 
-        public void Draw(SpriteBatch spriteBatch, double timePassed)
+        public override void Draw(SpriteBatch spriteBatch, double timePassed)
         {
             if (!IsOpened)
                 return;
@@ -183,10 +162,11 @@ namespace StryfeRPG.Managers
                                  destinationRectangle: new Rectangle(slotX, slotY, itemSize, itemSize),
                                  color: color);
 
-                    // Item sprite
+                    
                     Item item = GetItem(x, y);
                     if (item != null)
                     {
+                        // Item sprite
                         Texture2D texture = Global.GetTexture(item.TextureName);
                         if (texture != null)
                         {
@@ -202,6 +182,15 @@ namespace StryfeRPG.Managers
                                  destinationRectangle: new Rectangle(slotX + itemSize - 15, slotY + itemSize - 15, 10, 10),
                                  color: Color.Blue);
                             }
+                        }
+
+                        // Item quantity, if more than 1
+                        if (item.Type != ItemType.Equipment && Quantities.ContainsKey(item.Id) && Quantities[item.Id] > 1)
+                        {
+                            string str = Quantities[item.Id].ToString();
+                            Vector2 measure = Global.DialogFont.MeasureString(str);
+                            spriteBatch.DrawString(Global.DetailFont, str, new Vector2(slotX + itemSize - measure.X - 2 + 1, slotY + itemSize - measure.Y + 1), new Color(Color.Black, 0.5f));
+                            spriteBatch.DrawString(Global.DetailFont, str, new Vector2(slotX + itemSize - measure.X - 2, slotY + itemSize - measure.Y), Color.White);
                         }
                     }
                 }
@@ -226,7 +215,7 @@ namespace StryfeRPG.Managers
             }
         }
 
-        public void PerformAction()
+        public override void PerformAction()
         {
             if (selectedItem != null)
             {
@@ -236,7 +225,7 @@ namespace StryfeRPG.Managers
 
         // Singleton stuff
         private static InventoryManager instance;
-        protected InventoryManager()
+        protected InventoryManager() : base()
         {
             bgTexture = Global.GetTexture("dialog_bg");
             itemTexture = Global.GetTexture("item_bg");
@@ -244,8 +233,10 @@ namespace StryfeRPG.Managers
 
             Inventory = new Dictionary<int, Item>();
             Quantities = new Dictionary<int, int>();
-        }
 
+            Width = 550;
+            Height = 300;
+        }
         public static InventoryManager Instance
         {
             get

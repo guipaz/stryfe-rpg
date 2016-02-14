@@ -9,6 +9,7 @@ using StryfeRPG.System;
 using StryfeRPG.Models.Utils;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Media;
+using StryfeRPG.Managers.Data;
 
 namespace StryfeRPG
 {
@@ -103,8 +104,10 @@ namespace StryfeRPG
             // Dialogs
             DialogManager.Instance.Draw(spriteBatch, timePassed);
 
-            // Inventory
+            // Windows
+            //TODO: change do WindowManager
             InventoryManager.Instance.Draw(spriteBatch, timePassed);
+            EquipmentManager.Instance.Draw(spriteBatch, timePassed);
 
             spriteBatch.End();
             
