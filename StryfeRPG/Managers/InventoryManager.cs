@@ -63,6 +63,8 @@ namespace StryfeRPG.Managers
                 Inventory[GetAvailablePosition()] = item;
                 Quantities[item.Id] = quantity;
             }
+
+            ScriptInterpreter.Instance.FinishedCommand();
         }
 
         private int GetAvailablePosition()
@@ -98,13 +100,17 @@ namespace StryfeRPG.Managers
             CheckSelectedItem();
         }
 
+        private Item GetItem(int x, int y)
+        {
+            int i = y * tilesX + x;
+            if (Inventory.ContainsKey(i))
+                return Inventory[i];
+            return null;
+        }
+
         private void CheckSelectedItem()
         {
-            int i = (int)selectedItemIndex.Y * tilesX + (int)selectedItemIndex.X;
-            if (Inventory.ContainsKey(i))
-                selectedItem = Inventory[i];
-            else
-                selectedItem = null;
+            selectedItem = GetItem((int)selectedItemIndex.X, (int)selectedItemIndex.Y);
         }
 
         public void Draw(SpriteBatch spriteBatch, double timePassed)
@@ -138,10 +144,28 @@ namespace StryfeRPG.Managers
 
                     if (selectedItemIndex.X == x && selectedItemIndex.Y == y)
                         color = Color.Cyan; // when the slot is selected
-                    
+
+                    int slotX = lastX;
+                    int slotY = itemY + y * (itemSize + margin);
+
                     spriteBatch.Draw(itemTexture,
-                                 destinationRectangle: new Rectangle(lastX, itemY + y * (itemSize + margin), itemSize, itemSize),
+                                 destinationRectangle: new Rectangle(slotX, slotY, itemSize, itemSize),
                                  color: color);
+
+                    // Item sprite
+                    Item item = GetItem(x, y);
+                    if (item != null)
+                    {
+                        Texture2D texture = Global.GetTexture(item.TextureName);
+                        if (texture != null)
+                        {
+                            Rectangle rect = Utils.GetRectangleByGid(item.Gid, item.TextureTileSize, texture.Width);
+                            spriteBatch.Draw(texture,
+                                             new Rectangle(slotX + item.TextureTileSize / 4, slotY + item.TextureTileSize / 4, item.TextureTileSize, item.TextureTileSize),
+                                             rect,
+                                             Color.White);
+                        }
+                    }
                 }
             }
 
@@ -151,16 +175,17 @@ namespace StryfeRPG.Managers
                              destinationRectangle: new Rectangle(itemX, itemY, windowX + Width - itemX - margin, Height - margin * 2),
                              color: Color.White);
 
-            //TODO: item sprite
-
             // Item name
             if (selectedItem != null)
             {
                 string str = Utils.GetCroppedString(selectedItem.Name, Global.DialogFont, windowX + Width - itemX - (margin * 3), Height - margin * 4)[0];
-                spriteBatch.DrawString(Global.DialogFont, str, new Vector2(itemX + margin, itemY + margin), Color.White);
-            }
+                spriteBatch.DrawString(Global.DialogFont, str, new Vector2(itemX + margin, itemY + margin), Color.Yellow);
 
-            //TODO: item description
+                // Item description
+                Vector2 measure = Global.DialogFont.MeasureString(str);
+                str = Utils.GetCroppedString(selectedItem.Description, Global.DetailFont, windowX + Width - itemX - (margin * 3), Height - margin * 4 - measure.Y)[0];
+                spriteBatch.DrawString(Global.DetailFont, str, new Vector2(itemX + margin, itemY + margin + measure.Y + 10), Color.White);
+            }
         }
 
         // Singleton stuff

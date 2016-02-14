@@ -19,6 +19,7 @@ namespace StryfeRPG.System
         public static int TileSize = 64;
         public static SpriteFont MapFont;
         public static SpriteFont DialogFont;
+        public static SpriteFont DetailFont;
 
         // Loaded resources
         private static ContentManager Content;

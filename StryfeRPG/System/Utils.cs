@@ -119,5 +119,14 @@ namespace StryfeRPG.System
         {
             return InventoryManager.Instance.IsOpened;
         }
+
+        public static Rectangle GetRectangleByGid(int gid, int tileSize, int textureWidth)
+        {
+            int tilesWide = textureWidth / tileSize;
+            int column = gid % tilesWide;
+            int row = gid / tilesWide;
+
+            return new Rectangle(tileSize * column, tileSize * row, tileSize, tileSize);
+        }
     }
 }

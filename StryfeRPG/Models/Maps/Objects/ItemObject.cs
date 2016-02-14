@@ -17,8 +17,11 @@ namespace StryfeRPG.Models.Maps.Objects
 
         public ItemObject(TmxObject obj, Tileset tileset) : base(obj, tileset)
         {
-            Item = Global.GetItem(int.Parse(obj.Properties["item"]));
-            Quantity = obj.Properties.ContainsKey("quantity") ? int.Parse(obj.Properties["quantity"]) : 1;
+            if (ScriptId == -1)
+            {
+                Item = Global.GetItem(int.Parse(obj.Properties["item"]));
+                Quantity = obj.Properties.ContainsKey("quantity") ? int.Parse(obj.Properties["quantity"]) : 1;
+            }
         }
 
         public override void PerformAction()
@@ -28,8 +31,9 @@ namespace StryfeRPG.Models.Maps.Objects
             if (ScriptId == -1)
             {
                 InventoryManager.Instance.AddItem(Item, Quantity);
-                SavedInformation.IsActive = false;
             }
+
+            SavedInformation.IsActive = false;
         }
     }
 }

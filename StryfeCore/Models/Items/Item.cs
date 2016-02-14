@@ -33,7 +33,7 @@ namespace StryfeRPG.Models.Items
         {
             Modifiers = new List<AttributeModifier>();
             ScriptId = -1;
-            TextureTileSize = 0;
+            TextureTileSize = 34;
             Gid = -1;
         }
 

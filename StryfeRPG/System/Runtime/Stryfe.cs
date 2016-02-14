@@ -42,6 +42,7 @@ namespace StryfeRPG
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Global.MapFont = Content.Load<SpriteFont>("Fonts/DialogFont"); //TODO: get this straight
             Global.DialogFont = Content.Load<SpriteFont>("Fonts/DialogFont");
+            Global.DetailFont = Content.Load<SpriteFont>("Fonts/DetailFont");
             Global.Viewport = GraphicsDevice.Viewport;
 
             Utils.LoadDialogs();

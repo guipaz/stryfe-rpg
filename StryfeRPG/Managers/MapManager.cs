@@ -183,12 +183,7 @@ namespace StryfeRPG.Managers
             Texture2D texture = obj.Texture;
             Vector2 currentPosition = obj.CurrentPosition;
 
-            int tilesWide = (texture.Width / Global.TileSize);
-            int column = textureId % tilesWide;
-            int row = textureId / tilesWide;
-
-            Rectangle tilesetRec = new Rectangle(size * column, size * row, size, size);
-            spriteBatch.Draw(texture, new Rectangle((int)currentPosition.X, (int)currentPosition.Y, size, size), tilesetRec, Color.White);
+            spriteBatch.Draw(texture, new Rectangle((int)currentPosition.X, (int)currentPosition.Y, size, size), Utils.GetRectangleByGid(textureId, size, texture.Width), Color.White);
         }
 
         private void DrawObjectName(MapObject obj, SpriteBatch spriteBatch)

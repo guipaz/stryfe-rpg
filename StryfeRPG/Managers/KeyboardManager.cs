@@ -71,6 +71,10 @@ namespace StryfeRPG.Managers
                 {
                     DialogManager.Instance.SkipMessage();
                     return;
+                } else if (InventoryManager.Instance.IsOpened)
+                {
+                    InventoryManager.Instance.CloseInventory();
+                    return;
                 }
             }
 

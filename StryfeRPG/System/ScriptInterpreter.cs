@@ -69,7 +69,7 @@ namespace StryfeRPG.System
                     MapManager.Instance.Teleport(arguments[0], new Vector2(int.Parse(arguments[1]), int.Parse(arguments[2])), Utils.GetDirection(arguments[3]));
                     break;
                 case "add_item":
-
+                    InventoryManager.Instance.AddItem(int.Parse(arguments[0]), int.Parse(arguments[1]));
                     break;
             }
         }

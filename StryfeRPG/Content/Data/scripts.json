@@ -1,26 +1,54 @@
 {
-"0":
-{
-	"id" : 0,
-	"commands":
-	[
-		{
-			"command": "message",
-			"arguments":
-			[
-				"Raymond",
-				"My name is Raymond, and I'm a knight of the Templars of the Sun.",
-				"Maybe someday you can join the Templars and help me purge the evil out of this lands.",
-			]
-		},
-		{
-			"command": "message",
-			"arguments":
-			[
-				"$player's thought",
-				"(What a bold knight.)"
-			]
-		}
-	]
-}
+	"0":
+	{
+		"id" : 0,
+		"commands":
+		[
+			{
+				"command": "message",
+				"arguments":
+				[
+					"Raymond",
+					"My name is Raymond, and I'm a knight of the Templars of the Sun.",
+					"Maybe someday you can join the Templars and help me purge the evil out of this lands.",
+				]
+			},
+			{
+				"command": "message",
+				"arguments":
+				[
+					"$player's thought",
+					"(What a bold knight.)"
+				]
+			}
+		]
+	},
+
+	"1":
+	{
+		"id": 1,
+		"commands":
+		[
+			{
+				"command": "add_item",
+				"arguments": [ 0, 1 ]
+			},
+			{
+				"command": "add_item",
+				"arguments": [ 1, 1 ]
+			},
+			{
+				"command": "add_item",
+				"arguments": [ 2, 1 ]
+			},
+			{
+				"command": "add_item",
+				"arguments": [ 3, 1 ]
+			},
+			{
+				"command": "add_item",
+				"arguments": [ 4, 1 ]
+			}
+		]
+	}
 }

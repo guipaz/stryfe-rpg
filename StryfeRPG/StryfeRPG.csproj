@@ -104,6 +104,7 @@
     <None Include="Content\Data\scripts.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Fonts\DetailFont.spritefont" />
     <None Include="Content\Fonts\DialogFont.spritefont" />
     <None Include="Content\Fonts\MapFont.spritefont" />
     <None Include="Content\Maps\exampleMap.tmx">
