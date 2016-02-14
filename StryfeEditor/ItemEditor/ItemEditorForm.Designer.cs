@@ -57,6 +57,8 @@
             this.delButton = new System.Windows.Forms.Button();
             this.editButton = new System.Windows.Forms.Button();
             this.type = new System.Windows.Forms.ComboBox();
+            this.equipType = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,7 +89,7 @@
             // 
             // price
             // 
-            this.price.Location = new System.Drawing.Point(163, 67);
+            this.price.Location = new System.Drawing.Point(163, 94);
             this.price.Name = "price";
             this.price.Size = new System.Drawing.Size(111, 20);
             this.price.TabIndex = 5;
@@ -95,7 +97,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 70);
+            this.label3.Location = new System.Drawing.Point(12, 97);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(34, 13);
             this.label3.TabIndex = 6;
@@ -103,7 +105,7 @@
             // 
             // description
             // 
-            this.description.Location = new System.Drawing.Point(81, 94);
+            this.description.Location = new System.Drawing.Point(81, 121);
             this.description.Name = "description";
             this.description.Size = new System.Drawing.Size(193, 20);
             this.description.TabIndex = 7;
@@ -111,7 +113,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 97);
+            this.label4.Location = new System.Drawing.Point(12, 124);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(63, 13);
             this.label4.TabIndex = 8;
@@ -129,7 +131,7 @@
             this.groupBox1.Controls.Add(this.modValue);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Location = new System.Drawing.Point(12, 179);
+            this.groupBox1.Location = new System.Drawing.Point(12, 206);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(262, 130);
             this.groupBox1.TabIndex = 10;
@@ -203,6 +205,7 @@
             this.modDelButton.TabIndex = 9;
             this.modDelButton.Text = "Del";
             this.modDelButton.UseVisualStyleBackColor = true;
+            this.modDelButton.Click += new System.EventHandler(this.modDelButton_Click);
             // 
             // modEditButton
             // 
@@ -250,7 +253,7 @@
             // 
             // script
             // 
-            this.script.Location = new System.Drawing.Point(227, 121);
+            this.script.Location = new System.Drawing.Point(227, 148);
             this.script.Name = "script";
             this.script.Size = new System.Drawing.Size(47, 20);
             this.script.TabIndex = 11;
@@ -258,7 +261,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(12, 124);
+            this.label8.Location = new System.Drawing.Point(12, 151);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(37, 13);
             this.label8.TabIndex = 12;
@@ -276,7 +279,7 @@
             // 
             // changeTextureButton
             // 
-            this.changeTextureButton.Location = new System.Drawing.Point(15, 148);
+            this.changeTextureButton.Location = new System.Drawing.Point(15, 175);
             this.changeTextureButton.Name = "changeTextureButton";
             this.changeTextureButton.Size = new System.Drawing.Size(92, 23);
             this.changeTextureButton.TabIndex = 14;
@@ -286,7 +289,7 @@
             // 
             // tileSize
             // 
-            this.tileSize.Location = new System.Drawing.Point(227, 150);
+            this.tileSize.Location = new System.Drawing.Point(227, 177);
             this.tileSize.Name = "tileSize";
             this.tileSize.Size = new System.Drawing.Size(47, 20);
             this.tileSize.TabIndex = 15;
@@ -295,7 +298,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(173, 153);
+            this.label9.Location = new System.Drawing.Point(173, 180);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(48, 13);
             this.label9.TabIndex = 16;
@@ -304,7 +307,7 @@
             // gidLabel
             // 
             this.gidLabel.AutoSize = true;
-            this.gidLabel.Location = new System.Drawing.Point(113, 153);
+            this.gidLabel.Location = new System.Drawing.Point(113, 180);
             this.gidLabel.Name = "gidLabel";
             this.gidLabel.Size = new System.Drawing.Size(33, 13);
             this.gidLabel.TabIndex = 17;
@@ -345,6 +348,7 @@
             this.type.FormattingEnabled = true;
             this.type.Items.AddRange(new object[] {
             "Armor",
+            "Equipment",
             "Misc",
             "Quest",
             "Usable",
@@ -355,11 +359,35 @@
             this.type.Sorted = true;
             this.type.TabIndex = 18;
             // 
+            // equipType
+            // 
+            this.equipType.FormattingEnabled = true;
+            this.equipType.Items.AddRange(new object[] {
+            "Accessory",
+            "Armor",
+            "Weapon"});
+            this.equipType.Location = new System.Drawing.Point(153, 67);
+            this.equipType.Name = "equipType";
+            this.equipType.Size = new System.Drawing.Size(121, 21);
+            this.equipType.Sorted = true;
+            this.equipType.TabIndex = 19;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(12, 70);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(87, 13);
+            this.label10.TabIndex = 20;
+            this.label10.Text = "Equipment Type:";
+            // 
             // ItemEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(441, 321);
+            this.ClientSize = new System.Drawing.Size(441, 346);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.equipType);
             this.Controls.Add(this.type);
             this.Controls.Add(this.newButton);
             this.Controls.Add(this.delButton);
@@ -421,5 +449,7 @@
         private System.Windows.Forms.ComboBox type;
         private System.Windows.Forms.ComboBox modType;
         private System.Windows.Forms.ComboBox modAttribute;
+        private System.Windows.Forms.ComboBox equipType;
+        private System.Windows.Forms.Label label10;
     }
 }

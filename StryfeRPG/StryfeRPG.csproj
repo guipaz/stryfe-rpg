@@ -42,20 +42,22 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Managers\AudioManager.cs" />
-    <Compile Include="Managers\DialogManager.cs" />
-    <Compile Include="Managers\HUDManager.cs" />
-    <Compile Include="Managers\InventoryManager.cs" />
-    <Compile Include="Managers\PauseManager.cs" />
+    <Compile Include="Managers\Data\EquipmentManager.cs" />
+    <Compile Include="Managers\System\AudioManager.cs" />
+    <Compile Include="Managers\Data\CharacterManager.cs" />
+    <Compile Include="Managers\GUI\DialogManager.cs" />
+    <Compile Include="Managers\GUI\HUDManager.cs" />
+    <Compile Include="Managers\GUI\InventoryManager.cs" />
+    <Compile Include="Managers\System\PauseManager.cs" />
     <Compile Include="Models\Characters\SpriteSheet.cs" />
     <Compile Include="Models\Maps\ObjectInfo.cs" />
     <Compile Include="Models\Maps\Objects\ItemObject.cs" />
     <Compile Include="Models\Maps\Objects\Player.cs" />
     <Compile Include="Models\Maps\Objects\Teleport.cs" />
     <Compile Include="System\Runtime\Stryfe.cs" />
-    <Compile Include="Managers\CameraManager.cs" />
-    <Compile Include="Managers\KeyboardManager.cs" />
-    <Compile Include="Managers\MapManager.cs" />
+    <Compile Include="Managers\System\CameraManager.cs" />
+    <Compile Include="Managers\System\KeyboardManager.cs" />
+    <Compile Include="Managers\GUI\MapManager.cs" />
     <Compile Include="Models\Maps\Objects\NPC.cs" />
     <Compile Include="Models\Maps\Map.cs" />
     <Compile Include="Models\Maps\Objects\MapObject.cs" />

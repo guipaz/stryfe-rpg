@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using StryfeCore.Models.Items;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace StryfeRPG.Models.Items
 {
     public enum ItemType
     {
-        Usable, Quest, Misc, Weapon, Armor
+        Usable, Quest, Misc, Equipment
     }
 
     public class Item
@@ -21,6 +22,7 @@ namespace StryfeRPG.Models.Items
         [JsonConverter(typeof(StringEnumConverter))]
         public ItemType Type { get; set; }
         public string Description { get; set; }
+
         public List<AttributeModifier> Modifiers { get; set; }
         public int ScriptId { get; set; } // Activated when used (usable), equipped (armor, weapon) or gathered (misc, quest)
 
@@ -40,6 +42,31 @@ namespace StryfeRPG.Models.Items
         public override string ToString()
         {
             return String.Format("{0} - {1}", Id, Name);
+        }
+
+        public Item Clone()
+        {
+            Item i = null;
+            if (Type == ItemType.Equipment)
+                i = new Equipment();
+            else
+                i = new Item();
+
+            i.Id = Id;
+            i.Name = Name;
+            i.Price = Price;
+            i.Weight = Weight;
+            i.Type = Type;
+            i.Description = Description;
+            i.Modifiers = new List<AttributeModifier>();
+            foreach (AttributeModifier o in Modifiers)
+                i.Modifiers.Add(o);
+            i.ScriptId = ScriptId;
+            i.TextureName = TextureName;
+            i.Gid = Gid;
+            i.TextureTileSize = TextureTileSize;
+
+            return i;
         }
     }
 }

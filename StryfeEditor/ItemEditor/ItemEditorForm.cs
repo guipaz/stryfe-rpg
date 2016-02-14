@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using StryfeRPG.Models.Items;
 using StryfeRPG.Models.Characters;
 using System.Globalization;
+using StryfeCore.Models.Items;
 
 namespace StryfeEditor.ItemEditor
 {
@@ -26,9 +27,40 @@ namespace StryfeEditor.ItemEditor
         public ItemEditorForm()
         {
             InitializeComponent();
-            
+
+            FillCombos();
+
             Utils.LoadItems();
             PopulateList();
+            
+        }
+
+        public void FillCombos()
+        {
+            type.Items.Clear();
+            equipType.Items.Clear();
+            modAttribute.Items.Clear();
+            modType.Items.Clear();
+
+            // Type
+            var values = Enum.GetValues(typeof(ItemType));
+            foreach (object o in values)
+                type.Items.Add(o.ToString());
+
+            // EquipType
+            values = Enum.GetValues(typeof(EquipmentType));
+            foreach (object o in values)
+                equipType.Items.Add(o.ToString());
+
+            // Attributes
+            values = Enum.GetValues(typeof(CharacterAttribute));
+            foreach (object o in values)
+                modAttribute.Items.Add(o.ToString());
+
+            // Modifier Type
+            values = Enum.GetValues(typeof(ModifierType));
+            foreach (object o in values)
+                modType.Items.Add(o.ToString());
         }
 
         private void PopulateList()
@@ -144,6 +176,10 @@ namespace StryfeEditor.ItemEditor
             
             name.Text = currentItem.Name;
             type.Text = currentItem.Type.ToString();
+            if (currentItem.Type == ItemType.Equipment)
+                equipType.Text = ((Equipment)currentItem).EquipType.ToString();
+            else
+                equipType.Text = "";
             price.Text = String.Format("{0}", currentItem.Price);
             description.Text = currentItem.Description;
             script.Text = currentItem.ScriptId.ToString();
@@ -174,7 +210,7 @@ namespace StryfeEditor.ItemEditor
 
         private void FillModifier()
         {
-            modAttribute.SelectedText = currentModifier.Attribute.ToString();
+            modAttribute.Text = currentModifier.Attribute.ToString();
             modType.Text = currentModifier.Type.ToString();
             modValue.Text = currentModifier.Value.ToString();
         }
@@ -196,7 +232,7 @@ namespace StryfeEditor.ItemEditor
         {
             if (currentItem != null && modList.SelectedIndex >= 0 && modList.SelectedIndex < currentItem.Modifiers.Count)
             {
-                currentModifier = currentItem.Modifiers[modList.SelectedIndex];
+                currentModifier = modifiers[modList.SelectedIndex];
                 FillModifier();
             }
         }
@@ -204,7 +240,7 @@ namespace StryfeEditor.ItemEditor
         private void modEditButton_Click(object sender, EventArgs e)
         {
             if (currentModifier != null)
-                currentItem.Modifiers.Remove(currentModifier);
+                modifiers.Remove(currentModifier);
             else
                 currentModifier = new AttributeModifier();
             
@@ -220,9 +256,14 @@ namespace StryfeEditor.ItemEditor
         private void editButton_Click(object sender, EventArgs e)
         {
             int pos = -1;
+            ItemType itemType = (ItemType)Enum.Parse(typeof(ItemType), Utils.GetTitleCase(type.Text));
             if (currentItem == null)
             {
-                currentItem = new Item();
+                if (itemType == ItemType.Equipment)
+                    currentItem = new Equipment();
+                else
+                    currentItem = new Item();
+
                 currentItem.Id = GetNextId();
             } else
             {
@@ -230,7 +271,11 @@ namespace StryfeEditor.ItemEditor
             }
 
             currentItem.Name = name.Text;
-            currentItem.Type = (ItemType)Enum.Parse(typeof(ItemType), Utils.GetTitleCase(type.Text));
+            currentItem.Type = itemType;
+
+            if (itemType == ItemType.Equipment)
+                ((Equipment)currentItem).EquipType = (EquipmentType)Enum.Parse(typeof(EquipmentType), Utils.GetTitleCase(equipType.Text));
+
             currentItem.Description = description.Text;
             currentItem.ScriptId = script.Text.Count() > 0 ? int.Parse(script.Text) : -1;
 
@@ -243,6 +288,9 @@ namespace StryfeEditor.ItemEditor
                 currentItem.TextureTileSize = tileSize.Text.Count() > 0 ? int.Parse(tileSize.Text) : Global.DefaultItemSize;
                 currentItem.Gid = imagePicker.gid;
             }
+
+            foreach (AttributeModifier mod in modifiers)
+                mod.ItemId = currentItem.Id;
 
             currentItem.Modifiers = (List<AttributeModifier>)modifiers.Clone();
 
@@ -279,6 +327,16 @@ namespace StryfeEditor.ItemEditor
                 Global.Items.Remove(currentItem);
                 PopulateList();
                 Clear();
+            }
+        }
+
+        private void modDelButton_Click(object sender, EventArgs e)
+        {
+            if (currentModifier != null)
+            {
+                modifiers.Remove(currentModifier);
+                LoadModifiers();
+                ClearModifier();
             }
         }
     }

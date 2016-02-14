@@ -14,6 +14,7 @@ namespace StryfeRPG.Models.Items
     }
     public class AttributeModifier : ICloneable
     {
+        public int ItemId { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
         public CharacterAttribute Attribute { get; set; }
         public int Value { get; set; }
@@ -32,6 +33,7 @@ namespace StryfeRPG.Models.Items
         public object Clone()
         {
             AttributeModifier mod = new AttributeModifier();
+            mod.ItemId = ItemId;
             mod.Attribute = Attribute;
             mod.Value = Value;
             mod.Type = Type;

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using StryfeRPG.Managers;
 using StryfeRPG.Models.Characters;
 using StryfeRPG.Models.Items;
 using StryfeRPG.Models.Maps;
@@ -84,6 +85,12 @@ namespace StryfeRPG.System
         public static void SetItems(Dictionary<int, Item> items)
         {
             Global.items = items;
+        }
+
+        public static void RetrieveAllItems()
+        {
+            foreach (KeyValuePair<int, Item> i in items)
+                InventoryManager.Instance.AddItem(i.Value, 1);
         }
     }
 }

@@ -51,6 +51,9 @@ namespace StryfeRPG
 
             MapManager.Instance.spriteBatch = spriteBatch;
             MapManager.Instance.LoadMap("testMap");
+
+            //testing
+            Global.RetrieveAllItems();
         }
 
         protected override void UnloadContent()

@@ -47,11 +47,13 @@
   <ItemGroup>
     <Compile Include="Models\Characters\AttributeSheet.cs" />
     <Compile Include="Models\Items\AttributeModifier.cs" />
+    <Compile Include="Models\Items\Equipment.cs" />
     <Compile Include="Models\Items\Item.cs" />
     <Compile Include="Models\Utils\Dialog.cs" />
     <Compile Include="Models\Utils\Script.cs" />
     <Compile Include="Models\Utils\ScriptCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serializers\ItemConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

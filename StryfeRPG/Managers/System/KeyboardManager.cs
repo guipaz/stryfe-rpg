@@ -19,7 +19,7 @@ namespace StryfeRPG.Managers
 
         private Keys ActionButton = Keys.Z;
         private Keys CancelButton = Keys.X;
-        private Keys InventoryButton = Keys.I;
+        private Keys InventoryButton = Keys.C;
 
         //TODO: use an array of "key released"
         KeyboardState currentState;
@@ -40,6 +40,9 @@ namespace StryfeRPG.Managers
                 {
                     DialogManager.Instance.NextMessage();
                     return;
+                } else if (InventoryManager.Instance.IsOpened)
+                {
+                    InventoryManager.Instance.PerformAction();
                 }
 
                 // Map action

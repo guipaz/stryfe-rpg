@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using StryfeRPG.Models.Items;
+using StryfeRPG.System.Serializers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -21,7 +22,12 @@ namespace StryfeEditor
 
         public static void LoadItems()
         {
-            List<Item> items = JsonConvert.DeserializeObject<List<Item>>(File.ReadAllText(String.Format("{0}/Data/items.json", Global.ContentPath)));
+            List<Item> itemsJson = JsonConvert.DeserializeObject<List<Item>>(File.ReadAllText(String.Format("{0}/Data/items.json", Global.ContentPath)), new ItemConverter());
+
+            List<Item> items = new List<Item>();
+            foreach (Item i in itemsJson)
+                items.Add(i);
+
             Global.Items = items;
         }
 

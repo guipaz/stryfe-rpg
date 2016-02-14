@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StryfeRPG.Managers.Data;
 using StryfeRPG.Models.Items;
 using StryfeRPG.System;
 using System;
@@ -15,6 +16,7 @@ namespace StryfeRPG.Managers
         // Data management
         private Dictionary<int, Item> Inventory = new Dictionary<int, Item>(); // Key: position - Value: item
         private Dictionary<int, int> Quantities = new Dictionary<int, int>(); // Key: item id - Value: quantity
+
         private Item selectedItem;
         private Vector2 selectedItemIndex;
 
@@ -85,7 +87,36 @@ namespace StryfeRPG.Managers
 
         public void UseItem(Item item)
         {
+            if (selectedItem == null)
+                return;
 
+            //TODO: do a lot of other stuff
+            bool add = true;
+
+            // Check for equipment
+            if (item.Type == ItemType.Equipment)
+            {
+                EquipmentManager.Instance.ToggleEquipment(item);
+                return;
+            }
+
+            // Apply modifiers
+            if (add)
+                foreach (AttributeModifier mod in item.Modifiers)
+                    CharacterManager.Instance.AddModifier(mod);
+            else
+                CharacterManager.Instance.RemoveModifiers(item.Id);
+
+            // Remove item if usable
+            if (item.Type == ItemType.Usable)
+            {
+                int i = (int)selectedItemIndex.Y * tilesX + (int)selectedItemIndex.X;
+                Inventory.Remove(i);
+                Quantities[item.Id]--;
+                if (Quantities[item.Id] <= 0)
+                    Quantities.Remove(item.Id);
+                selectedItem = null;
+            }
         }
 
         public void Move(Vector2 movement)
@@ -164,6 +195,13 @@ namespace StryfeRPG.Managers
                                              new Rectangle(slotX + item.TextureTileSize / 4, slotY + item.TextureTileSize / 4, item.TextureTileSize, item.TextureTileSize),
                                              rect,
                                              Color.White);
+
+                            if (EquipmentManager.Instance.IsItemEquipped(item.Id))
+                            {
+                                spriteBatch.Draw(itemTexture,
+                                 destinationRectangle: new Rectangle(slotX + itemSize - 15, slotY + itemSize - 15, 10, 10),
+                                 color: Color.Blue);
+                            }
                         }
                     }
                 }
@@ -185,6 +223,14 @@ namespace StryfeRPG.Managers
                 Vector2 measure = Global.DialogFont.MeasureString(str);
                 str = Utils.GetCroppedString(selectedItem.Description, Global.DetailFont, windowX + Width - itemX - (margin * 3), Height - margin * 4 - measure.Y)[0];
                 spriteBatch.DrawString(Global.DetailFont, str, new Vector2(itemX + margin, itemY + margin + measure.Y + 10), Color.White);
+            }
+        }
+
+        public void PerformAction()
+        {
+            if (selectedItem != null)
+            {
+                UseItem(selectedItem);
             }
         }
 

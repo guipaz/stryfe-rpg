@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
+using StryfeCore.Models.Items;
 using StryfeRPG.Managers;
 using StryfeRPG.Models.Characters;
 using StryfeRPG.Models.Items;
 using StryfeRPG.Models.Maps;
 using StryfeRPG.Models.Utils;
+using StryfeRPG.System.Serializers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -35,10 +37,11 @@ namespace StryfeRPG.System
 
         public static void LoadItems()
         {
-            List<Item> itemsJson = JsonConvert.DeserializeObject<List<Item>>(File.ReadAllText("Content/Data/items.json"));
+            List<Item> itemsJson = JsonConvert.DeserializeObject<List<Item>>(File.ReadAllText("Content/Data/items.json"), new ItemConverter());
             Dictionary<int, Item> items = new Dictionary<int, Item>();
             foreach (Item i in itemsJson)
                 items[i.Id] = i;
+                
             Global.SetItems(items);
         }
 
@@ -127,6 +130,26 @@ namespace StryfeRPG.System
             int row = gid / tilesWide;
 
             return new Rectangle(tileSize * column, tileSize * row, tileSize, tileSize);
+        }
+
+        public static void PrintStats()
+        {
+            AttributeSheet sheet = Global.Player.Attributes;
+            Console.WriteLine("---\nPureBase: ");
+            foreach (KeyValuePair<CharacterAttribute, int> att in sheet.PureBase)
+                Console.WriteLine("{0}: {1}", att.Key.ToString(), att.Value);
+
+            Console.WriteLine("---\nBase: ");
+            foreach (KeyValuePair<CharacterAttribute, int> att in sheet.Base)
+                Console.WriteLine("{0}: {1}", att.Key.ToString(), att.Value);
+
+            Console.WriteLine("---\nCalculated: ");
+            foreach (KeyValuePair<CharacterAttribute, int> att in sheet.Calculated)
+                Console.WriteLine("{0}: {1}", att.Key.ToString(), att.Value);
+
+            Console.WriteLine("---\nCurrent: ");
+            foreach (KeyValuePair<CharacterAttribute, int> att in sheet.Current)
+                Console.WriteLine("{0}: {1}", att.Key.ToString(), att.Value);
         }
     }
 }
