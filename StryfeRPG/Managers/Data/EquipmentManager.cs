@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StryfeCore.Models.Items;
+using StryfeRPG.Models.Characters;
 using StryfeRPG.Models.Items;
 using StryfeRPG.System;
 using System;
@@ -14,7 +15,7 @@ namespace StryfeRPG.Managers.Data
     public class EquipmentManager : WindowManager
     {
         // Data
-        public List<Equipment> Equipped = new List<Equipment>();
+        public List<Equipment> EquippedItems = new List<Equipment>();
 
         // Screen
         private Texture2D slotTexture;
@@ -35,7 +36,7 @@ namespace StryfeRPG.Managers.Data
             bool sameItem = false;
             int accessories = 0; // can equip 2 accessories
 
-            foreach (Equipment e in Equipped)
+            foreach (Equipment e in EquippedItems)
             {
                 if (e.EquipType == equip.EquipType)
                 {
@@ -50,7 +51,7 @@ namespace StryfeRPG.Managers.Data
                     }
 
                     removeItem = e;
-                    Equipped.Remove(e);
+                    EquippedItems.Remove(e);
 
                     break;
                 }
@@ -71,14 +72,14 @@ namespace StryfeRPG.Managers.Data
             foreach (AttributeModifier mod in equip.Modifiers)
                 CharacterManager.Instance.AddModifier(mod);
 
-            Equipped.Add(equip);
+            EquippedItems.Add(equip);
 
             Utils.PrintStats();
         }
 
         public bool IsItemEquipped(int id)
         {
-            foreach (Equipment e in Equipped)
+            foreach (Equipment e in EquippedItems)
                 if (e.Id == id)
                     return true;
             return false;
@@ -99,23 +100,105 @@ namespace StryfeRPG.Managers.Data
             // Item slot
             int slotX = 0;
             int slotY = 0;
+            int accessoryAux = 0; // control for more than one accessory
             for (int x = 0; x < 2; x++)
             {
                 for (int y = 0; y < 4; y++)
                 {
+                    // Slot
                     slotX = x * (itemSize + marginIn * 2 + Global.TileSize);
                     slotY = y * (itemSize + marginIn);
                     spriteBatch.Draw(slotTexture,
                              destinationRectangle: new Rectangle(windowX + marginOut + slotX, windowY + marginOut + slotY, itemSize, itemSize),
                              color: Color.White);
-                }
+
+                    // Gets which equip type is
+                    EquipmentType type = EquipmentType.Accessory;
+                    if (x == 0)
+                    {
+                        switch (y)
+                        {
+                            case 0:
+                                type = EquipmentType.Helmet;
+                                break;
+                            case 1:
+                                type = EquipmentType.Weapon;
+                                break;
+                            case 2:
+                                type = EquipmentType.Cape;
+                                break;
+                            case 3:
+                                type = EquipmentType.Accessory;
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        switch (y)
+                        {
+                            case 0:
+                                type = EquipmentType.Armor;
+                                break;
+                            case 1:
+                                type = EquipmentType.Shield;
+                                break;
+                            case 2:
+                                type = EquipmentType.Shoes;
+                                break;
+                            case 3:
+                                type = EquipmentType.Accessory;
+                                break;
+                        }
+                    }
+
+                    Item item = null;
+                    foreach (Equipment e in EquippedItems)
+                    {
+                        if (e.EquipType == type)
+                        {
+                            if (type == EquipmentType.Accessory)
+                            {
+                                if (accessoryAux == 1)
+                                {
+                                    accessoryAux++; // it's ugly but it works
+                                    continue;
+                                }
+
+                                accessoryAux++;
+                            }
+
+                            item = e;
+                            break;
+                        }
+                    }
+
+                    // Draws item sprite or thumbnail if nothing is equipped
+                    if (item != null)
+                    {
+                        Texture2D texture = Global.GetTexture(item.TextureName);
+                        if (texture != null)
+                        {
+                            Rectangle rect = Utils.GetRectangleByGid(item.Gid, item.TextureTileSize, texture.Width);
+                            spriteBatch.Draw(texture,
+                                             new Rectangle(windowX + marginOut + slotX + item.TextureTileSize / 4,
+                                                           windowY + marginOut + slotY + item.TextureTileSize / 4,
+                                                           item.TextureTileSize, item.TextureTileSize),
+                                             rect,
+                                             Color.White);
+                        }
+                    } else
+                    {
+                        //TODO: thumbnail
+                    }
+                }               
+                
             }
 
             // Player image
             int imgX = windowX + marginOut + itemSize + marginIn;
             spriteBatch.Draw(Global.Player.Texture,
                             destinationRectangle: new Rectangle(imgX, windowY + Height / 2 - Global.TileSize / 2, Global.TileSize, Global.TileSize),
-                            sourceRectangle: Utils.GetRectangleByGid(Global.Player.GetSprite(), Global.TileSize, Global.Player.Texture.Width),
+                            sourceRectangle: Utils.GetRectangleByGid(Global.Player.GetSprite(FacingDirection.Down), Global.TileSize, Global.Player.Texture.Width),
                             color: Color.White);
 
             // Description frame

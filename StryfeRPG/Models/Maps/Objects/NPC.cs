@@ -72,8 +72,12 @@ namespace StryfeRPG.Models.Characters
         {
             if (Sheet == null)
                 return TextureId;
+            return GetSprite(Direction);
+        }
 
-            switch (Direction)
+        public int GetSprite(FacingDirection direction)
+        {
+            switch (direction)
             {
                 case FacingDirection.Up:
                     return Sheet.GidUp;

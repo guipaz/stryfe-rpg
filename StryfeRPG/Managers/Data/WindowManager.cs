@@ -37,6 +37,9 @@ namespace StryfeRPG.Managers.Data
 
         public virtual void OpenWindow()
         {
+            if (IsWindowOpened && CurrentManager != null)
+                CurrentManager.CloseWindow();
+
             IsOpened = true;
 
             CurrentManager = this;
