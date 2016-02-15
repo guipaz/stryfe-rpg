@@ -22,10 +22,46 @@ namespace StryfeRPG.Managers.Data
         private int itemSize = 50;
         private int marginOut = 15;
         private int marginIn = 10;
+        private int tilesX = 2;
+        private int tilesY = 4;
 
-        public void Move(Vector2 movement)
+        // Navigation
+        private Vector2 selectedTile;
+        private Equipment selectedItem;
+
+        public override void OpenWindow()
         {
+            base.OpenWindow();
 
+            CheckSelectedItem();
+        }
+
+        public override void Move(Vector2 movement)
+        {
+            Vector2 finalPos = new Vector2(selectedTile.X + movement.X, selectedTile.Y + movement.Y);
+            if (finalPos.X >= 0 &&
+                finalPos.Y >= 0 &&
+                finalPos.X < tilesX &&
+                finalPos.Y < tilesY)
+                selectedTile = finalPos;
+
+            CheckSelectedItem();
+        }
+
+        private void CheckSelectedItem()
+        {
+            selectedItem = GetEquipment((int)selectedTile.X, (int)selectedTile.Y);
+        }
+
+        private Equipment GetEquipment(int x, int y)
+        {
+            EquipmentType type = GetEquipType(x, y);
+
+            //TODO: accessory control
+            foreach (Equipment e in EquippedItems)
+                if (type == e.EquipType)
+                    return e;
+            return null;
         }
 
         public void ToggleEquipment(Item item)
@@ -106,51 +142,21 @@ namespace StryfeRPG.Managers.Data
                 for (int y = 0; y < 4; y++)
                 {
                     // Slot
+                    Color color = Color.White;
+                    int i = (int)y * tilesX + (int)x;
+                    //if (Inventory.ContainsKey(i) && Inventory[i] != null)
+                    //    color = Color.LightBlue; // when there's an item in the slot
+
+                    if (selectedTile.X == x && selectedTile.Y == y)
+                        color = Color.Cyan; // when the slot is selected
+
                     slotX = x * (itemSize + marginIn * 2 + Global.TileSize);
                     slotY = y * (itemSize + marginIn);
                     spriteBatch.Draw(slotTexture,
                              destinationRectangle: new Rectangle(windowX + marginOut + slotX, windowY + marginOut + slotY, itemSize, itemSize),
-                             color: Color.White);
+                             color: color);
 
-                    // Gets which equip type is
-                    EquipmentType type = EquipmentType.Accessory;
-                    if (x == 0)
-                    {
-                        switch (y)
-                        {
-                            case 0:
-                                type = EquipmentType.Helmet;
-                                break;
-                            case 1:
-                                type = EquipmentType.Weapon;
-                                break;
-                            case 2:
-                                type = EquipmentType.Cape;
-                                break;
-                            case 3:
-                                type = EquipmentType.Accessory;
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        switch (y)
-                        {
-                            case 0:
-                                type = EquipmentType.Armor;
-                                break;
-                            case 1:
-                                type = EquipmentType.Shield;
-                                break;
-                            case 2:
-                                type = EquipmentType.Shoes;
-                                break;
-                            case 3:
-                                type = EquipmentType.Accessory;
-                                break;
-                        }
-                    }
-
+                    EquipmentType type = GetEquipType(x, y);
                     Item item = null;
                     foreach (Equipment e in EquippedItems)
                     {
@@ -208,9 +214,53 @@ namespace StryfeRPG.Managers.Data
                              color: Color.White);
         }
 
+        private EquipmentType GetEquipType(int x, int y)
+        {
+            EquipmentType type = EquipmentType.Accessory;
+            if (x == 0)
+            {
+                switch (y)
+                {
+                    case 0:
+                        type = EquipmentType.Helmet;
+                        break;
+                    case 1:
+                        type = EquipmentType.Weapon;
+                        break;
+                    case 2:
+                        type = EquipmentType.Cape;
+                        break;
+                    case 3:
+                        type = EquipmentType.Accessory;
+                        break;
+                }
+            }
+            else
+            {
+                switch (y)
+                {
+                    case 0:
+                        type = EquipmentType.Armor;
+                        break;
+                    case 1:
+                        type = EquipmentType.Shield;
+                        break;
+                    case 2:
+                        type = EquipmentType.Shoes;
+                        break;
+                    case 3:
+                        type = EquipmentType.Accessory;
+                        break;
+                }
+            }
+
+            return type;
+        }
+
         public override void PerformAction()
         {
-            throw new NotImplementedException();
+            if (selectedItem != null)
+                ToggleEquipment(selectedItem);
         }
 
         // Singleton stuff

@@ -126,12 +126,9 @@ namespace StryfeRPG.Managers
                 Console.WriteLine(movement);
 
                 // If inventory is opened, send the movement to it
-                if (Utils.IsMenuOpened())
+                if (WindowManager.IsWindowOpened)
                 {
-                    if (InventoryManager.Instance.IsOpened)
-                    {
-                        InventoryManager.Instance.Move(movement);
-                    }
+                    WindowManager.CurrentManager.Move(movement);
 
                     hudCooldown = 1 / hudActionsPerSecond;
                     return;

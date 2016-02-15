@@ -56,5 +56,6 @@ namespace StryfeRPG.Managers.Data
 
         public abstract void Draw(SpriteBatch spriteBatch, double timePassed);
         public abstract void PerformAction();
+        public abstract void Move(Vector2 movement);
     }
 }

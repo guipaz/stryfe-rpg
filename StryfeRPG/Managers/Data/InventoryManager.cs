@@ -98,7 +98,7 @@ namespace StryfeRPG.Managers
             }
         }
 
-        public void Move(Vector2 movement)
+        public override void Move(Vector2 movement)
         {
             Vector2 finalPos = new Vector2(selectedItemIndex.X + movement.X, selectedItemIndex.Y + movement.Y);
             if (finalPos.X >= 0 &&
