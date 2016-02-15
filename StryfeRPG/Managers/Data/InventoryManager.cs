@@ -24,7 +24,7 @@ namespace StryfeRPG.Managers
         private int tilesX = 4;
         private int tilesY = 4;
         
-        private Texture2D itemTexture;
+        private Texture2D slotTexture;
 
         public override void OpenWindow()
         {
@@ -130,7 +130,7 @@ namespace StryfeRPG.Managers
 
             // Window
             int windowX = bounds.Width / 2 - Width / 2;
-            spriteBatch.Draw(bgTexture,
+            spriteBatch.Draw(dialogTexture,
                              destinationRectangle: new Rectangle(windowX, bounds.Height / 2 - Height / 2, Width, Height),
                              color: new Color(Color.White, 0.8f));
 
@@ -158,7 +158,7 @@ namespace StryfeRPG.Managers
                     int slotX = lastX;
                     int slotY = itemY + y * (itemSize + margin);
 
-                    spriteBatch.Draw(itemTexture,
+                    spriteBatch.Draw(slotTexture,
                                  destinationRectangle: new Rectangle(slotX, slotY, itemSize, itemSize),
                                  color: color);
 
@@ -178,7 +178,7 @@ namespace StryfeRPG.Managers
 
                             if (EquipmentManager.Instance.IsItemEquipped(item.Id))
                             {
-                                spriteBatch.Draw(itemTexture,
+                                spriteBatch.Draw(slotTexture,
                                  destinationRectangle: new Rectangle(slotX + itemSize - 15, slotY + itemSize - 15, 10, 10),
                                  color: Color.Blue);
                             }
@@ -198,7 +198,7 @@ namespace StryfeRPG.Managers
 
             // Description frame
             itemX = lastX + itemSize + margin;
-            spriteBatch.Draw(itemTexture,
+            spriteBatch.Draw(slotTexture,
                              destinationRectangle: new Rectangle(itemX, itemY, windowX + Width - itemX - margin, Height - margin * 2),
                              color: Color.White);
 
@@ -227,9 +227,7 @@ namespace StryfeRPG.Managers
         private static InventoryManager instance;
         protected InventoryManager() : base()
         {
-            bgTexture = Global.GetTexture("dialog_bg");
-            itemTexture = Global.GetTexture("item_bg");
-            bounds = Global.Viewport.Bounds;
+            slotTexture = Global.GetTexture("item_bg");
 
             Inventory = new Dictionary<int, Item>();
             Quantities = new Dictionary<int, int>();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StryfeRPG.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +18,14 @@ namespace StryfeRPG.Managers.Data
         protected int Width = 550;
         protected int Height = 300;
 
-        protected Texture2D bgTexture;
+        protected Texture2D dialogTexture;
         protected Rectangle bounds;
+
+        public WindowManager()
+        {
+            dialogTexture = Global.GetTexture("dialog_bg");
+            bounds = Global.Viewport.Bounds;
+        }
 
         public void ToggleWindow()
         {

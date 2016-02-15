@@ -17,7 +17,11 @@ namespace StryfeRPG.Managers.Data
         public List<Equipment> Equipped = new List<Equipment>();
 
         // Screen
-        
+        private Texture2D slotTexture;
+        private int itemSize = 50;
+        private int marginOut = 15;
+        private int marginIn = 10;
+
         public void Move(Vector2 movement)
         {
 
@@ -87,11 +91,38 @@ namespace StryfeRPG.Managers.Data
 
             // Window
             int windowX = bounds.Width / 2 - Width / 2;
-            spriteBatch.Draw(bgTexture,
-                             destinationRectangle: new Rectangle(windowX, bounds.Height / 2 - Height / 2, Width, Height),
+            int windowY = bounds.Height / 2 - Height / 2;
+            spriteBatch.Draw(dialogTexture,
+                             destinationRectangle: new Rectangle(windowX, windowY, Width, Height),
                              color: new Color(Color.White, 0.8f));
 
+            // Item slot
+            int slotX = 0;
+            int slotY = 0;
+            for (int x = 0; x < 2; x++)
+            {
+                for (int y = 0; y < 4; y++)
+                {
+                    slotX = x * (itemSize + marginIn * 2 + Global.TileSize);
+                    slotY = y * (itemSize + marginIn);
+                    spriteBatch.Draw(slotTexture,
+                             destinationRectangle: new Rectangle(windowX + marginOut + slotX, windowY + marginOut + slotY, itemSize, itemSize),
+                             color: Color.White);
+                }
+            }
 
+            // Player image
+            int imgX = windowX + marginOut + itemSize + marginIn;
+            spriteBatch.Draw(Global.Player.Texture,
+                            destinationRectangle: new Rectangle(imgX, windowY + Height / 2 - Global.TileSize / 2, Global.TileSize, Global.TileSize),
+                            sourceRectangle: Utils.GetRectangleByGid(Global.Player.GetSprite(), Global.TileSize, Global.Player.Texture.Width),
+                            color: Color.White);
+
+            // Description frame
+            int descriptionX = imgX + Global.TileSize + itemSize + marginIn * 2;
+            spriteBatch.Draw(slotTexture,
+                             destinationRectangle: new Rectangle(descriptionX, windowY + marginOut, Width + windowX - descriptionX - marginOut, Height - marginOut * 2),
+                             color: Color.White);
         }
 
         public override void PerformAction()
@@ -101,13 +132,12 @@ namespace StryfeRPG.Managers.Data
 
         // Singleton stuff
         private static EquipmentManager instance;
-        protected EquipmentManager()
+        protected EquipmentManager() : base()
         {
-            bgTexture = Global.GetTexture("dialog_bg");
-            bounds = Global.Viewport.Bounds;
+            slotTexture = Global.GetTexture("item_bg");
 
-            Width = 300;
-            Height = 300;
+            Width = marginOut * 2 + itemSize * 2 + marginIn * 3 + Global.TileSize + 200;
+            Height = marginOut * 2 + itemSize * 4 + marginIn * 3;
         }
         public static EquipmentManager Instance
         {
