@@ -51,17 +51,36 @@ namespace StryfeRPG.Managers.Data
         private void CheckSelectedItem()
         {
             selectedItem = GetEquipment((int)selectedTile.X, (int)selectedTile.Y);
+            if (selectedItem != null)
+                Console.WriteLine(selectedItem.Name);
         }
 
         private Equipment GetEquipment(int x, int y)
         {
             EquipmentType type = GetEquipType(x, y);
-
-            //TODO: accessory control
+            Equipment equip = null;
+            
+            int accessories = 0; // accessory control
             foreach (Equipment e in EquippedItems)
+            {
                 if (type == e.EquipType)
-                    return e;
-            return null;
+                {
+                    if (type == EquipmentType.Accessory)
+                    {
+                        accessories++;
+
+                        if (accessories == 2 && x == 0)
+                            return equip;
+                        else
+                        {
+                            equip = e;
+                        }
+                    } else
+                        return e;
+                }
+            }
+
+            return equip;
         }
 
         public void ToggleEquipment(Item item)
@@ -101,6 +120,7 @@ namespace StryfeRPG.Managers.Data
             if (sameItem)
             {
                 Utils.PrintStats();
+                CheckSelectedItem();
                 return;
             }
                 
@@ -111,6 +131,7 @@ namespace StryfeRPG.Managers.Data
             EquippedItems.Add(equip);
 
             Utils.PrintStats();
+            CheckSelectedItem();
         }
 
         public bool IsItemEquipped(int id)

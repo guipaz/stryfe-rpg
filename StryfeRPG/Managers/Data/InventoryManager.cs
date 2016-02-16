@@ -14,8 +14,9 @@ namespace StryfeRPG.Managers
     public class InventoryManager : WindowManager
     {
         // Data management
-        private Dictionary<int, Item> Inventory = new Dictionary<int, Item>(); // Key: position - Value: item
-        private Dictionary<int, int> Quantities = new Dictionary<int, int>(); // Key: item id - Value: quantity
+        private Dictionary<int, Item> Items = new Dictionary<int, Item>(); // Key: inventory id - Value: item
+        private Dictionary<int, int> Quantities = new Dictionary<int, int>(); // Key: inventory id - Value: quantity
+        private Dictionary<int, int> Positions = new Dictionary<int, int>(); // Key: position - Value: inventory id
 
         private Item selectedItem;
         private Vector2 selectedItemIndex;
@@ -43,7 +44,7 @@ namespace StryfeRPG.Managers
         {
             if (item != null)
             {
-                Inventory[GetAvailablePosition(item)] = item;
+                Items[GetAvailablePosition(item)] = item;
                 Quantities[item.Id] = Quantities.ContainsKey(item.Id) ? Quantities[item.Id] + quantity : quantity;
             }
 
@@ -52,13 +53,13 @@ namespace StryfeRPG.Managers
 
         private int GetAvailablePosition(Item item)
         {
-            List<int> positions = Inventory.Keys.ToList();
+            List<int> positions = Items.Keys.ToList();
             positions.Sort();
             
             int pos = 0;
             foreach (int occupiedPos in positions)
             {
-                if ((Inventory[occupiedPos].Id == item.Id &&
+                if ((Items[occupiedPos].Id == item.Id &&
                     item.Type != ItemType.Equipment) ||
                     pos < occupiedPos)
                     return pos;
@@ -91,7 +92,7 @@ namespace StryfeRPG.Managers
                 Quantities[item.Id]--;
                 if (Quantities[item.Id] <= 0)
                 {
-                    Inventory.Remove(i);
+                    Items.Remove(i);
                     Quantities.Remove(item.Id);
                     selectedItem = null;
                 }
@@ -113,8 +114,8 @@ namespace StryfeRPG.Managers
         private Item GetItem(int x, int y)
         {
             int i = y * tilesX + x;
-            if (Inventory.ContainsKey(i))
-                return Inventory[i];
+            if (Items.ContainsKey(i))
+                return Items[i];
             return null;
         }
 
@@ -149,7 +150,7 @@ namespace StryfeRPG.Managers
 
                     Color color = Color.White;
                     int i = (int)y * tilesX + (int)x;
-                    if (Inventory.ContainsKey(i) && Inventory[i] != null)
+                    if (Items.ContainsKey(i) && Items[i] != null)
                         color = Color.LightBlue; // when there's an item in the slot
 
                     if (selectedItemIndex.X == x && selectedItemIndex.Y == y)
@@ -229,7 +230,7 @@ namespace StryfeRPG.Managers
         {
             slotTexture = Global.GetTexture("item_bg");
 
-            Inventory = new Dictionary<int, Item>();
+            Items = new Dictionary<int, Item>();
             Quantities = new Dictionary<int, int>();
 
             Width = 550;
