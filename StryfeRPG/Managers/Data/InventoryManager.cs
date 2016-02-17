@@ -31,11 +31,6 @@ namespace StryfeRPG.Managers
         {
             base.OpenWindow();
             CheckSelectedItem();
-
-            foreach (KeyValuePair<int, Item> i in Items)
-            {
-                Console.WriteLine("{0}: {1}", i.Key, i.Value);
-            }
         }
 
         public void AddItem(int id, int quantity)
@@ -61,13 +56,20 @@ namespace StryfeRPG.Managers
                 IdsByPositions[pos] = id;
                 pos++;
             }
+
+            CheckSelectedItem();
+
+            foreach (KeyValuePair<int, Item> i in Items)
+            {
+                Console.WriteLine("{0}: {1}", i.Key, i.Value);
+            }
         }
 
-        public void AddItem(Item item, int quantity)
+        public void AddItem(Item item, int quantity, int inventoryId = -1)
         {
             if (item != null)
             {
-                int inventoryId = GetAvailableInventoryId(item);
+                inventoryId = inventoryId == -1 ? GetAvailableInventoryId(item) : inventoryId;
                 Items[inventoryId] = item;
                 Quantities[inventoryId] = Quantities.ContainsKey(inventoryId) ? Quantities[inventoryId] + quantity : quantity;
             }
@@ -117,7 +119,6 @@ namespace StryfeRPG.Managers
             {
                 Items.Remove(i);
                 Quantities.Remove(inventoryId);
-                selectedItem = null;
             }
 
             SortInventory();

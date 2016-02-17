@@ -111,7 +111,7 @@ namespace StryfeRPG.Managers.Data
 
                     removeItem = e.Value;
                     EquippedItems.Remove(e.Key);
-                    InventoryManager.Instance.AddItem(e.Value, 1);
+                    InventoryManager.Instance.AddItem(e.Value, 1, e.Key);
 
                     break;
                 }
