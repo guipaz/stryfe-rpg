@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StryfeRPG.Models.Items;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,9 @@ using System.Threading.Tasks;
 
 namespace StryfeRPG.Models.Characters
 {
-    class InventoryItem
+    public class InventoryItem
     {
+        public int InventoryId { get; set; }
+        public Item Item { get; set; }
     }
 }

@@ -50,6 +50,7 @@
     <Compile Include="Managers\GUI\HUDManager.cs" />
     <Compile Include="Managers\Data\InventoryManager.cs" />
     <Compile Include="Managers\System\PauseManager.cs" />
+    <Compile Include="Models\Characters\InventoryItem.cs" />
     <Compile Include="Models\Characters\SpriteSheet.cs" />
     <Compile Include="Models\Maps\ObjectInfo.cs" />
     <Compile Include="Models\Maps\Objects\ItemObject.cs" />

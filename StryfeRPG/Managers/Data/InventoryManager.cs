@@ -14,9 +14,9 @@ namespace StryfeRPG.Managers
     public class InventoryManager : WindowManager
     {
         // Data management
-        private Dictionary<int, Item> Items = new Dictionary<int, Item>(); // Key: inventory id - Value: item
+        public Dictionary<int, Item> Items = new Dictionary<int, Item>(); // Key: inventory id - Value: item
         private Dictionary<int, int> Quantities = new Dictionary<int, int>(); // Key: inventory id - Value: quantity
-        private Dictionary<int, int> Positions = new Dictionary<int, int>(); // Key: position - Value: inventory id
+        private Dictionary<int, int> IdsByPositions = new Dictionary<int, int>(); // Key: position - Value: inventory id
 
         private Item selectedItem;
         private Vector2 selectedItemIndex;
@@ -31,72 +31,96 @@ namespace StryfeRPG.Managers
         {
             base.OpenWindow();
             CheckSelectedItem();
+
+            foreach (KeyValuePair<int, Item> i in Items)
+            {
+                Console.WriteLine("{0}: {1}", i.Key, i.Value);
+            }
         }
 
         public void AddItem(int id, int quantity)
         {
             Item item = Global.GetItem(id);
             if (item != null)
+            {
                 AddItem(item, quantity);
+            }
+        }
+
+        private void SortInventory()
+        {
+            IdsByPositions.Clear();
+
+            int pos = 0;
+
+            List<int> ids = Items.Keys.ToList();
+            ids.Sort();
+
+            foreach (int id in ids)
+            {
+                IdsByPositions[pos] = id;
+                pos++;
+            }
         }
 
         public void AddItem(Item item, int quantity)
         {
             if (item != null)
             {
-                Items[GetAvailablePosition(item)] = item;
-                Quantities[item.Id] = Quantities.ContainsKey(item.Id) ? Quantities[item.Id] + quantity : quantity;
+                int inventoryId = GetAvailableInventoryId(item);
+                Items[inventoryId] = item;
+                Quantities[inventoryId] = Quantities.ContainsKey(inventoryId) ? Quantities[inventoryId] + quantity : quantity;
             }
+
+            SortInventory();
 
             ScriptInterpreter.Instance.FinishedCommand();
         }
 
-        private int GetAvailablePosition(Item item)
+        private int GetAvailableInventoryId(Item item)
         {
-            List<int> positions = Items.Keys.ToList();
-            positions.Sort();
-            
+            List<int> ids = Items.Keys.ToList();
+            ids.Sort();
+
             int pos = 0;
-            foreach (int occupiedPos in positions)
+            foreach (int occupiedId in ids)
             {
-                if ((Items[occupiedPos].Id == item.Id &&
+                if ((Items[occupiedId].Id == item.Id &&
                     item.Type != ItemType.Equipment) ||
-                    pos < occupiedPos)
+                    pos < occupiedId)
                     return pos;
                 pos++;
             }
 
             return pos;
         }
-
-        public void UseItem(Item item)
+        
+        public void UseItem(int inventoryId)
         {
-            if (selectedItem == null)
-                return;
-            
+            Item item = Items[inventoryId];
+
             // Check for equipment
             if (item.Type == ItemType.Equipment)
             {
-                EquipmentManager.Instance.ToggleEquipment(item);
-                return;
-            }
-
-            // Apply modifiers
-            foreach (AttributeModifier mod in item.Modifiers)
-                CharacterManager.Instance.AddModifier(mod);
-
-            // Remove item if usable
-            if (item.Type == ItemType.Usable)
+                EquipmentManager.Instance.ToggleEquipment(inventoryId);
+            } else
             {
-                int i = (int)selectedItemIndex.Y * tilesX + (int)selectedItemIndex.X;
-                Quantities[item.Id]--;
-                if (Quantities[item.Id] <= 0)
-                {
-                    Items.Remove(i);
-                    Quantities.Remove(item.Id);
-                    selectedItem = null;
-                }
+                // Apply modifiers
+                foreach (AttributeModifier mod in item.Modifiers)
+                    CharacterManager.Instance.AddModifier(mod);
             }
+
+            // Remove item from inventory
+            int i = (int)selectedItemIndex.Y * tilesX + (int)selectedItemIndex.X;
+            Quantities[inventoryId]--;
+            if (Quantities[inventoryId] <= 0)
+            {
+                Items.Remove(i);
+                Quantities.Remove(inventoryId);
+                selectedItem = null;
+            }
+
+            SortInventory();
         }
 
         public override void Move(Vector2 movement)
@@ -110,18 +134,22 @@ namespace StryfeRPG.Managers
 
             CheckSelectedItem();
         }
-
-        private Item GetItem(int x, int y)
+         
+        private Item GetItemByPosition(int x, int y)
         {
-            int i = y * tilesX + x;
-            if (Items.ContainsKey(i))
-                return Items[i];
+            int pos = y * tilesX + x;
+            if (!IdsByPositions.ContainsKey(pos))
+                return null;
+
+            int inventoryId = IdsByPositions[pos];
+            if (Items.ContainsKey(inventoryId))
+                return Items[inventoryId];
             return null;
         }
 
         private void CheckSelectedItem()
         {
-            selectedItem = GetItem((int)selectedItemIndex.X, (int)selectedItemIndex.Y);
+            selectedItem = GetItemByPosition((int)selectedItemIndex.X, (int)selectedItemIndex.Y);
         }
 
         public override void Draw(SpriteBatch spriteBatch, double timePassed)
@@ -164,7 +192,7 @@ namespace StryfeRPG.Managers
                                  color: color);
 
                     
-                    Item item = GetItem(x, y);
+                    Item item = GetItemByPosition(x, y);
                     if (item != null)
                     {
                         // Item sprite
@@ -177,7 +205,7 @@ namespace StryfeRPG.Managers
                                              rect,
                                              Color.White);
 
-                            if (EquipmentManager.Instance.IsItemEquipped(item.Id))
+                            if (EquipmentManager.Instance.IsItemEquipped(IdsByPositions[y * tilesX + x]))
                             {
                                 spriteBatch.Draw(slotTexture,
                                  destinationRectangle: new Rectangle(slotX + itemSize - 15, slotY + itemSize - 15, 10, 10),
@@ -220,7 +248,7 @@ namespace StryfeRPG.Managers
         {
             if (selectedItem != null)
             {
-                UseItem(selectedItem);
+                UseItem(IdsByPositions[(int)selectedItemIndex.Y * tilesX + (int)selectedItemIndex.X]);
             }
         }
 
@@ -232,6 +260,7 @@ namespace StryfeRPG.Managers
 
             Items = new Dictionary<int, Item>();
             Quantities = new Dictionary<int, int>();
+            IdsByPositions = new Dictionary<int, int>();
 
             Width = 550;
             Height = 300;

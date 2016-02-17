@@ -15,7 +15,7 @@ namespace StryfeRPG.Managers.Data
     public class EquipmentManager : WindowManager
     {
         // Data
-        public List<Equipment> EquippedItems = new List<Equipment>();
+        public Dictionary<int, Equipment> EquippedItems = new Dictionary<int, Equipment>();
 
         // Screen
         private Texture2D slotTexture;
@@ -27,7 +27,7 @@ namespace StryfeRPG.Managers.Data
 
         // Navigation
         private Vector2 selectedTile;
-        private Equipment selectedItem;
+        private int selectedItem;
 
         public override void OpenWindow()
         {
@@ -50,20 +50,18 @@ namespace StryfeRPG.Managers.Data
 
         private void CheckSelectedItem()
         {
-            selectedItem = GetEquipment((int)selectedTile.X, (int)selectedTile.Y);
-            if (selectedItem != null)
-                Console.WriteLine(selectedItem.Name);
+            selectedItem = GetEquipmentId((int)selectedTile.X, (int)selectedTile.Y);
         }
 
-        private Equipment GetEquipment(int x, int y)
+        private int GetEquipmentId(int x, int y)
         {
             EquipmentType type = GetEquipType(x, y);
-            Equipment equip = null;
+            int equip = -1;
             
             int accessories = 0; // accessory control
-            foreach (Equipment e in EquippedItems)
+            foreach (KeyValuePair<int, Equipment> e in EquippedItems)
             {
-                if (type == e.EquipType)
+                if (type == e.Value.EquipType)
                 {
                     if (type == EquipmentType.Accessory)
                     {
@@ -73,40 +71,47 @@ namespace StryfeRPG.Managers.Data
                             return equip;
                         else
                         {
-                            equip = e;
+                            equip = e.Key;
                         }
                     } else
-                        return e;
+                        return e.Key;
                 }
             }
 
             return equip;
         }
 
-        public void ToggleEquipment(Item item)
+        public void ToggleEquipment(int inventoryId)
         {
-            Equipment equip = (Equipment)item;
+            Equipment equip = null;
+            bool justRemoving = false;
+            if (InventoryManager.Instance.Items.ContainsKey(inventoryId))
+            {
+                equip = (Equipment)InventoryManager.Instance.Items[inventoryId];
+            }
+            else
+            {
+                equip = EquippedItems[inventoryId];
+                justRemoving = true;
+            }
 
             Item removeItem = null;
-            bool sameItem = false;
             int accessories = 0; // can equip 2 accessories
 
-            foreach (Equipment e in EquippedItems)
+            foreach (KeyValuePair<int, Equipment> e in EquippedItems)
             {
-                if (e.EquipType == equip.EquipType)
+                if (e.Value.EquipType == equip.EquipType)
                 {
-                    if (e.Id == equip.Id)
-                        sameItem = true;
-
-                    if (e.EquipType == EquipmentType.Accessory)
+                    if (e.Value.EquipType == EquipmentType.Accessory)
                     {
                         accessories++;
-                        if (accessories < 2 && !sameItem)
+                        if (accessories < 2)
                             continue;
                     }
 
-                    removeItem = e;
-                    EquippedItems.Remove(e);
+                    removeItem = e.Value;
+                    EquippedItems.Remove(e.Key);
+                    InventoryManager.Instance.AddItem(e.Value, 1);
 
                     break;
                 }
@@ -117,27 +122,26 @@ namespace StryfeRPG.Managers.Data
                 CharacterManager.Instance.RemoveModifiers(removeItem.Id);
             }
 
-            if (sameItem)
+            if (justRemoving)
             {
                 Utils.PrintStats();
                 CheckSelectedItem();
                 return;
             }
-                
 
             foreach (AttributeModifier mod in equip.Modifiers)
                 CharacterManager.Instance.AddModifier(mod);
 
-            EquippedItems.Add(equip);
+            EquippedItems.Add(inventoryId, equip);
 
             Utils.PrintStats();
             CheckSelectedItem();
         }
 
-        public bool IsItemEquipped(int id)
+        public bool IsItemEquipped(int inventoryId)
         {
-            foreach (Equipment e in EquippedItems)
-                if (e.Id == id)
+            foreach (KeyValuePair<int, Equipment> e in EquippedItems)
+                if (e.Key == inventoryId)
                     return true;
             return false;
         }
@@ -179,9 +183,9 @@ namespace StryfeRPG.Managers.Data
 
                     EquipmentType type = GetEquipType(x, y);
                     Item item = null;
-                    foreach (Equipment e in EquippedItems)
+                    foreach (KeyValuePair<int, Equipment> e in EquippedItems)
                     {
-                        if (e.EquipType == type)
+                        if (e.Value.EquipType == type)
                         {
                             if (type == EquipmentType.Accessory)
                             {
@@ -194,7 +198,7 @@ namespace StryfeRPG.Managers.Data
                                 accessoryAux++;
                             }
 
-                            item = e;
+                            item = e.Value;
                             break;
                         }
                     }
@@ -280,7 +284,7 @@ namespace StryfeRPG.Managers.Data
 
         public override void PerformAction()
         {
-            if (selectedItem != null)
+            if (selectedItem != -1)
                 ToggleEquipment(selectedItem);
         }
 
