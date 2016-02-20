@@ -69,10 +69,8 @@ namespace StryfeRPG.Managers.Data
 
                         if (accessories == 2 && x == 0)
                             return equip;
-                        else
-                        {
+                        else if (accessories == 2 && x == 1)
                             equip = e.Key;
-                        }
                     } else
                         return e.Key;
                 }
@@ -83,35 +81,33 @@ namespace StryfeRPG.Managers.Data
 
         public void ToggleEquipment(int inventoryId)
         {
-            Equipment equip = null;
+            Equipment equipping = null;
             bool justRemoving = false;
             if (InventoryManager.Instance.Items.ContainsKey(inventoryId))
             {
-                equip = (Equipment)InventoryManager.Instance.Items[inventoryId];
+                equipping = (Equipment)InventoryManager.Instance.Items[inventoryId];
             }
             else
             {
-                equip = EquippedItems[inventoryId];
+                equipping = EquippedItems[inventoryId];
                 justRemoving = true;
             }
 
             Item removeItem = null;
-            int accessories = 0; // can equip 2 accessories
-
-            foreach (KeyValuePair<int, Equipment> e in EquippedItems)
+            
+            foreach (KeyValuePair<int, Equipment> equipped in EquippedItems)
             {
-                if (e.Value.EquipType == equip.EquipType)
+                if (equipped.Value.EquipType == equipping.EquipType)
                 {
-                    if (e.Value.EquipType == EquipmentType.Accessory)
+                    if (equipped.Value.EquipType == EquipmentType.Accessory)
                     {
-                        accessories++;
-                        if (accessories < 2)
+                        if (equipped.Key != inventoryId)
                             continue;
                     }
 
-                    removeItem = e.Value;
-                    EquippedItems.Remove(e.Key);
-                    InventoryManager.Instance.AddItem(e.Value, 1, e.Key);
+                    removeItem = equipped.Value;
+                    EquippedItems.Remove(equipped.Key);
+                    InventoryManager.Instance.AddItem(equipped.Value, 1, equipped.Key);
 
                     break;
                 }
@@ -129,10 +125,10 @@ namespace StryfeRPG.Managers.Data
                 return;
             }
 
-            foreach (AttributeModifier mod in equip.Modifiers)
+            foreach (AttributeModifier mod in equipping.Modifiers)
                 CharacterManager.Instance.AddModifier(mod);
 
-            EquippedItems.Add(inventoryId, equip);
+            EquippedItems.Add(inventoryId, equipping);
 
             Utils.PrintStats();
             CheckSelectedItem();

@@ -82,15 +82,19 @@ namespace StryfeRPG.Managers
         private int GetAvailableInventoryId(Item item)
         {
             List<int> ids = Items.Keys.ToList();
+            ids.AddRange(EquipmentManager.Instance.EquippedItems.Keys.ToList());
             ids.Sort();
 
             int pos = 0;
             foreach (int occupiedId in ids)
             {
-                if ((Items[occupiedId].Id == item.Id &&
-                    item.Type != ItemType.Equipment) ||
-                    pos < occupiedId)
-                    return pos;
+                if ((Items.ContainsKey(occupiedId) && Items[occupiedId].Id == item.Id) ||
+                    (EquipmentManager.Instance.EquippedItems.ContainsKey(occupiedId) && EquipmentManager.Instance.EquippedItems[occupiedId].Id == item.Id))
+                {
+                    if (item.Type != ItemType.Equipment || pos < occupiedId)
+                        return pos;
+                }
+               
                 pos++;
             }
 
@@ -100,6 +104,7 @@ namespace StryfeRPG.Managers
         public void UseItem(int inventoryId)
         {
             Item item = Items[inventoryId];
+
 
             // Check for equipment
             if (item.Type == ItemType.Equipment)
@@ -113,11 +118,10 @@ namespace StryfeRPG.Managers
             }
 
             // Remove item from inventory
-            int i = (int)selectedItemIndex.Y * tilesX + (int)selectedItemIndex.X;
             Quantities[inventoryId]--;
             if (Quantities[inventoryId] <= 0)
             {
-                Items.Remove(i);
+                Items.Remove(inventoryId);
                 Quantities.Remove(inventoryId);
             }
 
