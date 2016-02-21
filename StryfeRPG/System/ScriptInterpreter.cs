@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using StryfeCore.Models.Utils;
 using StryfeRPG.Managers;
 using StryfeRPG.Models.Maps;
 using StryfeRPG.Models.Utils;
@@ -13,16 +14,75 @@ namespace StryfeRPG.System
     public class ScriptInterpreter
     {
         private Script currentScript;
+        private ScriptPage currentPage;
+
         private int currentCommand;
         private MapObject caller;
 
         public void RunScript(int id, MapObject caller)
         {
-            currentScript = Global.GetScript(id);
             currentCommand = 0;
             this.caller = caller;
 
+            currentScript = Global.GetScript(id);
+            currentPage = GetCurrentPage();
+            
             NextCommand();
+        }
+
+        private ScriptPage GetCurrentPage()
+        {
+            ScriptPage finalPage = null;
+
+            if (currentScript != null && currentScript.Pages.Count() > 0)
+            {
+                // Evaluate each condition in order
+                foreach (ScriptPage page in currentScript.Pages)
+                {
+                    // Returns if there's no condition to be met
+                    if (page.Condition == null || page.Condition == "" || page.Condition == "none")
+                    {
+                        finalPage = page;
+                        continue;
+                    }
+
+                    List<string> args = GetArgumentsList(page.Arguments);
+                    // Checks conditions
+                    switch (page.Condition)
+                    {
+                        case "interaction": // Verifies if there has been enough interactions with the caller
+                            ObjectInfo info = caller.SavedInformation;
+                            if (info != null)
+                            {
+                                int value = int.Parse(args[1]);
+                                if (Compare(args[0], info.NumberOfInteractions, value))
+                                    finalPage = page;
+                            }
+                            break;
+                        case "has_item":
+                            if (InventoryManager.Instance.HasItem(int.Parse(args[0]), int.Parse(args[1])))
+                                finalPage = page;
+                            break;
+                    }
+                }
+            }
+
+            return finalPage;
+        }
+
+        private bool Compare(string comparison, int value1, int value2)
+        {
+            return (comparison == "!=" && value1 != value2) ||
+                (comparison == "==" && value1 == value2) ||
+                (comparison == ">" && value1 > value2) ||
+                (comparison == "<" && value1 < value2) ||
+                (comparison == ">=" && value1 >= value2) ||
+                (comparison == "<=" && value1 <= value2);
+        }
+
+        private List<string> GetArgumentsList(string args)
+        {
+            return args != null ? new List<string>(args.Split(',')) : null;
         }
 
         public bool IsScriptRunning()
@@ -39,14 +99,14 @@ namespace StryfeRPG.System
         private void NextCommand()
         {
             // If the commands are finished, finishes the script and dismisses the caller
-            if (currentCommand >= currentScript.Commands.Count())
+            if (currentCommand >= currentPage.Commands.Count())
             {
                 currentScript = null;
                 caller.Dismiss();
                 return;
             }
 
-            ScriptCommand command = currentScript.Commands[currentCommand];
+            ScriptCommand command = currentPage.Commands[currentCommand];
             currentCommand++;
 
             // Replace the macros

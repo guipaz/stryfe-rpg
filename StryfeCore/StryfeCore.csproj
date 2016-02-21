@@ -52,6 +52,7 @@
     <Compile Include="Models\Utils\Dialog.cs" />
     <Compile Include="Models\Utils\Script.cs" />
     <Compile Include="Models\Utils\ScriptCommand.cs" />
+    <Compile Include="Models\Utils\ScriptPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serializers\ItemConverter.cs" />
   </ItemGroup>

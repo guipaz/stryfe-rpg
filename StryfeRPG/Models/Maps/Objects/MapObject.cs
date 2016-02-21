@@ -89,13 +89,10 @@ namespace StryfeRPG.Models.Maps
 
         public virtual void PerformAction()
         {
-            SavedInformation.NumberOfInteractions++;
-
             if (ScriptId != -1)
-            {
                 ScriptInterpreter.Instance.RunScript(ScriptId, this);
-                return;
-            }
+
+            SavedInformation.NumberOfInteractions++;
         }
 
         public virtual void Dismiss()

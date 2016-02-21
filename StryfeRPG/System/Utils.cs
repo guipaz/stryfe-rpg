@@ -33,7 +33,12 @@ namespace StryfeRPG.System
 
         public static void LoadScripts()
         {
-            Global.SetScripts(JsonConvert.DeserializeObject<Dictionary<int, Script>>(File.ReadAllText("Content/Data/scripts.json")));
+            List<Script> scriptsJson = JsonConvert.DeserializeObject<List<Script>>(File.ReadAllText("Content/Data/scripts.json"));
+            Dictionary<int, Script> scripts = new Dictionary<int, Script>();
+            foreach (Script i in scriptsJson)
+                scripts[i.Id] = i;
+
+            Global.SetScripts(scripts);
         }
 
         public static void LoadItems()

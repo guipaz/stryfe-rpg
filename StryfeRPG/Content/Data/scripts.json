@@ -1,54 +1,94 @@
-{
-	"0":
+[
 	{
 		"id" : 0,
-		"commands":
+		"pages":
 		[
 			{
-				"command": "message",
-				"arguments":
+				"condition": "none",
+				"commands":
 				[
-					"Raymond",
-					"My name is Raymond, and I'm a knight of the Templars of the Sun.",
-					"Maybe someday you can join the Templars and help me purge the evil out of this lands.",
+					{
+						"command": "message",
+						"arguments":
+						[
+							"Raymond",
+							"My name is Raymond, and I'm a knight of the Templars of the Sun.",
+							"Maybe someday you can join the Templars and help me purge the evil out of this lands.",
+						]
+					},
+					{
+						"command": "message",
+						"arguments":
+						[
+							"$player's thought",
+							"(What a bold knight.)"
+						]
+					}
+				],
+			},
+			{
+				"condition": "interaction",
+				"arguments": ">=,1",
+				"commands":
+				[
+					{
+						"command": "message",
+						"arguments":
+						[
+							"Raymond",
+							"I'm sorry, but I'm quite busy now. We can talk later."
+						]
+					}
 				]
 			},
 			{
-				"command": "message",
-				"arguments":
+				"condition": "has_item",
+				"arguments": "0,2",
+				"commands":
 				[
-					"$player's thought",
-					"(What a bold knight.)"
+					{
+						"command": "message",
+						"arguments":
+						[
+							"Raymond",
+							"Oh, you seem to be a prepared lad. Two red potions, huh?",
+							"You better get on an adventure and use them! Hahaha!"
+						]
+					}
 				]
-			}
+			},
 		]
 	},
-
-	"1":
 	{
 		"id": 1,
-		"commands":
+		"pages":
 		[
 			{
-				"command": "add_item",
-				"arguments": [ 0, 1 ]
-			},
-			{
-				"command": "add_item",
-				"arguments": [ 1, 1 ]
-			},
-			{
-				"command": "add_item",
-				"arguments": [ 2, 1 ]
-			},
-			{
-				"command": "add_item",
-				"arguments": [ 3, 1 ]
-			},
-			{
-				"command": "add_item",
-				"arguments": [ 4, 1 ]
+				"condition": "none",
+				"commands":
+				[
+					{
+						"command": "add_item",
+						"arguments": [ 0, 1 ]
+					},
+					{
+						"command": "add_item",
+						"arguments": [ 1, 1 ]
+					},
+					{
+						"command": "add_item",
+						"arguments": [ 2, 1 ]
+					},
+					{
+						"command": "add_item",
+						"arguments": [ 3, 1 ]
+					},
+					{
+						"command": "add_item",
+						"arguments": [ 4, 1 ]
+					}
+				]
 			}
-		]
+		],
 	}
-}
+]
