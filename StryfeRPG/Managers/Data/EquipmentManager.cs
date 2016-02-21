@@ -16,6 +16,8 @@ namespace StryfeRPG.Managers.Data
     {
         // Data
         public Dictionary<int, Equipment> EquippedItems = new Dictionary<int, Equipment>();
+        private int Accessory1 = -1;
+        private int Accessory2 = -1;
 
         // Screen
         private Texture2D slotTexture;
@@ -56,84 +58,113 @@ namespace StryfeRPG.Managers.Data
         private int GetEquipmentId(int x, int y)
         {
             EquipmentType type = GetEquipType(x, y);
-            int equip = -1;
-            
-            int accessories = 0; // accessory control
             foreach (KeyValuePair<int, Equipment> e in EquippedItems)
             {
                 if (type == e.Value.EquipType)
                 {
                     if (type == EquipmentType.Accessory)
-                    {
-                        accessories++;
-
-                        if (accessories == 2 && x == 0)
-                            return equip;
-                        else if (accessories == 2 && x == 1)
-                            equip = e.Key;
-                    } else
-                        return e.Key;
+                        return x == 0 ? Accessory1 : Accessory2;
+                    return e.Key;
                 }
             }
 
-            return equip;
+            return -1;
         }
 
         public void ToggleEquipment(int inventoryId)
         {
-            Equipment equipping = null;
-            bool justRemoving = false;
-            if (InventoryManager.Instance.Items.ContainsKey(inventoryId))
+            if (IsItemEquipped(inventoryId))
             {
-                equipping = (Equipment)InventoryManager.Instance.Items[inventoryId];
-            }
-            else
+                UnequipItem(inventoryId);
+            } else
             {
-                equipping = EquippedItems[inventoryId];
-                justRemoving = true;
+                EquipItem(inventoryId);
             }
-
-            Item removeItem = null;
-            
-            foreach (KeyValuePair<int, Equipment> equipped in EquippedItems)
-            {
-                if (equipped.Value.EquipType == equipping.EquipType)
-                {
-                    if (equipped.Value.EquipType == EquipmentType.Accessory)
-                    {
-                        if (equipped.Key != inventoryId)
-                            continue;
-                    }
-
-                    removeItem = equipped.Value;
-                    EquippedItems.Remove(equipped.Key);
-                    InventoryManager.Instance.AddItem(equipped.Value, 1, equipped.Key);
-
-                    break;
-                }
-            }
-            
-            if (removeItem != null)
-            {
-                CharacterManager.Instance.RemoveModifiers(removeItem.Id);
-            }
-
-            if (justRemoving)
-            {
-                Utils.PrintStats();
-                CheckSelectedItem();
-                return;
-            }
-
-            foreach (AttributeModifier mod in equipping.Modifiers)
-                CharacterManager.Instance.AddModifier(mod);
-
-            EquippedItems.Add(inventoryId, equipping);
-
-            Utils.PrintStats();
-            CheckSelectedItem();
         }
 
+        public void EquipItem(int inventoryId)
+        {
+            if (InventoryManager.Instance.Items.ContainsKey(inventoryId))
+            {
+                Equipment item = (Equipment)InventoryManager.Instance.Items[inventoryId];
+
+                // Unequip the slot type
+                UnequipSlot(item.EquipType);
+
+                // Adds the modifiers
+                foreach (AttributeModifier mod in item.Modifiers)
+                    CharacterManager.Instance.AddModifier(mod);
+                
+                // Adds the item to the control dictionary
+                EquippedItems.Add(inventoryId, item);
+
+                // If it's an accessory, sets the reference
+                if (item.EquipType == EquipmentType.Accessory)
+                {
+                    if (Accessory1 != -1)
+                        Accessory2 = inventoryId;
+                    else
+                        Accessory1 = inventoryId;
+                }
+
+                // Checks the selected item
+                CheckSelectedItem();
+            }
+        }
+
+        public void UnequipItem(int inventoryId)
+        {
+            if (EquippedItems.ContainsKey(inventoryId))
+            {
+                Equipment item = EquippedItems[inventoryId];
+                
+                // Removes from the equipped control dictionary
+                EquippedItems.Remove(inventoryId);
+
+                // If it's an accessory, unsets the reference
+                if (item.EquipType == EquipmentType.Accessory)
+                {
+                    if (Accessory1 == inventoryId)
+                    {
+                        Accessory1 = Accessory2;
+                        Accessory2 = -1;
+                    }
+                    else
+                    {
+                        Accessory2 = -1;
+                    }                        
+                }
+
+                // Adds the item back to the inventory
+                InventoryManager.Instance.AddItem(item, 1, inventoryId);
+
+                // Removes the modifiers
+                CharacterManager.Instance.RemoveModifiers(item.Id);
+
+                // Checks the selected item
+                CheckSelectedItem();
+            }
+        }
+
+        public void UnequipSlot(EquipmentType type)
+        {
+            foreach (KeyValuePair<int, Equipment> equipped in EquippedItems)
+            {
+                if (equipped.Value.EquipType == type)
+                {
+                    // Unequip if it's not an accessory or if there's two equipped
+                    if (type != EquipmentType.Accessory ||
+                        (Accessory1 != -1 && Accessory2 != -1))
+                    {
+                        UnequipItem(equipped.Key);
+                        break;
+                    }
+                }
+            }
+
+            CheckSelectedItem();
+        }
+        
         public bool IsItemEquipped(int inventoryId)
         {
             foreach (KeyValuePair<int, Equipment> e in EquippedItems)
@@ -157,7 +188,6 @@ namespace StryfeRPG.Managers.Data
             // Item slot
             int slotX = 0;
             int slotY = 0;
-            int accessoryAux = 0; // control for more than one accessory
             for (int x = 0; x < 2; x++)
             {
                 for (int y = 0; y < 4; y++)
@@ -185,13 +215,8 @@ namespace StryfeRPG.Managers.Data
                         {
                             if (type == EquipmentType.Accessory)
                             {
-                                if (accessoryAux == 1)
-                                {
-                                    accessoryAux++; // it's ugly but it works
+                                if (!(x == 0 && e.Key == Accessory1) && !(x == 1 && e.Key == Accessory2))
                                     continue;
-                                }
-
-                                accessoryAux++;
                             }
 
                             item = e.Value;
