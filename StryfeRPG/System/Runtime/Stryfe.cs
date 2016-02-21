@@ -10,6 +10,7 @@ using StryfeRPG.Models.Utils;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Media;
 using StryfeRPG.Managers.Data;
+using MonoGame.Extended.BitmapFonts;
 
 namespace StryfeRPG
 {
@@ -41,9 +42,10 @@ namespace StryfeRPG
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            Global.MapFont = Content.Load<SpriteFont>("Fonts/DialogFont"); //TODO: get this straight
+            Global.MapFont = Content.Load<SpriteFont>("Fonts/DetailFont"); //TODO: get this straight
             Global.DialogFont = Content.Load<SpriteFont>("Fonts/DialogFont");
             Global.DetailFont = Content.Load<SpriteFont>("Fonts/DetailFont");
+
             Global.Viewport = GraphicsDevice.Viewport;
 
             Utils.LoadDialogs();

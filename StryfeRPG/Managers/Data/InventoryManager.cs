@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGame.Extended.BitmapFonts;
 using StryfeRPG.Managers.Data;
 using StryfeRPG.Models.Items;
 using StryfeRPG.System;
@@ -238,7 +239,7 @@ namespace StryfeRPG.Managers
         {
             if (!IsOpened)
                 return;
-
+            
             // Window
             int windowX = bounds.Width / 2 - Width / 2;
             spriteBatch.Draw(dialogTexture,

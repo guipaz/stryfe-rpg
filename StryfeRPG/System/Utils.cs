@@ -64,6 +64,8 @@ namespace StryfeRPG.System
 
                     // Gets the index of the last space so we put a break there
                     int breakIndex = editText.LastIndexOf(' ', charsThatFit, charsThatFit);
+                    if (breakIndex < 0)
+                        breakIndex = editText.Count() - 1;
 
                     // Adds the break
                     string currentWithBreak = editText.Insert(breakIndex, "\n");
