@@ -4,7 +4,7 @@
 This is a study project I started since I'm stuck at home because of a disease I'm treating. I always wanted to start developing a game but didn't have the time. Now I do. :)
 
 ## Which frameworks/libraries do you use?
-I'm using **Monogame/XNA** for the game engine, an adapted version of **TiledSharp** (https://github.com/marshallward/TiledSharp) for map reading and **JSON.Net** (http://www.newtonsoft.com/json) for JSON operations. I'm not using any database for now, so everything is pure JSON for ease.
+I'm using **Monogame/XNA** for the game engine, an adapted version of **TiledSharp** (https://github.com/marshallward/TiledSharp) for map reading and **JSON.Net** (http://www.newtonsoft.com/json) for JSON operations. I'm not using any database for now, so everything is pure JSON for ease. I've been also taking a look at MonoGame.Extended (https://github.com/craftworkgames/MonoGame.Extended), as I may use some of it's stuff
 
 ## I want to build it and run!
 Well, first you need Visual Studio (at least I do). I'm sure you can build it in another IDE or Sublime or Notepad or whatever, but gosh, Visual Studio Community is right there. Then:
