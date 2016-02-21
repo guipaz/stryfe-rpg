@@ -123,8 +123,6 @@ namespace StryfeRPG.Managers
             {
                 Vector2 movement = new Vector2(moveX, moveY);
 
-                Console.WriteLine(movement);
-
                 // If inventory is opened, send the movement to it
                 if (WindowManager.IsWindowOpened)
                 {

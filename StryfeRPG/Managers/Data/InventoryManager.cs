@@ -14,9 +14,16 @@ namespace StryfeRPG.Managers
     public class InventoryManager : WindowManager
     {
         // Data management
-        public Dictionary<int, Item> Items = new Dictionary<int, Item>(); // Key: inventory id - Value: item
-        private Dictionary<int, int> Quantities = new Dictionary<int, int>(); // Key: inventory id - Value: quantity
-        private Dictionary<int, int> IdsByPositions = new Dictionary<int, int>(); // Key: position - Value: inventory id
+        public Dictionary<int, Item> Items { get; set; } // Key: inventory id - Value: item
+        private Dictionary<int, int> Quantities; // Key: inventory id - Value: quantity
+
+        // Items positioning
+        private List<int> CurrentInventory;
+        private ItemType CurrentTabType;
+
+        private List<int> UsableInventory;
+        private List<int> EquipInventory;
+        private List<int> MiscInventory;
 
         private Item selectedItem;
         private Vector2 selectedItemIndex;
@@ -42,63 +49,36 @@ namespace StryfeRPG.Managers
             }
         }
 
-        private void SortInventory()
-        {
-            IdsByPositions.Clear();
-
-            int pos = 0;
-
-            List<int> ids = Items.Keys.ToList();
-            ids.Sort();
-
-            foreach (int id in ids)
-            {
-                IdsByPositions[pos] = id;
-                pos++;
-            }
-
-            CheckSelectedItem();
-
-            foreach (KeyValuePair<int, Item> i in Items)
-            {
-                Console.WriteLine("{0}: {1}", i.Key, i.Value);
-            }
-        }
-
         public void AddItem(Item item, int quantity, int inventoryId = -1)
         {
             if (item != null)
             {
                 inventoryId = inventoryId == -1 ? GetAvailableInventoryId(item) : inventoryId;
+
+                Console.WriteLine("Added item: {0} - {1}", item.Name, inventoryId);
+
                 Items[inventoryId] = item;
                 Quantities[inventoryId] = Quantities.ContainsKey(inventoryId) ? Quantities[inventoryId] + quantity : quantity;
+
+                List<int> positions = GetPositionList(item.Type);
+                if (!positions.Contains(inventoryId))
+                    GetPositionList(item.Type).Add(inventoryId);
             }
-
-            SortInventory();
-
+            
             ScriptInterpreter.Instance.FinishedCommand();
         }
 
-        private int GetAvailableInventoryId(Item item)
+        private List<int> GetPositionList(ItemType type)
         {
-            List<int> ids = Items.Keys.ToList();
-            ids.AddRange(EquipmentManager.Instance.EquippedItems.Keys.ToList());
-            ids.Sort();
-
-            int pos = 0;
-            foreach (int occupiedId in ids)
+            switch (type)
             {
-                if ((Items.ContainsKey(occupiedId) && Items[occupiedId].Id == item.Id) ||
-                    (EquipmentManager.Instance.EquippedItems.ContainsKey(occupiedId) && EquipmentManager.Instance.EquippedItems[occupiedId].Id == item.Id))
-                {
-                    if (item.Type != ItemType.Equipment || pos < occupiedId)
-                        return pos;
-                }
-               
-                pos++;
+                case ItemType.Usable:
+                    return UsableInventory;
+                case ItemType.Equipment:
+                    return EquipInventory;
+                default:
+                    return MiscInventory;
             }
-
-            return pos;
         }
         
         public void UseItem(int inventoryId)
@@ -110,7 +90,8 @@ namespace StryfeRPG.Managers
             if (item.Type == ItemType.Equipment)
             {
                 EquipmentManager.Instance.ToggleEquipment(inventoryId);
-            } else
+            }
+            else
             {
                 // Apply modifiers
                 foreach (AttributeModifier mod in item.Modifiers)
@@ -123,38 +104,134 @@ namespace StryfeRPG.Managers
             {
                 Items.Remove(inventoryId);
                 Quantities.Remove(inventoryId);
+
+                GetPositionList(item.Type).Remove(inventoryId);
             }
 
-            SortInventory();
+            Console.WriteLine("Used item: {0} - {1}", item.Name, inventoryId);
+
+            CheckSelectedItem();
+        }
+
+        private int GetAvailableInventoryId(Item item)
+        {
+            List<int> ids = Items.Keys.ToList();
+            ids.AddRange(EquipmentManager.Instance.EquippedItems.Keys.ToList());
+            ids.Sort();
+
+            int pos = 0;
+            foreach (int occupiedId in ids)
+            {
+                if (Items.ContainsKey(occupiedId) && Items[occupiedId].Id == item.Id)
+                {
+                    if (item.Type != ItemType.Equipment)
+                        return occupiedId;
+                }
+               
+                pos++;
+            }
+
+            return ids.Contains(pos) ? pos + 1 : pos;
         }
 
         public override void Move(Vector2 movement)
         {
-            Vector2 finalPos = new Vector2(selectedItemIndex.X + movement.X, selectedItemIndex.Y + movement.Y);
-            if (finalPos.X >= 0 &&
-                finalPos.Y >= 0 &&
-                finalPos.X < tilesX &&
-                finalPos.Y < tilesY)
-                selectedItemIndex = finalPos;
+            // Checks if it's entering the tabs mode
+            if (movement.Y != 0 && selectedItemIndex.Y + movement.Y == -1)
+            {
+                int x = 0;
+                switch (CurrentTabType)
+                {
+                    case ItemType.Usable:
+                        x = 0;
+                        break;
+                    case ItemType.Equipment:
+                        x = 1;
+                        break;
+                    default:
+                        x = 2;
+                        break;
+                }
+
+                selectedItemIndex = new Vector2(x, -1);
+            } else if (selectedItemIndex.Y == -1 && movement.Y != 1) // Checks if it's in tabs mode and not exiting
+            {
+                int x = Math.Min((int)(selectedItemIndex.X + movement.X), 2);
+                if (x < 0)
+                    x = 0;
+                selectedItemIndex = new Vector2(x, -1);
+            } else if (selectedItemIndex.Y == -1 && movement.Y == 1) // Checks if it's exiting tabs mode
+            {
+                selectedItemIndex = Vector2.Zero;
+            } else // Otherwise, checks the slots movement as usual
+            {
+                Vector2 finalPos = new Vector2(selectedItemIndex.X + movement.X, selectedItemIndex.Y + movement.Y);
+                if (finalPos.X >= 0 &&
+                    finalPos.Y >= -1 && // tabs
+                    finalPos.X < tilesX &&
+                    finalPos.Y < tilesY)
+                    selectedItemIndex = finalPos;
+            }
 
             CheckSelectedItem();
         }
          
-        private Item GetItemByPosition(int x, int y)
+        private Item GetItem(int x, int y)
         {
-            int pos = y * tilesX + x;
-            if (!IdsByPositions.ContainsKey(pos))
-                return null;
+            int inventoryId = GetInventoryId(x, y);
 
-            int inventoryId = IdsByPositions[pos];
             if (Items.ContainsKey(inventoryId))
                 return Items[inventoryId];
             return null;
         }
 
+        private int GetInventoryId(int x, int y)
+        {
+            if (y == -1)
+                return -1;
+
+            int pos = y * tilesX + x;
+            if (CurrentInventory.Count() <= pos)
+                return -1;
+
+            return CurrentInventory[pos];
+        }
+
         private void CheckSelectedItem()
         {
-            selectedItem = GetItemByPosition((int)selectedItemIndex.X, (int)selectedItemIndex.Y);
+            // Checks if the tabs are being moved
+            if (selectedItemIndex.Y == -1)
+            {
+                // If they are, gets which tab should be showing now
+                if (selectedItemIndex.X > 2)
+                    selectedItemIndex = new Vector2(2, selectedItemIndex.Y);
+
+                if (selectedItemIndex.X == 0)
+                    CurrentTabType = ItemType.Usable;
+                else
+                    if (selectedItemIndex.X == 1)
+                    CurrentTabType = ItemType.Equipment;
+                else
+                    CurrentTabType = ItemType.Misc;
+
+                switch (CurrentTabType)
+                {
+                    case ItemType.Usable:
+                        CurrentInventory = UsableInventory;
+                        break;
+                    case ItemType.Equipment:
+                        CurrentInventory = EquipInventory;
+                        break;
+                    default:
+                        CurrentInventory = MiscInventory;
+                        break;
+                }
+
+                return;
+            }
+
+            // If it's not a tab, gets the selected item
+            selectedItem = GetItem((int)selectedItemIndex.X, (int)selectedItemIndex.Y);
         }
 
         public override void Draw(SpriteBatch spriteBatch, double timePassed)
@@ -167,6 +244,36 @@ namespace StryfeRPG.Managers
             spriteBatch.Draw(dialogTexture,
                              destinationRectangle: new Rectangle(windowX, bounds.Height / 2 - Height / 2, Width, Height),
                              color: new Color(Color.White, 0.8f));
+
+            // Tabs
+            int tabMargin = 10;
+
+            int tabWidth = tabMargin * 2 + (int)Global.DetailFont.MeasureString("Usable").X;
+            int tabHeight = tabMargin * 2 + (int)Global.DetailFont.MeasureString("Usable").Y;
+
+            int tabX = windowX;
+            int tabY = bounds.Height / 2 - Height / 2 - tabHeight;
+
+            spriteBatch.Draw(dialogTexture,
+                             destinationRectangle: new Rectangle(tabX, tabY, tabWidth, tabHeight),
+                             color: new Color(Color.White, CurrentTabType == ItemType.Usable ? 0.8f : 0.5f)); // Usable
+            spriteBatch.DrawString(Global.DetailFont, "Usable", new Vector2(tabX + tabMargin, tabY + tabMargin), selectedItemIndex.Y == -1 && CurrentTabType == ItemType.Usable ? Color.White : Color.LightGray);
+
+            tabX = tabX + tabMargin + tabWidth;
+            tabWidth = tabMargin * 2 + (int)Global.DetailFont.MeasureString("Equips").X;
+            
+            spriteBatch.Draw(dialogTexture,
+                             destinationRectangle: new Rectangle(tabX, tabY, tabWidth, tabHeight),
+                             color: new Color(Color.White, CurrentTabType == ItemType.Equipment ? 0.8f : 0.5f)); // Equips
+            spriteBatch.DrawString(Global.DetailFont, "Equips", new Vector2(tabX + tabMargin, tabY + tabMargin), selectedItemIndex.Y == -1 && CurrentTabType == ItemType.Equipment ? Color.White : Color.LightGray);
+
+            tabX = tabX + tabMargin + tabWidth;
+            tabWidth = tabMargin * 2 + (int)Global.DetailFont.MeasureString("Misc").X;
+
+            spriteBatch.Draw(dialogTexture,
+                             destinationRectangle: new Rectangle(tabX, tabY, tabWidth, tabHeight),
+                             color: new Color(Color.White, CurrentTabType == ItemType.Misc ? 0.8f : 0.5f)); // Misc
+            spriteBatch.DrawString(Global.DetailFont, "Misc", new Vector2(tabX + tabMargin, tabY + tabMargin), selectedItemIndex.Y == -1 && CurrentTabType == ItemType.Misc ? Color.White : Color.LightGray);
 
             // Item slots
             int margin = 20;
@@ -183,7 +290,7 @@ namespace StryfeRPG.Managers
 
                     Color color = Color.White;
                     int i = (int)y * tilesX + (int)x;
-                    if (Items.ContainsKey(i) && Items[i] != null)
+                    if (GetInventoryId(x, y) != -1)
                         color = Color.LightBlue; // when there's an item in the slot
 
                     if (selectedItemIndex.X == x && selectedItemIndex.Y == y)
@@ -197,7 +304,7 @@ namespace StryfeRPG.Managers
                                  color: color);
 
                     
-                    Item item = GetItemByPosition(x, y);
+                    Item item = GetItem(x, y);
                     if (item != null)
                     {
                         // Item sprite
@@ -209,13 +316,6 @@ namespace StryfeRPG.Managers
                                              new Rectangle(slotX + item.TextureTileSize / 4, slotY + item.TextureTileSize / 4, item.TextureTileSize, item.TextureTileSize),
                                              rect,
                                              Color.White);
-
-                            if (EquipmentManager.Instance.IsItemEquipped(IdsByPositions[y * tilesX + x]))
-                            {
-                                spriteBatch.Draw(slotTexture,
-                                 destinationRectangle: new Rectangle(slotX + itemSize - 15, slotY + itemSize - 15, 10, 10),
-                                 color: Color.Blue);
-                            }
                         }
 
                         // Item quantity, if more than 1
@@ -253,7 +353,7 @@ namespace StryfeRPG.Managers
         {
             if (selectedItem != null)
             {
-                UseItem(IdsByPositions[(int)selectedItemIndex.Y * tilesX + (int)selectedItemIndex.X]);
+                UseItem(GetInventoryId((int)selectedItemIndex.X, (int)selectedItemIndex.Y));
             }
         }
 
@@ -265,7 +365,13 @@ namespace StryfeRPG.Managers
 
             Items = new Dictionary<int, Item>();
             Quantities = new Dictionary<int, int>();
-            IdsByPositions = new Dictionary<int, int>();
+
+            UsableInventory = new List<int>();
+            EquipInventory = new List<int>();
+            MiscInventory = new List<int>();
+
+            CurrentInventory = UsableInventory;
+            CurrentTabType = ItemType.Usable;
 
             Width = 550;
             Height = 300;
