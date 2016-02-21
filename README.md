@@ -13,6 +13,7 @@ Well, first you need Visual Studio (at least I do). I'm sure you can build it in
 2. Build the TiledSharp project (in this repository)
 3. Put the dll inside a "lib" folder in the project's root (not the solution's) - i.e: StryfeRPG/StryfeRPG/lib/TiledSharp.dll
 4. Install JSON.Net via NuGet if needed (http://www.newtonsoft.com/json if you need help);
+5. Install MonoGame.Extended via NuGet (https://github.com/craftworkgames/MonoGame.Extended)
 5. Build and run!
 
 I hope that's all it takes for you to run it!
