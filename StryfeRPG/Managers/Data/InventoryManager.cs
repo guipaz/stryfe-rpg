@@ -2,7 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.BitmapFonts;
 using StryfeCore.Models.Items;
+using StryfeCore.Models.Utils;
 using StryfeRPG.Managers.Data;
+using StryfeRPG.Managers.GUI;
 using StryfeRPG.Models.Items;
 using StryfeRPG.System;
 using System;
@@ -43,7 +45,7 @@ namespace StryfeRPG.Managers
             CheckSelectedItem();
         }
 
-        public void AddItem(int id, int quantity)
+        public void AddItem(int id, int quantity = 1)
         {
             Item item = Global.GetItem(id);
             if (item != null)
@@ -52,7 +54,7 @@ namespace StryfeRPG.Managers
             }
         }
 
-        public void AddItem(Item item, int quantity, int inventoryId = -1)
+        public void AddItem(Item item, int quantity = 1, int inventoryId = -1, bool showAlert = true)
         {
             if (item != null)
             {
@@ -66,6 +68,52 @@ namespace StryfeRPG.Managers
                 List<int> positions = GetPositionList(item.Type);
                 if (!positions.Contains(inventoryId))
                     GetPositionList(item.Type).Add(inventoryId);
+
+                if (showAlert)
+                    QuickMessageManager.Instance.ShowMessage(new QuickMessage("Item gained", string.Format("{0} x{1}", item.Name, quantity)));
+            }
+            
+            ScriptInterpreter.Instance.FinishedCommand();
+        }
+
+        public void RemoveItem(int id, int quantity = 1)
+        {
+            Item item = Global.GetItem(id);
+            if (item != null)
+            {
+                RemoveItem(item, quantity);
+            }
+        }
+
+        public void RemoveItem(Item item, int quantity = 1, bool showAlert = true)
+        {
+            int inventoryId = -1;
+            if (item != null)
+            {
+                foreach (KeyValuePair<int, Item> i in Items)
+                {
+                    if (item.Id == i.Value.Id)
+                    {
+                        inventoryId = i.Key;
+                        break;
+                    }
+                }
+            }
+
+            if (inventoryId != -1)
+            {
+                EquipmentManager.Instance.UnequipItem(inventoryId);
+                Quantities[inventoryId] -= quantity;
+                if (Quantities[inventoryId] <= 0)
+                {
+                    Items.Remove(inventoryId);
+                    Quantities.Remove(inventoryId);
+
+                    GetPositionList(item.Type).Remove(inventoryId);
+                }
+
+                if (showAlert)
+                    QuickMessageManager.Instance.ShowMessage(new QuickMessage("Item removed", string.Format("{0} x{1}", item.Name, quantity)));
             }
             
             ScriptInterpreter.Instance.FinishedCommand();
@@ -74,8 +122,7 @@ namespace StryfeRPG.Managers
         public void UseItem(int inventoryId)
         {
             Item item = Items[inventoryId];
-
-
+            
             // Check for equipment
             if (item.Type == ItemType.Equipment)
             {

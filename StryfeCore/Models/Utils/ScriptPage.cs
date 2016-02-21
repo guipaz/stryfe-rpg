@@ -9,6 +9,7 @@ namespace StryfeCore.Models.Utils
 {
     public class ScriptPage
     {
+        public string Switch { get; set; }
         public string Condition { get; set; }
         public string Arguments { get; set; }
         public List<ScriptCommand> Commands { get; set; }

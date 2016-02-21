@@ -31,6 +31,9 @@ namespace StryfeRPG.System
         private static Dictionary<int, Dialog> dialogs = new Dictionary<int, Dialog>();
         private static Dictionary<int, Script> scripts = new Dictionary<int, Script>();
         private static Dictionary<int, Item> items = new Dictionary<int, Item>();
+
+        // Runtime data
+        private static Dictionary<string, bool> switches = new Dictionary<string, bool>();
         
         public static void SetContent(ContentManager content)
         {
@@ -63,6 +66,16 @@ namespace StryfeRPG.System
             if (scripts.ContainsKey(id))
                 return scripts[id];
             return null;
+        }
+
+        public static bool GetSwitch(string sw)
+        {
+            return switches.ContainsKey(sw) ? switches[sw] : false;
+        }
+
+        public static void SetSwitch(string sw, bool value)
+        {
+            switches[sw] = value;
         }
 
         public static void SetDialogs(Dictionary<int, Dialog> dialogs)

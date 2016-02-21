@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using StryfeCore.Models.Utils;
 using StryfeRPG.Managers;
+using StryfeRPG.Managers.GUI;
 using StryfeRPG.Models.Maps;
 using StryfeRPG.Models.Utils;
 using System;
@@ -40,7 +41,12 @@ namespace StryfeRPG.System
                 foreach (ScriptPage page in currentScript.Pages)
                 {
                     // Returns if there's no condition to be met
-                    if (page.Condition == null || page.Condition == "" || page.Condition == "none")
+                    if ((page.Switch != null && Global.GetSwitch(page.Switch)) ||
+                        
+                        (page.Switch == null &&
+                        (page.Condition == null ||
+                        page.Condition == "" ||
+                        page.Condition == "none")))
                     {
                         finalPage = page;
                         continue;
@@ -99,7 +105,7 @@ namespace StryfeRPG.System
         private void NextCommand()
         {
             // If the commands are finished, finishes the script and dismisses the caller
-            if (currentCommand >= currentPage.Commands.Count())
+            if (currentPage == null || currentCommand >= currentPage.Commands.Count())
             {
                 currentScript = null;
                 caller.Dismiss();
@@ -130,6 +136,17 @@ namespace StryfeRPG.System
                     break;
                 case "add_item":
                     InventoryManager.Instance.AddItem(int.Parse(arguments[0]), int.Parse(arguments[1]));
+                    break;
+                case "remove_item":
+                    InventoryManager.Instance.RemoveItem(int.Parse(arguments[0]), int.Parse(arguments[1]));
+                    break;
+                case "alert":
+                    QuickMessageManager.Instance.ShowMessage(new QuickMessage(arguments[0], arguments[1]));
+                    FinishedCommand();
+                    break;
+                case "set_switch":
+                    Global.SetSwitch(arguments[0], bool.Parse(arguments[1]));
+                    FinishedCommand();
                     break;
             }
         }

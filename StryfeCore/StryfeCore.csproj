@@ -50,6 +50,7 @@
     <Compile Include="Models\Items\Equipment.cs" />
     <Compile Include="Models\Items\Item.cs" />
     <Compile Include="Models\Utils\Dialog.cs" />
+    <Compile Include="Models\Utils\QuickMessage.cs" />
     <Compile Include="Models\Utils\Script.cs" />
     <Compile Include="Models\Utils\ScriptCommand.cs" />
     <Compile Include="Models\Utils\ScriptPage.cs" />

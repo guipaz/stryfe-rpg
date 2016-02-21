@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Managers\Data\EquipmentManager.cs" />
     <Compile Include="Managers\Data\WindowManager.cs" />
+    <Compile Include="Managers\GUI\QuickMessageManager.cs" />
     <Compile Include="Managers\System\AudioManager.cs" />
     <Compile Include="Managers\Data\CharacterManager.cs" />
     <Compile Include="Managers\GUI\DialogManager.cs" />

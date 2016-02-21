@@ -136,7 +136,7 @@ namespace StryfeRPG.Managers.Data
                 }
 
                 // Adds the item back to the inventory
-                InventoryManager.Instance.AddItem(item, 1, inventoryId);
+                InventoryManager.Instance.AddItem(item, 1, inventoryId, false);
 
                 // Removes the modifiers
                 CharacterManager.Instance.RemoveModifiers(item.Id);

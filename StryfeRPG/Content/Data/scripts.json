@@ -38,6 +38,10 @@
 							"Raymond",
 							"I'm sorry, but I'm quite busy now. We can talk later."
 						]
+					},
+					{
+						"command": "set_switch",
+						"arguments": [ "raymond_potions", "true" ]
 					}
 				]
 			},
@@ -52,7 +56,19 @@
 						[
 							"Raymond",
 							"Oh, you seem to be a prepared lad. Two red potions, huh?",
-							"You better get on an adventure and use them! Hahaha!"
+							"Could you give one for me? I'd really be appreciated!",
+						]
+					},
+					{
+						"command": "remove_item",
+						"arguments": [0, 1]
+					},
+					{
+						"command": "message",
+						"arguments":
+						[
+							"Raymond",
+							"Thank you, kiddo!"
 						]
 					}
 				]
@@ -86,9 +102,33 @@
 					{
 						"command": "add_item",
 						"arguments": [ 4, 1 ]
+					},
+					{
+						"command": "alert",
+						"arguments": ["Gained item", "Red Potion"]
 					}
 				]
 			}
 		],
+	},
+	{
+		"id": 2,
+		"pages":
+		[
+			{
+				"switch": "raymond_potions",
+				"commands":
+				[
+					{
+						"command": "message",
+						"arguments":
+						[
+							"Nadia",
+							"We're currently developing an attack plan. When we're done we can talk."
+						]
+					}
+				]
+			}
+		]
 	}
 ]

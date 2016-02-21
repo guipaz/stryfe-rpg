@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Media;
 using StryfeRPG.Managers.Data;
 using MonoGame.Extended.BitmapFonts;
+using StryfeRPG.Managers.GUI;
 
 namespace StryfeRPG
 {
@@ -83,6 +84,7 @@ namespace StryfeRPG
                 return;
 
             MapManager.Instance.Update(timePassed);
+            QuickMessageManager.Instance.Update(timePassed);
             
             base.Update(gameTime);
         }
@@ -106,10 +108,12 @@ namespace StryfeRPG
             // Dialogs
             DialogManager.Instance.Draw(spriteBatch, timePassed);
 
+            // Quick Messages
+            QuickMessageManager.Instance.Draw(spriteBatch);
+
             // Windows
-            //TODO: change do WindowManager
-            InventoryManager.Instance.Draw(spriteBatch, timePassed);
-            EquipmentManager.Instance.Draw(spriteBatch, timePassed);
+            if (WindowManager.IsWindowOpened)
+                WindowManager.CurrentManager.Draw(spriteBatch, timePassed);
 
             spriteBatch.End();
             
