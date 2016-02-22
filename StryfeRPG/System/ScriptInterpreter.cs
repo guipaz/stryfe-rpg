@@ -146,6 +146,10 @@ namespace StryfeRPG.System
                     Global.SetSwitch(arguments[0], bool.Parse(arguments[1]));
                     FinishedCommand();
                     break;
+                case Constants.CommandAddExperience:
+                    CharacterManager.Instance.AddExperience(int.Parse(arguments[0]));
+                    FinishedCommand();
+                    break;
             }
         }
 

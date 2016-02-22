@@ -272,7 +272,7 @@ namespace StryfeRPG.Managers.Data
                 TextWindow nameWindow = new TextWindow(Global.DialogFont, i.Name,
                                                  new Vector2(margin, margin),
                                                  new Vector2(description.Bounds.Width - margin * 2, description.Bounds.Height - margin * 2),
-                                                 Color.Yellow);
+                                                 Color.DarkSlateBlue);
                 description.AddChild(nameWindow);
 
                 // Item description

@@ -28,6 +28,10 @@ namespace StryfeRPG.System
                 textWindow.RecalculateText();
 
                 spriteBatch.DrawString(textWindow.Font, textWindow.Text,
+                                       position + new Vector2(1,1),
+                                       new Color(Color.Black, 0.3f));
+
+                spriteBatch.DrawString(textWindow.Font, textWindow.Text,
                                        position,
                                        textWindow.Color);
             } else

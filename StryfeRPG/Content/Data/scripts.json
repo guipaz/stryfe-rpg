@@ -69,7 +69,19 @@
 							"Raymond",
 							"Thank you, kiddo!"
 						]
-					}
+					},
+					{
+						"command": "add_experience",
+						"arguments": [ 250 ]
+					},
+					{
+						"command": "message",
+						"arguments":
+						[
+							"Raymond",
+							"Here you go, for your troubles. Go get'em!"
+						]
+					},
 				]
 			},
 		]
@@ -83,7 +95,7 @@
 				[
 					{
 						"command": "add_item",
-						"arguments": [ 0, 1 ]
+						"arguments": [ 0, 2 ]
 					},
 					{
 						"command": "add_item",
@@ -103,7 +115,7 @@
 					},
 					{
 						"command": "alert",
-						"arguments": ["Gained item", "Red Potion"]
+						"arguments": ["Congratulations!", "There's nothing here."]
 					}
 				]
 			}

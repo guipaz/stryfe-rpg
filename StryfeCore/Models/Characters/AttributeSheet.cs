@@ -39,6 +39,8 @@ namespace StryfeRPG.Models.Characters
         public Dictionary<CharacterAttribute, int> Calculated = new Dictionary<CharacterAttribute, int>();
         public Dictionary<CharacterAttribute, int> Current = new Dictionary<CharacterAttribute, int>();
 
+        public int PointsLeft;
+
         // Item bonuses, equipment modifiers and such
         public List<AttributeModifier> Modifiers = new List<AttributeModifier>();
 
@@ -58,6 +60,23 @@ namespace StryfeRPG.Models.Characters
             
             Recalculate();
             ResetCurrent();
+        }
+
+        private void RecalculateLevel()
+        {
+            if (PureBase[CharacterAttribute.Experience] >= PureBase[CharacterAttribute.Level] * 100)
+            {
+                // Adds level, points and reduces experience
+                PureBase[CharacterAttribute.Experience] -= PureBase[CharacterAttribute.Level] * 100;
+                PureBase[CharacterAttribute.Level]++;
+                PointsLeft += 3;
+
+                // Resets the current attributes
+                ResetCurrent();
+
+                // Recalculates again if there's more levels to up
+                RecalculateLevel();
+            }
         }
 
         public void Recalculate()
@@ -82,14 +101,9 @@ namespace StryfeRPG.Models.Characters
             {
                 CurrentProportion.Add(att.Key, Current[att.Key] / Calculated[att.Key]);
             }
-            
+
             // Calculates everything
-            if (TempBase[CharacterAttribute.Experience] >= TempBase[CharacterAttribute.Level] * 100)
-            {
-                TempBase[CharacterAttribute.Level]++;
-                TempBase[CharacterAttribute.Experience] = 0;
-                ResetCurrent();
-            }
+            RecalculateLevel();
             
             Calculated[CharacterAttribute.HP] = TempBase[CharacterAttribute.Vitality] * 3 + TempBase[CharacterAttribute.Strenght];
             Calculated[CharacterAttribute.MP] = TempBase[CharacterAttribute.Wisdom] * 3 + TempBase[CharacterAttribute.Intelligence] + TempBase[CharacterAttribute.Faith];

@@ -94,6 +94,9 @@ namespace StryfeRPG.Managers
             else if (IsKeyReleased(EquipmentButton))
             {
                 EquipmentManager.Instance.ToggleWindow();
+            } else if (IsKeyReleased(CharacterButton))
+            {
+                CharacterManager.Instance.ToggleWindow();
             }
 
             // Movement cooldown

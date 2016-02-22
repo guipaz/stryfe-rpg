@@ -17,7 +17,7 @@ namespace StryfeRPG.Managers.GUI
         private QuickMessage currentMessage;
 
         // Time control
-        private double cooldown = 1;
+        private double cooldown = 2;
         private double timeLeft = 0;
 
         // Screen

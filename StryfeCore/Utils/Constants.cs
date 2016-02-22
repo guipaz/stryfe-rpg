@@ -19,6 +19,7 @@ namespace StryfeCore.Models.Utils
         public const string CommandRemoveItem = "remove_item";
         public const string CommandAlert = "alert";
         public const string CommandSetSwitch = "set_switch";
+        public const string CommandAddExperience = "add_experience";
 
         public const string MacroPlayerName = "$player";
     }

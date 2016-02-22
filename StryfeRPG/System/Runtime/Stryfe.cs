@@ -57,7 +57,8 @@ namespace StryfeRPG
             MapManager.Instance.LoadMap("testMap");
 
             //testing
-            Global.RetrieveAllItems();
+            //Global.RetrieveAllItems();
+            CharacterManager.Instance.AddExperience(120);
         }
 
         protected override void UnloadContent()

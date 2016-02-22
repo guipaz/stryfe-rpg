@@ -324,11 +324,13 @@ namespace StryfeRPG.Managers
             if (selectedItem != null)
             {
                 string str = Utils.GetCroppedString(selectedItem.Name, Global.DialogFont, windowX + Width - itemX - (margin * 3), Height - margin * 4)[0];
-                spriteBatch.DrawString(Global.DialogFont, str, new Vector2(itemX + margin, itemY + margin), Color.Yellow);
+                spriteBatch.DrawString(Global.DialogFont, str, new Vector2(itemX + margin + 1, itemY + margin + 1), new Color(Color.Black, 0.3f));
+                spriteBatch.DrawString(Global.DialogFont, str, new Vector2(itemX + margin, itemY + margin), Color.DarkSlateBlue);
 
                 // Item description
                 Vector2 measure = Global.DialogFont.MeasureString(str);
                 str = Utils.GetCroppedString(selectedItem.Description, Global.DetailFont, windowX + Width - itemX - (margin * 3), Height - margin * 4 - measure.Y)[0];
+                spriteBatch.DrawString(Global.DetailFont, str, new Vector2(itemX + margin + 1, itemY + margin + measure.Y + 10 + 1), new Color(Color.Black, 0.3f));
                 spriteBatch.DrawString(Global.DetailFont, str, new Vector2(itemX + margin, itemY + margin + measure.Y + 10), Color.White);
             }
         }
