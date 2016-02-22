@@ -4,7 +4,6 @@
 		"pages":
 		[
 			{
-				"condition": "none",
 				"commands":
 				[
 					{
@@ -80,7 +79,6 @@
 		"pages":
 		[
 			{
-				"condition": "none",
 				"commands":
 				[
 					{

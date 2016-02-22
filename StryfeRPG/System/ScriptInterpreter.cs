@@ -19,7 +19,7 @@ namespace StryfeRPG.System
 
         private int currentCommand;
         private MapObject caller;
-
+        
         public void RunScript(int id, MapObject caller)
         {
             currentCommand = 0;
@@ -44,9 +44,7 @@ namespace StryfeRPG.System
                     if ((page.Switch != null && Global.GetSwitch(page.Switch)) ||
                         
                         (page.Switch == null &&
-                        (page.Condition == null ||
-                        page.Condition == "" ||
-                        page.Condition == "none")))
+                        page.Condition == null))
                     {
                         finalPage = page;
                         continue;
@@ -56,7 +54,7 @@ namespace StryfeRPG.System
                     // Checks conditions
                     switch (page.Condition)
                     {
-                        case "interaction": // Verifies if there has been enough interactions with the caller
+                        case Constants.ConditionInteraction: // Verifies if there has been enough interactions with the caller
                             ObjectInfo info = caller.SavedInformation;
                             if (info != null)
                             {
@@ -65,7 +63,7 @@ namespace StryfeRPG.System
                                     finalPage = page;
                             }
                             break;
-                        case "has_item":
+                        case Constants.ConditionHasItem:
                             if (InventoryManager.Instance.HasItem(int.Parse(args[0]), int.Parse(args[1])))
                                 finalPage = page;
                             break;
@@ -125,26 +123,26 @@ namespace StryfeRPG.System
             // Run the command
             switch (command.Command)
             {
-                case "message":
+                case Constants.CommandMessage:
                     DialogManager.Instance.ActivateDialog(new Dialog(arguments[0], arguments.GetRange(1, arguments.Count() - 1)), caller);
                     break;
-                case "wait":
+                case Constants.CommandWait:
                     PauseManager.Instance.Wait(int.Parse(arguments[0]));
                     break;
-                case "teleport":
+                case Constants.CommandTeleport:
                     MapManager.Instance.Teleport(arguments[0], new Vector2(int.Parse(arguments[1]), int.Parse(arguments[2])), Utils.GetDirection(arguments[3]));
                     break;
-                case "add_item":
+                case Constants.CommandAddItem:
                     InventoryManager.Instance.AddItem(int.Parse(arguments[0]), int.Parse(arguments[1]));
                     break;
-                case "remove_item":
+                case Constants.CommandRemoveItem:
                     InventoryManager.Instance.RemoveItem(int.Parse(arguments[0]), int.Parse(arguments[1]));
                     break;
-                case "alert":
+                case Constants.CommandAlert:
                     QuickMessageManager.Instance.ShowMessage(new QuickMessage(arguments[0], arguments[1]));
                     FinishedCommand();
                     break;
-                case "set_switch":
+                case Constants.CommandSetSwitch:
                     Global.SetSwitch(arguments[0], bool.Parse(arguments[1]));
                     FinishedCommand();
                     break;
@@ -157,16 +155,14 @@ namespace StryfeRPG.System
             while (str.Contains('$'))
             {
                 bool found = true;
-
-                int macroIndex = str.IndexOf('$');
                 int stopperIndex = str.IndexOfAny(stoppers);
 
-                string macro = str.Substring(str.IndexOf('$') + 1, (stopperIndex != -1 ? stopperIndex : str.Count()) - str.IndexOf('$') - 1);
+                string macro = str.Substring(str.IndexOf('$'), (stopperIndex != -1 ? stopperIndex : str.Count()) - str.IndexOf('$'));
                 
                 switch (macro)
                 {
-                    case "player":
-                        str = str.Replace("$player", Global.Player.Name);
+                    case Constants.MacroPlayerName:
+                        str = str.Replace(Constants.MacroPlayerName, Global.Player.Name);
                         break;
                     default:
                         found = false;

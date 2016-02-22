@@ -195,8 +195,6 @@ namespace StryfeRPG.Managers.Data
                     // Slot
                     Color color = Color.White;
                     int i = (int)y * tilesX + (int)x;
-                    //if (Inventory.ContainsKey(i) && Inventory[i] != null)
-                    //    color = Color.LightBlue; // when there's an item in the slot
 
                     if (selectedTile.X == x && selectedTile.Y == y)
                         color = Color.Cyan; // when the slot is selected
@@ -258,6 +256,21 @@ namespace StryfeRPG.Managers.Data
             spriteBatch.Draw(slotTexture,
                              destinationRectangle: new Rectangle(descriptionX, windowY + marginOut, Width + windowX - descriptionX - marginOut, Height - marginOut * 2),
                              color: Color.White);
+
+            // Item name
+            if (selectedItem != -1)
+            {
+                Item i = EquippedItems[selectedItem];
+
+                int margin = 10;
+                string str = Utils.GetCroppedString(i.Name, Global.DialogFont, windowX + Width - descriptionX - (margin * 3), Height - margin * 4)[0];
+                spriteBatch.DrawString(Global.DialogFont, str, new Vector2(descriptionX + margin, windowY + marginOut + margin), Color.Yellow);
+
+                // Item description
+                Vector2 measure = Global.DialogFont.MeasureString(str);
+                str = Utils.GetCroppedString(i.Description, Global.DetailFont, windowX + Width - descriptionX - (margin * 3), Height - margin * 4 - measure.Y)[0];
+                spriteBatch.DrawString(Global.DetailFont, str, new Vector2(descriptionX + margin, windowY + marginOut + margin + measure.Y + 10), Color.White);
+            }
         }
 
         private EquipmentType GetEquipType(int x, int y)

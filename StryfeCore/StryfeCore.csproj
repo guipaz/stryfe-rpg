@@ -49,6 +49,7 @@
     <Compile Include="Models\Items\AttributeModifier.cs" />
     <Compile Include="Models\Items\Equipment.cs" />
     <Compile Include="Models\Items\Item.cs" />
+    <Compile Include="Utils\Constants.cs" />
     <Compile Include="Models\Utils\Dialog.cs" />
     <Compile Include="Models\Utils\QuickMessage.cs" />
     <Compile Include="Models\Utils\Script.cs" />
