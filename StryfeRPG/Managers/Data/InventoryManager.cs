@@ -121,6 +121,9 @@ namespace StryfeRPG.Managers
         
         public void UseItem(int inventoryId)
         {
+            if (inventoryId == -1)
+                return;
+
             Item item = Items[inventoryId];
             
             // Check for equipment

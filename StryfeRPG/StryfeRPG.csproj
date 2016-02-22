@@ -70,6 +70,9 @@
     <Compile Include="System\Global.cs" />
     <Compile Include="System\ScriptInterpreter.cs" />
     <Compile Include="System\Utils.cs" />
+    <Compile Include="System\Windows\TextWindow.cs" />
+    <Compile Include="System\Windows\Window.cs" />
+    <Compile Include="System\Windows\WindowUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Extended, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

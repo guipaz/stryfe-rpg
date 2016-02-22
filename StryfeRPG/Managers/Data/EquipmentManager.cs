@@ -4,6 +4,7 @@ using StryfeCore.Models.Items;
 using StryfeRPG.Models.Characters;
 using StryfeRPG.Models.Items;
 using StryfeRPG.System;
+using StryfeRPG.System.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -178,12 +179,11 @@ namespace StryfeRPG.Managers.Data
             if (!IsOpened)
                 return;
 
+            WindowUtils.spriteBatch = spriteBatch;
+
             // Window
-            int windowX = bounds.Width / 2 - Width / 2;
-            int windowY = bounds.Height / 2 - Height / 2;
-            spriteBatch.Draw(dialogTexture,
-                             destinationRectangle: new Rectangle(windowX, windowY, Width, Height),
-                             color: new Color(Color.White, 0.8f));
+            Window window = new Window(bounds.Width / 2 - Width / 2, bounds.Height / 2 - Height / 2, Width, Height);
+            window.Margin = 15;
 
             // Item slot
             int slotX = 0;
@@ -192,19 +192,19 @@ namespace StryfeRPG.Managers.Data
             {
                 for (int y = 0; y < 4; y++)
                 {
-                    // Slot
+                    // Gets the right color
                     Color color = Color.White;
-                    int i = (int)y * tilesX + (int)x;
-
                     if (selectedTile.X == x && selectedTile.Y == y)
                         color = Color.Cyan; // when the slot is selected
 
                     slotX = x * (itemSize + marginIn * 2 + Global.TileSize);
                     slotY = y * (itemSize + marginIn);
-                    spriteBatch.Draw(slotTexture,
-                             destinationRectangle: new Rectangle(windowX + marginOut + slotX, windowY + marginOut + slotY, itemSize, itemSize),
-                             color: color);
 
+                    // Adds the slot window to the master window
+                    Window slot = new Window(slotX, slotY, itemSize, itemSize, slotTexture, color);
+                    window.AddChild(slot);
+
+                    // Checks if there's any item
                     EquipmentType type = GetEquipType(x, y);
                     Item item = null;
                     foreach (KeyValuePair<int, Equipment> e in EquippedItems)
@@ -229,12 +229,14 @@ namespace StryfeRPG.Managers.Data
                         if (texture != null)
                         {
                             Rectangle rect = Utils.GetRectangleByGid(item.Gid, item.TextureTileSize, texture.Width);
-                            spriteBatch.Draw(texture,
-                                             new Rectangle(windowX + marginOut + slotX + item.TextureTileSize / 4,
-                                                           windowY + marginOut + slotY + item.TextureTileSize / 4,
-                                                           item.TextureTileSize, item.TextureTileSize),
-                                             rect,
-                                             Color.White);
+                            Window icon = new Window(item.TextureTileSize / 4,
+                                                     item.TextureTileSize / 4,
+                                                     item.TextureTileSize,
+                                                     item.TextureTileSize,
+                                                     texture,
+                                                     Color.White,
+                                                     rect);
+                            slot.AddChild(icon);
                         }
                     } else
                     {
@@ -243,19 +245,22 @@ namespace StryfeRPG.Managers.Data
                 }               
                 
             }
-
+            
             // Player image
-            int imgX = windowX + marginOut + itemSize + marginIn;
-            spriteBatch.Draw(Global.Player.Texture,
-                            destinationRectangle: new Rectangle(imgX, windowY + Height / 2 - Global.TileSize / 2, Global.TileSize, Global.TileSize),
-                            sourceRectangle: Utils.GetRectangleByGid(Global.Player.GetSprite(FacingDirection.Down), Global.TileSize, Global.Player.Texture.Width),
-                            color: Color.White);
+            Window playerImage = new Window(itemSize + marginIn, Height / 2 - Global.TileSize / 2, Global.TileSize, Global.TileSize,
+                                       Global.Player.Texture,
+                                       Color.White,
+                                       Utils.GetRectangleByGid(Global.Player.GetSprite(FacingDirection.Down), Global.TileSize, Global.Player.Texture.Width));
+            window.AddChild(playerImage);
 
             // Description frame
-            int descriptionX = imgX + Global.TileSize + itemSize + marginIn * 2;
-            spriteBatch.Draw(slotTexture,
-                             destinationRectangle: new Rectangle(descriptionX, windowY + marginOut, Width + windowX - descriptionX - marginOut, Height - marginOut * 2),
-                             color: Color.White);
+            Window description = new Window(playerImage.Bounds.X + Global.TileSize + itemSize + marginIn * 2,
+                                            0,
+                                            Width - playerImage.Bounds.X - Global.TileSize - itemSize - marginIn * 2 - marginOut * 2,
+                                            Height - marginOut * 2,
+                                            slotTexture,
+                                            Color.White);
+            window.AddChild(description);
 
             // Item name
             if (selectedItem != -1)
@@ -263,14 +268,23 @@ namespace StryfeRPG.Managers.Data
                 Item i = EquippedItems[selectedItem];
 
                 int margin = 10;
-                string str = Utils.GetCroppedString(i.Name, Global.DialogFont, windowX + Width - descriptionX - (margin * 3), Height - margin * 4)[0];
-                spriteBatch.DrawString(Global.DialogFont, str, new Vector2(descriptionX + margin, windowY + marginOut + margin), Color.Yellow);
+
+                TextWindow nameWindow = new TextWindow(Global.DialogFont, i.Name,
+                                                 new Vector2(margin, margin),
+                                                 new Vector2(description.Bounds.Width - margin * 2, description.Bounds.Height - margin * 2),
+                                                 Color.Yellow);
+                description.AddChild(nameWindow);
 
                 // Item description
-                Vector2 measure = Global.DialogFont.MeasureString(str);
-                str = Utils.GetCroppedString(i.Description, Global.DetailFont, windowX + Width - descriptionX - (margin * 3), Height - margin * 4 - measure.Y)[0];
-                spriteBatch.DrawString(Global.DetailFont, str, new Vector2(descriptionX + margin, windowY + marginOut + margin + measure.Y + 10), Color.White);
+                Vector2 measure = nameWindow.Font.MeasureString(nameWindow.Text);
+                TextWindow descriptionText = new TextWindow(Global.DetailFont, i.Description,
+                                                        new Vector2(margin, measure.Y),
+                                                        new Vector2(description.Bounds.Width - margin * 3, description.Bounds.Height - margin * 3 - measure.Y));
+                description.AddChild(descriptionText);
             }
+
+            // Draws the window
+            WindowUtils.DrawWindow(window);
         }
 
         private EquipmentType GetEquipType(int x, int y)
