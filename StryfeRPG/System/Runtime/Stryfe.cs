@@ -16,13 +16,15 @@ using Lidgren.Network;
 using System.Threading;
 using StryfeRPG.System.Network;
 using StryfeCore.Network;
+using StryfeRPG.Scenes;
 
 namespace StryfeRPG
 {
-    public class Stryfe : Game
+    public class Stryfe : Game, ISceneResponder
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Scene currentScene;
 
         public Stryfe()
         {
@@ -42,7 +44,7 @@ namespace StryfeRPG
             MediaPlayer.Volume = 0.0f; // debug
 
             new Thread(ClientHandler.Instance.Run).Start();
-            
+
             base.Initialize();
         }
         
@@ -59,47 +61,13 @@ namespace StryfeRPG
             Utils.LoadScripts();
             Utils.LoadItems();
 
-            MapManager.Instance.spriteBatch = spriteBatch;
-            MapManager.Instance.LoadMap("testMap");
-
-            //testing
-            //Global.RetrieveAllItems();
-            CharacterManager.Instance.AddExperience(120);
-
-            SRActionMessage msg = new SRActionMessage(ActionType.Login, ServiceType.Login);
-            msg.args = new Dictionary<ArgumentName, object>()
-            {
-                { ArgumentName.LoginUsername, "stryfe" },
-                { ArgumentName.LoginPassword, "123" }
-            };
-            ClientHandler.Instance.SendMessage(msg);
+            //ChangeScene(Scene.SceneType.Game);
+            ChangeScene(Scene.SceneType.Login);
         }
-
-        protected override void UnloadContent()
-        {
-            
-        }
-
+        
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            double timePassed = gameTime.ElapsedGameTime.TotalSeconds;
-
-            // If game is waiting, doesn't listen to any keyboard event
-            PauseManager.Instance.Update(timePassed);
-            if (PauseManager.Instance.Waiting)
-                return;
-
-            KeyboardManager.Instance.Update(timePassed);
-
-            // If game is paused, doesn't update the map
-            if (PauseManager.Instance.Paused)
-                return;
-
-            MapManager.Instance.Update(timePassed);
-            QuickMessageManager.Instance.Update(timePassed);
+            currentScene.Update(gameTime);
             
             base.Update(gameTime);
         }
@@ -108,31 +76,20 @@ namespace StryfeRPG
         {
             GraphicsDevice.Clear(Color.Black);
 
-            CameraManager.Instance.Position = Global.Player.CurrentPosition;
-            double timePassed = gameTime.ElapsedGameTime.TotalSeconds;
-
-            // Maps (and everything in them)
-            spriteBatch.Begin(samplerState: SamplerState.PointWrap, transformMatrix: CameraManager.Instance.TransformMatrix);
-            MapManager.Instance.Draw(timePassed);
-            spriteBatch.End();
-
-            // HUD
-            spriteBatch.Begin();
-            HUDManager.Instance.Draw(spriteBatch);
-
-            // Dialogs
-            DialogManager.Instance.Draw(spriteBatch, timePassed);
-
-            // Quick Messages
-            QuickMessageManager.Instance.Draw(spriteBatch);
-
-            // Windows
-            if (WindowManager.IsWindowOpened)
-                WindowManager.CurrentManager.Draw(spriteBatch, timePassed);
-
-            spriteBatch.End();
+            currentScene.Draw(gameTime);   
             
             base.Draw(gameTime);
+        }
+
+        public void ChangeScene(Scene.SceneType type)
+        {
+            currentScene = new GameScene(spriteBatch, this);
+            currentScene.LoadScene();
+        }
+
+        protected override void UnloadContent()
+        {
+            ClientHandler.Instance.Stop();
         }
     }
 }
