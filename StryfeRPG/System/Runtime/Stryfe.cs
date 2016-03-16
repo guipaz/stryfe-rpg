@@ -17,6 +17,7 @@ using System.Threading;
 using StryfeRPG.System.Network;
 using StryfeCore.Network;
 using StryfeRPG.Scenes;
+using StryfeRPG.System.Runtime;
 
 namespace StryfeRPG
 {
@@ -26,7 +27,9 @@ namespace StryfeRPG
         SpriteBatch spriteBatch;
         Scene currentScene;
 
-        public Stryfe()
+        public GameState gameState { get; set; }
+
+        public Stryfe Setup()
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 800;  // set this value to the desired width of your window
@@ -35,6 +38,8 @@ namespace StryfeRPG
 
             Content.RootDirectory = "Content";
             Global.SetContent(Content);
+
+            return this;
         }
 
         protected override void Initialize()
@@ -42,6 +47,7 @@ namespace StryfeRPG
             CameraManager.Instance.Bounds = GraphicsDevice.Viewport.Bounds;
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 0.0f; // debug
+            IsMouseVisible = true;
 
             new Thread(ClientHandler.Instance.Run).Start();
 
@@ -60,8 +66,7 @@ namespace StryfeRPG
             Utils.LoadDialogs();
             Utils.LoadScripts();
             Utils.LoadItems();
-
-            //ChangeScene(Scene.SceneType.Game);
+            
             ChangeScene(Scene.SceneType.Login);
         }
         
@@ -74,8 +79,6 @@ namespace StryfeRPG
         
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
-
             currentScene.Draw(gameTime);   
             
             base.Draw(gameTime);
@@ -83,13 +86,50 @@ namespace StryfeRPG
 
         public void ChangeScene(Scene.SceneType type)
         {
-            currentScene = new GameScene(spriteBatch, this);
-            currentScene.LoadScene();
+            Scene nextScene = null;
+            switch (type)
+            {
+                case Scene.SceneType.Game:
+                    nextScene = new GameScene(spriteBatch, this);
+                    break;
+                case Scene.SceneType.Login:
+                    nextScene = new LoginScene(spriteBatch, this);
+                    break;
+            }
+
+            nextScene.LoadScene();
+            //TODO: unload last scene
+            currentScene = nextScene;
         }
 
         protected override void UnloadContent()
         {
             ClientHandler.Instance.Stop();
+        }
+
+        public GraphicsDevice GetGraphicsDevice()
+        {
+            return GraphicsDevice;
+        }
+
+        public GraphicsDeviceManager GetGraphicsManager()
+        {
+            return graphics;
+        }
+
+        // Singleton stuff
+        private static Stryfe instance;
+        protected Stryfe() { }
+        public static Stryfe Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new Stryfe();
+                }
+                return instance;
+            }
         }
     }
 }

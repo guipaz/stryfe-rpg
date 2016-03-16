@@ -54,6 +54,7 @@
     <Compile Include="Models\Items\Equipment.cs" />
     <Compile Include="Models\Items\Item.cs" />
     <Compile Include="Network\NetworkSerializer.cs" />
+    <Compile Include="Network\SharedModels\PlayerInfo.cs" />
     <Compile Include="Network\SharedModels\ServerInfo.cs" />
     <Compile Include="Network\SRActionMessage.cs" />
     <Compile Include="Network\SRMessage.cs" />

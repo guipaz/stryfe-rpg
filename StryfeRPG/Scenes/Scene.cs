@@ -18,6 +18,7 @@ namespace StryfeRPG.Scenes
 
         protected SpriteBatch spriteBatch;
         protected ISceneResponder responder;
+        protected GraphicsDevice device;
 
         public Scene(SpriteBatch sb, ISceneResponder r)
         {

@@ -61,8 +61,14 @@
     <Compile Include="Scenes\ISceneResponder.cs" />
     <Compile Include="Scenes\LoginScene.cs" />
     <Compile Include="Scenes\Scene.cs" />
+    <Compile Include="System\Forms\FormUtils.cs" />
+    <Compile Include="System\Forms\SButton.cs" />
+    <Compile Include="System\Forms\SDrawable.cs" />
     <Compile Include="System\Network\ClientHandler.cs" />
-    <Compile Include="System\Network\MessageHandler.cs" />
+    <Compile Include="System\Network\IngameMessageHandler.cs" />
+    <Compile Include="System\Network\LoginMessageHandler.cs" />
+    <Compile Include="System\Network\IMessageHandler.cs" />
+    <Compile Include="System\Runtime\GameState.cs" />
     <Compile Include="System\Runtime\Stryfe.cs" />
     <Compile Include="Managers\System\CameraManager.cs" />
     <Compile Include="Managers\System\KeyboardManager.cs" />

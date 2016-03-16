@@ -8,9 +8,10 @@ namespace StryfeCore.Network
 {
     public enum ActionType
     {
-        Login,
+        GetServerList,
+        DoLogin,
         GetMapData,
-        MoveTo
+        UpdatePosition
     }
 
     public enum ServiceType
@@ -26,7 +27,7 @@ namespace StryfeCore.Network
         public ActionType type;
         public ServiceType serviceType;
 
-        public SRActionMessage (ActionType type, ServiceType serviceType)
+        public SRActionMessage (ActionType type, ServiceType serviceType) : base()
         {
             this.type = type;
             this.serviceType = serviceType;

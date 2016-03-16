@@ -9,15 +9,22 @@ namespace StryfeCore.Network
     public enum ArgumentName
     {
         ServerList,
-        PlayerPosition,
-        PlayerName,
+        PlayerInfo,
+        PlayerId,
+        Position,
         LoginUsername,
         LoginPassword,
+        VisiblePlayers,
     }
 
     [Serializable]
     public abstract class SRMessage
     {
         public Dictionary<ArgumentName, object> args;
+
+        public SRMessage()
+        {
+            args = new Dictionary<ArgumentName, object>();
+        }
     }
 }

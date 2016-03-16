@@ -51,6 +51,8 @@ namespace StryfeRPG.Scenes
 
         public override void Draw(GameTime gameTime)
         {
+            responder.GetGraphicsDevice().Clear(Color.Black);
+
             CameraManager.Instance.Position = Global.Player.CurrentPosition;
             double timePassed = gameTime.ElapsedGameTime.TotalSeconds;
 

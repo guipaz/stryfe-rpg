@@ -1,5 +1,6 @@
 ﻿using Lidgren.Network;
 using StryfeCore.Network;
+using StryfeServer.Models;
 using StryfeServer.Services;
 using System;
 using System.Collections.Generic;
@@ -24,8 +25,6 @@ namespace StryfeServer
             server = new NetServer(config);
             server.Start();
 
-            Console.WriteLine("i'm alive");
-
             //TODO: services initialization
 
             // Messages receipt
@@ -48,6 +47,7 @@ namespace StryfeServer
                                 case ServiceType.Char:
                                     break;
                                 case ServiceType.Map:
+                                    MapService.Instance.Handle(action, message.SenderConnection);
                                     break;
                             }
 
@@ -85,9 +85,9 @@ namespace StryfeServer
             server.SendMessage(CreateMessage(msg), conn, NetDeliveryMethod.ReliableOrdered);
         }
 
-        public void SendMessageToAll(SROrderMessage msg)
+        public void SendMessageToMany(SROrderMessage msg, List<NetConnection> conns)
         {
-            server.SendMessage(CreateMessage(msg), server.Connections, NetDeliveryMethod.ReliableOrdered, 0);
+            server.SendMessage(CreateMessage(msg), conns, NetDeliveryMethod.ReliableOrdered, 0);
         }
 
         NetOutgoingMessage CreateMessage(object contents)

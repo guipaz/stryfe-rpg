@@ -8,10 +8,16 @@ namespace StryfeCore.Network
 {
     public enum OrderType
     {
+        // Login
         UpdateServerList,
         SetPlayerInfo,
         UpdateMapInfo,
-        UpdateNPlayerInfo
+
+        // Movement
+        UpdateNPlayerInfo,
+
+        // Failure
+        LoginFailed
     }
     
     [Serializable]
@@ -19,9 +25,10 @@ namespace StryfeCore.Network
     {
         public OrderType type;
 
-        public SROrderMessage(OrderType type)
+        public SROrderMessage(OrderType type, Dictionary<ArgumentName, object> args = null) : base()
         {
             this.type = type;
+            this.args = args != null ? args : this.args;
         }
     }
 }

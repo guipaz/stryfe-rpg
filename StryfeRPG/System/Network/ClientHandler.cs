@@ -13,6 +13,7 @@ namespace StryfeRPG.System.Network
     {
         NetPeerConfiguration config;
         NetClient client;
+        IMessageHandler handler;
 
         bool stop = false;
 
@@ -23,7 +24,9 @@ namespace StryfeRPG.System.Network
             client = new NetClient(config);
             client.Start();
             client.Connect("localhost", 1234);
-            
+
+            handler = new LoginMessageHandler();
+
             // Messages receipt
             NetIncomingMessage message;
             while (!stop)
@@ -34,7 +37,7 @@ namespace StryfeRPG.System.Network
                     {
                         case NetIncomingMessageType.Data:
                             SROrderMessage msg = NetworkSerializer.DeserializeObject<SROrderMessage>(message.ReadBytes(message.LengthBytes));
-                            MessageHandler.Instance.Handle(msg);
+                            handler.Handle(msg);
                             break;
 
                         case NetIncomingMessageType.StatusChanged:
@@ -42,6 +45,10 @@ namespace StryfeRPG.System.Network
                             {
                                 case NetConnectionStatus.Connected:
                                     Console.WriteLine("Connected");
+                                    Console.WriteLine("Asking for server list...");
+
+                                    SRActionMessage action = new SRActionMessage(ActionType.GetServerList, ServiceType.Login);
+                                    SendMessage(action);
                                     break;
                             }
 
@@ -60,6 +67,11 @@ namespace StryfeRPG.System.Network
                 
                 Thread.Sleep(1);
             }
+        }
+
+        public void SetHandler(IMessageHandler handler)
+        {
+            this.handler = handler;
         }
 
         public void SendMessage(SRActionMessage action)

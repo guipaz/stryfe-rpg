@@ -8,7 +8,7 @@ namespace StryfeRPG
         [STAThread]
         static void Main()
         {
-            using (var game = new Stryfe())
+            using (var game = Stryfe.Instance.Setup())
                 game.Run();
         }
     }

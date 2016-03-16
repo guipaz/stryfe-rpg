@@ -10,6 +10,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using StryfeRPG.Models.Characters;
 using StryfeRPG.System;
+using StryfeCore.Network.SharedModels;
+using StryfeRPG.System.Runtime;
 
 namespace StryfeRPG.Managers
 {
@@ -20,6 +22,9 @@ namespace StryfeRPG.Managers
 
         private bool mustTeleport = false;
         private Teleport teleportObject;
+
+        // Networking
+        public Dictionary<int, Player> visiblePlayers = new Dictionary<int, Player>();
 
         public void PerformAction(Vector2 position)
         {
@@ -154,7 +159,7 @@ namespace StryfeRPG.Managers
             DrawObject(Global.Player);
 
             // Draw the other players
-            foreach (Player p in Global.NetPlayers.Values)
+            foreach (Player p in visiblePlayers.Values)
             {
                 DrawObject(p);
             }
@@ -230,6 +235,27 @@ namespace StryfeRPG.Managers
                     Rectangle tilesetRec = new Rectangle(size * column, size * row, size, size);
                     spriteBatch.Draw(tileset.Texture, new Rectangle((int)x, (int)y, size, size), tilesetRec, Color.White);
                 }
+            }
+        }
+
+        public void UpdatePlayer(PlayerInfo info)
+        {
+            if (!visiblePlayers.ContainsKey(info.id))
+                visiblePlayers[info.id] = new Player(Global.defaultObj, Global.defaultTileset); //TODO
+        }
+
+        public void UpdatePlayers(List<PlayerInfo> players)
+        {
+            visiblePlayers.Clear();
+
+            foreach (PlayerInfo info in players)
+            {
+                if (info.id == GameState.Instance.playerInfo.id)
+                    continue;
+
+                //TODO player factory
+                Player p = new Player(Global.defaultObj, Global.defaultTileset);
+                visiblePlayers.Add(p.id, p);
             }
         }
 
