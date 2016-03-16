@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A54EBB60-4343-4A0F-A3CA-2C0F78644953}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{8F0289C5-5A7D-444F-AA23-DA8299591BFD}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StryfeCore</RootNamespace>
-    <AssemblyName>StryfeCore</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>StryfeServer</RootNamespace>
+    <AssemblyName>StryfeServer</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,10 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,30 +43,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Characters\AttributeSheet.cs" />
-    <Compile Include="Models\Items\AttributeModifier.cs" />
-    <Compile Include="Models\Items\Equipment.cs" />
-    <Compile Include="Models\Items\Item.cs" />
-    <Compile Include="Network\Actions\SAction.cs" />
-    <Compile Include="Network\Actions\SActionMovement.cs" />
-    <Compile Include="Network\NetworkSerializer.cs" />
-    <Compile Include="Network\Messages\SActionMessage.cs" />
-    <Compile Include="Network\Messages\SMessage.cs" />
-    <Compile Include="Network\Messages\SOrderMessage.cs" />
-    <Compile Include="Network\Orders\SOrder.cs" />
-    <Compile Include="Network\Orders\SOrderMovePlayer.cs" />
-    <Compile Include="Network\Orders\SOrderPlayerInformation.cs" />
-    <Compile Include="Utils\Constants.cs" />
-    <Compile Include="Models\Utils\Dialog.cs" />
-    <Compile Include="Models\Utils\QuickMessage.cs" />
-    <Compile Include="Models\Utils\Script.cs" />
-    <Compile Include="Models\Utils\ScriptCommand.cs" />
-    <Compile Include="Models\Utils\ScriptPage.cs" />
+    <Compile Include="Handlers\MessageHandler.cs" />
+    <Compile Include="Models\DataHolder.cs" />
+    <Compile Include="Models\Player.cs" />
+    <Compile Include="StryfeServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serializers\ItemConverter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\lidgren-network-gen3\Lidgren.Network\Lidgren.Network.csproj">
+      <Project>{49ba1c69-6104-41ac-a5d8-b54fa9f696e8}</Project>
+      <Name>Lidgren.Network</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StryfeCore\StryfeCore.csproj">
+      <Project>{a54ebb60-4343-4a0f-a3ca-2c0f78644953}</Project>
+      <Name>StryfeCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

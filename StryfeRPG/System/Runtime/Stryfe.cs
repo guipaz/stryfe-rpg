@@ -12,6 +12,8 @@ using Microsoft.Xna.Framework.Media;
 using StryfeRPG.Managers.Data;
 using MonoGame.Extended.BitmapFonts;
 using StryfeRPG.Managers.GUI;
+using Lidgren.Network;
+using System.Threading;
 
 namespace StryfeRPG
 {
@@ -19,7 +21,7 @@ namespace StryfeRPG
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        
+
         public Stryfe()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -36,10 +38,13 @@ namespace StryfeRPG
             CameraManager.Instance.Bounds = GraphicsDevice.Viewport.Bounds;
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 0.0f; // debug
+            
+            Thread netThread = new Thread(NetworkHandler.Instance.Start);
+            netThread.Start();
 
             base.Initialize();
         }
-
+        
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -63,7 +68,7 @@ namespace StryfeRPG
 
         protected override void UnloadContent()
         {
-            
+            NetworkHandler.Instance.Stop();
         }
 
         protected override void Update(GameTime gameTime)

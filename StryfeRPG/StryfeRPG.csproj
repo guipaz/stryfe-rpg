@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -14,7 +14,7 @@
     <MonoGamePlatform>Windows</MonoGamePlatform>
     <MonoGameContentBuilderExe>
     </MonoGameContentBuilderExe>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -57,6 +57,7 @@
     <Compile Include="Models\Maps\Objects\ItemObject.cs" />
     <Compile Include="Models\Maps\Objects\Player.cs" />
     <Compile Include="Models\Maps\Objects\Teleport.cs" />
+    <Compile Include="System\Runtime\NetworkHandler.cs" />
     <Compile Include="System\Runtime\Stryfe.cs" />
     <Compile Include="Managers\System\CameraManager.cs" />
     <Compile Include="Managers\System\KeyboardManager.cs" />
@@ -83,15 +84,11 @@
       <HintPath>$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
-    <Reference Include="TiledSharp, Version=0.10.5878.12227, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\TiledSharp.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
@@ -100,9 +97,17 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\lidgren-network-gen3\Lidgren.Network\Lidgren.Network.csproj">
+      <Project>{49ba1c69-6104-41ac-a5d8-b54fa9f696e8}</Project>
+      <Name>Lidgren.Network</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StryfeCore\StryfeCore.csproj">
       <Project>{a54ebb60-4343-4a0f-a3ca-2c0f78644953}</Project>
       <Name>StryfeCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TiledSharp-master\TiledSharp\TiledSharp.csproj">
+      <Project>{e4130f8d-d301-4e0c-916d-489c4a23c9b1}</Project>
+      <Name>TiledSharp</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

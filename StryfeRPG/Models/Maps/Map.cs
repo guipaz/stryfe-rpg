@@ -63,6 +63,8 @@ namespace StryfeRPG.Models.Maps
                     } else if (obj.Type == "player")
                     {
                         PlayerReference = new Player(obj, tileset);
+                        Global.defaultObj = obj;
+                        Global.defaultTileset = tileset;
                     } else if (obj.Type == "teleport")
                     {
                         Objects.Add(new Teleport(obj, tileset));

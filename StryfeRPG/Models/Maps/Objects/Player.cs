@@ -12,6 +12,8 @@ namespace StryfeRPG.Models.Characters
 {
     public class Player : NPC
     {
+        public int id;
+
         public Player(TmxObject obj, Tileset tileset) : base(obj, tileset, "")
         {
             Name = "Stryfe";

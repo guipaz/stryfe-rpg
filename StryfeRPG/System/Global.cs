@@ -1,6 +1,8 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using StryfeCore.Network.Orders;
 using StryfeRPG.Managers;
 using StryfeRPG.Models.Characters;
 using StryfeRPG.Models.Items;
@@ -10,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TiledSharp;
 
 namespace StryfeRPG.System
 {
@@ -17,6 +20,9 @@ namespace StryfeRPG.System
     {
         // Settings
         public static int TileSize = 64;
+
+        public static TmxObject defaultObj;
+        public static Tileset defaultTileset;
 
         // Utils references
         public static Viewport Viewport;
@@ -37,6 +43,9 @@ namespace StryfeRPG.System
 
         // Runtime data
         private static Dictionary<string, bool> Switches = new Dictionary<string, bool>();
+
+        // Networking
+        public static Dictionary<int, Player> NetPlayers = new Dictionary<int, Player>();
         
         // Getters
         public static Texture2D GetTexture(string name)
@@ -109,6 +118,18 @@ namespace StryfeRPG.System
         public static void SetContent(ContentManager content)
         {
             Content = content;
+        }
+
+        public static void SetPlayerInformation(SOrderPlayerInformation info)
+        {
+            if (info.id == Player.id)
+                return;
+            
+            if (!NetPlayers.ContainsKey(info.id))
+                NetPlayers[info.id] = new Player(defaultObj, defaultTileset);
+
+            Player p = NetPlayers[info.id];
+            p.MapPosition = new Vector2(info.x, info.y);
         }
     }
 }

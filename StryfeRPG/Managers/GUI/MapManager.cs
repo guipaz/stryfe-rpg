@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using StryfeRPG.Models.Characters;
 using StryfeRPG.System;
+using StryfeCore.Network.Messages;
 
 namespace StryfeRPG.Managers
 {
@@ -77,12 +78,18 @@ namespace StryfeRPG.Managers
             {
                 AudioManager.Instance.PlaySong(currentMap.song);
             }
+
+            NetworkHandler.Instance.SendMessage(ActionType.MapLoaded, null);
         }
 
         public void Update(double timePassed)
         {
             // Update Player
             UpdateObject(Global.Player, timePassed);
+
+            // Update other players
+            foreach (Player p in Global.NetPlayers.Values)
+                UpdateObject(p, timePassed);
 
             // Update NPCs
             foreach (MapObject obj in currentMap.Objects)
@@ -148,6 +155,12 @@ namespace StryfeRPG.Managers
 
             // Draw the player
             DrawObject(Global.Player);
+
+            // Draw the other players
+            foreach (Player p in Global.NetPlayers.Values)
+            {
+                DrawObject(p);
+            }
 
             // Draw above tiles of the map
             foreach (TmxLayer layer in currentMap.AboveLayers)
