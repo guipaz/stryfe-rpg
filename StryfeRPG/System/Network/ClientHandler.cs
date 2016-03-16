@@ -86,6 +86,11 @@ namespace StryfeRPG.System.Network
             stop = true;
         }
 
+        public IMessageHandler GetHandler()
+        {
+            return handler;
+        }
+
         // Singleton stuff
         private static ClientHandler instance;
         protected ClientHandler() { }

@@ -27,6 +27,21 @@ namespace StryfeRPG.System.Network
             }
         }
 
+        public void Send(ActionType type, Dictionary<ArgumentName, object> args)
+        {
+            SRActionMessage msg = null;
+            switch (type)
+            {
+                case ActionType.UpdatePosition:
+                    msg = new SRActionMessage(type, ServiceType.Map);
+                    msg.args = args;
+                    break;
+            }
+
+            if (msg != null)
+                ClientHandler.Instance.SendMessage(msg);
+        }
+
         void UpdateMapInfo(Dictionary<ArgumentName, object> info)
         {
             // Sets players around

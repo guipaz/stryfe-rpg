@@ -27,6 +27,11 @@ namespace StryfeRPG.System.Network
             }
         }
 
+        public void Send(ActionType type, Dictionary<ArgumentName, object> args)
+        {
+
+        }
+
         public void UpdateServerList(List<ServerInfo> info)
         {
             foreach (ServerInfo s in info)
@@ -35,7 +40,7 @@ namespace StryfeRPG.System.Network
 
         public void SetPlayerInfo(PlayerInfo info)
         {
-            GameState.Instance.playerInfo = info;
+            GameState.Instance.SetPlayerInfo(info);
             ClientHandler.Instance.SetHandler(new IngameMessageHandler());
 
             SRActionMessage msg = new SRActionMessage(ActionType.GetMapData, ServiceType.Map);

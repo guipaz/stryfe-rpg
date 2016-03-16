@@ -11,5 +11,6 @@ namespace StryfeRPG.System.Network
     public interface IMessageHandler
     {
         void Handle(SROrderMessage msg);
+        void Send(ActionType type, Dictionary<ArgumentName, object> args);
     }
 }

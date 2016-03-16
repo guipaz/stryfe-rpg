@@ -1,4 +1,5 @@
-﻿using StryfeCore.Network.SharedModels;
+﻿using Microsoft.Xna.Framework;
+using StryfeCore.Network.SharedModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,14 @@ namespace StryfeRPG.System.Runtime
 {
     public class GameState
     {
-        public PlayerInfo playerInfo;
+        public PlayerInfo playerInfo { get; private set; }
+
+        public void SetPlayerInfo(PlayerInfo info)
+        {
+            playerInfo = info;
+            if (Global.Player != null)
+                Global.Player.SetInfo(info);
+        }
 
         // Singleton stuff
         private static GameState instance;

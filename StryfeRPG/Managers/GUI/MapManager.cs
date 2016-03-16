@@ -242,6 +242,7 @@ namespace StryfeRPG.Managers
         {
             if (!visiblePlayers.ContainsKey(info.id))
                 visiblePlayers[info.id] = new Player(Global.defaultObj, Global.defaultTileset); //TODO
+            visiblePlayers[info.id].SetInfo(info);
         }
 
         public void UpdatePlayers(List<PlayerInfo> players)
@@ -255,7 +256,8 @@ namespace StryfeRPG.Managers
 
                 //TODO player factory
                 Player p = new Player(Global.defaultObj, Global.defaultTileset);
-                visiblePlayers.Add(p.id, p);
+                p.SetInfo(info);
+                visiblePlayers[p.id] = p;
             }
         }
 

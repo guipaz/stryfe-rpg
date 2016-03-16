@@ -79,11 +79,11 @@ namespace StryfeRPG.Models.Maps
             Size = new Vector2((int)obj.Width / Global.TileSize, (int)obj.Height / Global.TileSize);
         }
 
-        public bool Move(Vector2 movement)
+        public virtual bool Move(Vector2 movement)
         {
             IsMoving = true;
             DestinationPosition = (MapPosition + movement) * Global.TileSize;
-
+            
             return true;
         }
 
