@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StryfeCore.Network.Actions;
-using StryfeCore.Network.Messages;
 using StryfeRPG.Managers;
 using StryfeRPG.System;
 using System;
@@ -85,11 +83,6 @@ namespace StryfeRPG.Models.Maps
         {
             IsMoving = true;
             DestinationPosition = (MapPosition + movement) * Global.TileSize;
-
-            SActionMovement mov = new SActionMovement();
-            mov.x = (int)MapPosition.X;
-            mov.y = (int)MapPosition.Y;
-            NetworkHandler.Instance.SendMessage(ActionType.Movement, mov);
 
             return true;
         }

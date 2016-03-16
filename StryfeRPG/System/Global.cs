@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
-using StryfeCore.Network.Orders;
 using StryfeRPG.Managers;
 using StryfeRPG.Models.Characters;
 using StryfeRPG.Models.Items;
@@ -118,18 +117,6 @@ namespace StryfeRPG.System
         public static void SetContent(ContentManager content)
         {
             Content = content;
-        }
-
-        public static void SetPlayerInformation(SOrderPlayerInformation info)
-        {
-            if (info.id == Player.id)
-                return;
-            
-            if (!NetPlayers.ContainsKey(info.id))
-                NetPlayers[info.id] = new Player(defaultObj, defaultTileset);
-
-            Player p = NetPlayers[info.id];
-            p.MapPosition = new Vector2(info.x, info.y);
         }
     }
 }

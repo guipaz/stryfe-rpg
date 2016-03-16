@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MonoGame.Extended, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Extended.0.4.64\lib\MonoGame.Extended.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -49,15 +53,11 @@
     <Compile Include="Models\Items\AttributeModifier.cs" />
     <Compile Include="Models\Items\Equipment.cs" />
     <Compile Include="Models\Items\Item.cs" />
-    <Compile Include="Network\Actions\SAction.cs" />
-    <Compile Include="Network\Actions\SActionMovement.cs" />
     <Compile Include="Network\NetworkSerializer.cs" />
-    <Compile Include="Network\Messages\SActionMessage.cs" />
-    <Compile Include="Network\Messages\SMessage.cs" />
-    <Compile Include="Network\Messages\SOrderMessage.cs" />
-    <Compile Include="Network\Orders\SOrder.cs" />
-    <Compile Include="Network\Orders\SOrderMovePlayer.cs" />
-    <Compile Include="Network\Orders\SOrderPlayerInformation.cs" />
+    <Compile Include="Network\SharedModels\ServerInfo.cs" />
+    <Compile Include="Network\SRActionMessage.cs" />
+    <Compile Include="Network\SRMessage.cs" />
+    <Compile Include="Network\SROrderMessage.cs" />
     <Compile Include="Utils\Constants.cs" />
     <Compile Include="Models\Utils\Dialog.cs" />
     <Compile Include="Models\Utils\QuickMessage.cs" />

@@ -14,6 +14,8 @@ using MonoGame.Extended.BitmapFonts;
 using StryfeRPG.Managers.GUI;
 using Lidgren.Network;
 using System.Threading;
+using StryfeRPG.System.Network;
+using StryfeCore.Network;
 
 namespace StryfeRPG
 {
@@ -38,10 +40,9 @@ namespace StryfeRPG
             CameraManager.Instance.Bounds = GraphicsDevice.Viewport.Bounds;
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 0.0f; // debug
-            
-            Thread netThread = new Thread(NetworkHandler.Instance.Start);
-            netThread.Start();
 
+            new Thread(ClientHandler.Instance.Run).Start();
+            
             base.Initialize();
         }
         
@@ -64,11 +65,19 @@ namespace StryfeRPG
             //testing
             //Global.RetrieveAllItems();
             CharacterManager.Instance.AddExperience(120);
+
+            SRActionMessage msg = new SRActionMessage(ActionType.Login, ServiceType.Login);
+            msg.args = new Dictionary<ArgumentName, object>()
+            {
+                { ArgumentName.LoginUsername, "stryfe" },
+                { ArgumentName.LoginPassword, "123" }
+            };
+            ClientHandler.Instance.SendMessage(msg);
         }
 
         protected override void UnloadContent()
         {
-            NetworkHandler.Instance.Stop();
+            
         }
 
         protected override void Update(GameTime gameTime)

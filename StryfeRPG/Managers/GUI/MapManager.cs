@@ -10,7 +10,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using StryfeRPG.Models.Characters;
 using StryfeRPG.System;
-using StryfeCore.Network.Messages;
 
 namespace StryfeRPG.Managers
 {
@@ -78,8 +77,6 @@ namespace StryfeRPG.Managers
             {
                 AudioManager.Instance.PlaySong(currentMap.song);
             }
-
-            NetworkHandler.Instance.SendMessage(ActionType.MapLoaded, null);
         }
 
         public void Update(double timePassed)

@@ -57,7 +57,8 @@
     <Compile Include="Models\Maps\Objects\ItemObject.cs" />
     <Compile Include="Models\Maps\Objects\Player.cs" />
     <Compile Include="Models\Maps\Objects\Teleport.cs" />
-    <Compile Include="System\Runtime\NetworkHandler.cs" />
+    <Compile Include="System\Network\ClientHandler.cs" />
+    <Compile Include="System\Network\MessageHandler.cs" />
     <Compile Include="System\Runtime\Stryfe.cs" />
     <Compile Include="Managers\System\CameraManager.cs" />
     <Compile Include="Managers\System\KeyboardManager.cs" />
